@@ -1,5 +1,5 @@
 module.exports = function (knex) {
-  knex.schema.createTable('trades', function(table){
+  knex.schema.createTableIfNotExists('trades', function(table){
     table.increments('id').primary();
     table.integer('user_id')
        .references('u_id')
@@ -11,5 +11,5 @@ module.exports = function (knex) {
     table.string('action');
     table.timestamps();
     table.float('price');
-  });    
+  }).catch(function(e){console.log(e)});    
 };  

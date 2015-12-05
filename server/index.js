@@ -2,7 +2,7 @@
 
 var express = require('express');
 var app = express();
-
+var knex = require('./db/index.js');
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
