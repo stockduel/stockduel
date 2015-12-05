@@ -1,21 +1,36 @@
 {
-  "name": "server",
+  "name": "Webpack_React",
   "version": "1.0.0",
   "description": "Social Trading Platform",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tatethurston/webpack_react"
   },
   "author": "floppyOrigami",
   "license": "ISC",
-  "devDependencies": {
-    "chai": "^3.4.1",
-    "express": "^4.13.3",
-    "knex": "^0.9.0",
-    "pg": "^4.4.3"
-  },
+  "homepage": "https://github.com/tatethurston/webpack_react",
   "dependencies": {
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
     "express": "^4.13.3",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "babel": "^6.1.18",
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "css-loader": "^0.23.0",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0",
+    "chai": "^3.4.1",
+    "knex": "^0.9.0",
+    "pg": "^4.4.3"
   }
 }
