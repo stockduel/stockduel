@@ -1,5 +1,5 @@
 module.exports = function(knex) {
-  return knex.schema.createTable('matches', function(table) {
+  return knex.schema.createTableIfNotExists('matches', function(table) {
     table.increments('m_id').primary();
     table.string('title');
     table.integer('creator_id')

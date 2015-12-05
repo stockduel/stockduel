@@ -1,5 +1,5 @@
 module.exports = function(knex) {
-  return knex.schema.createTable('stocks', function(table){
+  return knex.schema.createTableIfNotExists('stocks', function(table){
     table.increments('s_id').primary();
     table.string('name');
     table.string('symbol');
