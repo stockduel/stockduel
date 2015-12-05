@@ -7,6 +7,7 @@ var matches = require('../schema/matchesSchema.js');
 var trades = require('../schema/tradesSchema.js');
 var stocks = require('../schema/stocksSchema.js');
 var stock_prices = require('../schema/stockpricesSchema.js');
+var archive = require('../schema/archiveSchema.js');
 
 var config = require('./knexfile.js');
 var knex = require('knex')(config[ENV]);
@@ -16,7 +17,7 @@ var knex = require('knex')(config[ENV]);
 // ============= Build tables ============= \\
   (function(knexInstance) {
 
-    var builders = [users, matches, trades, stocks, stock_prices];
+    var builders = [users, matches, trades, stocks, stock_prices, archive];
 
     builders.forEach(function(builder) {
       builder(knexInstance);
