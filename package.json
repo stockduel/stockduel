@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {},
   "author": "floppyOrigami",
   "license": "ISC",
   "devDependencies": {
@@ -14,5 +13,9 @@
     "express": "^4.13.3",
     "knex": "^0.9.0",
     "pg": "^4.4.3"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "path": "^0.12.7"
   }
 }

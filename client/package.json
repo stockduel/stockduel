@@ -4,7 +4,7 @@
   "description": "React starter template using webpack",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --inline --hot"
+    "start": "webpack-dev-server d --hot"
   },
   "repository": {
     "type": "git",
