@@ -6,7 +6,7 @@ module.exports = function(knex) {
         .references('u_id')
         .inTable('users');
     table.float('starting_funds');
-    table.integer('chalengee')
+    table.integer('challengee')
         .references('u_id')
         .inTable('users');
     table.dateTime('startdate');

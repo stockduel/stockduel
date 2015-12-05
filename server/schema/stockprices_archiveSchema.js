@@ -1,5 +1,5 @@
 module.exports = function (knex) {
-  return knex.schema.createTableIfNotExists('archive', function(table) {
+  return knex.schema.createTableIfNotExists('stockprices_archive', function(table) {
     table.increments('archive_id').primary();
     table.integer('stock_id')
           .references('s_id')

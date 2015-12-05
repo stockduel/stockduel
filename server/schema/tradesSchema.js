@@ -7,6 +7,9 @@ module.exports = function (knex) {
     table.integer('match_id')
        .references('m_id')
        .inTable('matches');
+   table.integer('stock_id')
+      .references('s_id')
+      .inTable('stocks');
     table.integer('shares');
     table.string('action');
     table.timestamps();
