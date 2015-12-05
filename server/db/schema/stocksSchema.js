@@ -6,5 +6,8 @@ module.exports = function(knex) {
     table.string('industry');
     table.string('sector');
     table.string('exchange');
-  }).catch(function(e){console.log(e)});
+  }).catch(function(e){console.log(e);});
 };
+
+
+
