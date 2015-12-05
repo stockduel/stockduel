@@ -9,6 +9,7 @@ var stocks = require('../schema/stocksSchema.js');
 var stock_prices = require('../schema/stockpricesSchema.js');
 var archive = require('../schema/archiveSchema.js');
 
+// ============= Instatiate database connection ============= \\
 var config = require('./knexfile.js');
 var knex = require('knex')(config[ENV]);
 
