@@ -13,5 +13,5 @@ module.exports = function(knex) {
     table.dateTime('enddate');
     table.string('status');
     table.string('type');
-  });
+  }).catch(function(e){console.log(e)});
 };

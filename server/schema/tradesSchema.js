@@ -11,5 +11,5 @@ module.exports = function (knex) {
     table.string('action');
     table.timestamps();
     table.float('price');
-  });    
+  }).catch(function(e){console.log(e)});    
 };  

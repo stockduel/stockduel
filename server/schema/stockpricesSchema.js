@@ -23,5 +23,5 @@ module.exports = function (knex) {
     table.string('pe_ratio');
     table.string('peg_ratio');
     table.string('percent_change');
-  });
+  }).catch(function(e){console.log(e)});
 };

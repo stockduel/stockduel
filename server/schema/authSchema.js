@@ -6,5 +6,5 @@ module.exports = function(knex) {
     table.string('name');
     table.string('email');
     table.timestamps();
-  });
+  }).catch(function(e){console.log(e)});
 };
