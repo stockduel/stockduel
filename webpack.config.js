@@ -1,8 +1,6 @@
-
-
 module.exports = {
 
-  entry: './app/index.jsx',
+  entry: './client/app/index.jsx',
   output: {
     path: './dist',
     publicPath: 'dist',
