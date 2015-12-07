@@ -1,6 +1,6 @@
 module.exports = function (knex) {
-  return knex.schema.createTableIfNotExists('stockprices_archive', function(table) {
-    table.increments('archive_id').primary();
+  return knex.schema.createTableIfNotExists('stock_prices', function(table) {
+    table.increments('stockprice_id').primary();
     table.integer('stock_id')
           .references('s_id')
           .inTable('stocks');
@@ -23,5 +23,5 @@ module.exports = function (knex) {
     table.string('pe_ratio');
     table.string('peg_ratio');
     table.string('percent_change');
-  }).catch(function(e){console.log(e)});
+  }).catch(function(e){console.log(e);});
 };
