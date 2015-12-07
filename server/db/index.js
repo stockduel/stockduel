@@ -2,12 +2,12 @@ var ENV = 'development';
 var DATABASE = 'stockduel';
 
 // ============= Require Schema-builders ============= \\
-var users = require('../schema/usersSchema.js');
-var matches = require('../schema/matchesSchema.js');
-var stocks = require('../schema/stocksSchema.js');
-var trades = require('../schema/tradesSchema.js');
-var stock_prices = require('../schema/stockpricesSchema.js');
-var stockprices_archive = require('../schema/stockprices_archiveSchema.js');
+var users = require('./schema/usersSchema.js');
+var matches = require('./schema/matchesSchema.js');
+var stocks = require('./schema/stocksSchema.js');
+var trades = require('./schema/tradesSchema.js');
+var stock_prices = require('./schema/stockpricesSchema.js');
+var stockprices_archive = require('./schema/stockprices_archiveSchema.js');
 
 // ============= Instatiate database connection ============= \\
 var config = require('./knexfile.js');
@@ -24,7 +24,9 @@ var knex = require('knex')(config[ENV]);
       builder(knexInstance);
     });
 
-  }(knex))
+  }(knex));
 
 
 module.exports = knex;
+
+
