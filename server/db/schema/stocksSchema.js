@@ -8,3 +8,6 @@ module.exports = function(knex) {
     table.string('exchange');
   }).catch(function(e){console.log(e);});
 };
+
+
+
