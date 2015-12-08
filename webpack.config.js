@@ -1,6 +1,6 @@
 module.exports = {
 
-  entry: './app/index.jsx',
+  entry: './client/app/index.jsx',
   output: {
     path: './dist',
     publicPath: 'dist',
@@ -14,10 +14,10 @@ module.exports = {
       query: {
         presets: ['react', 'es2015'],
       },
-    }, {
+    },
+    {
       test: /\.css$/,
       loader: "style-loader!css-loader"
     }]
-  }
-
+  },
 };
