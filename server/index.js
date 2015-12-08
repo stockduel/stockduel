@@ -1,9 +1,10 @@
-//express server here
-
 var express = require('express');
 var app = express();
 var knex = require('./db/index.js');
 var port = process.env.PORT || 8080;
+
+var router = require('./routes/index');
+app.use(router);
 
 app.get('/', function (req, res) {
   res.send('Hello Huggada!');
@@ -12,7 +13,7 @@ app.get('/', function (req, res) {
   //.pipe(res);
 });
 
-app.listen(port, function(error) {
+app.listen(port, function (error) {
   if (error) {
     console.error(error);
   } else {
@@ -21,3 +22,4 @@ app.listen(port, function(error) {
 });
 
 
+module.exports = app;
