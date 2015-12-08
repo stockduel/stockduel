@@ -19,13 +19,22 @@
   "dependencies": {
     "bluebird": "^3.0.6",
     "express": "^4.13.3",
+    "express-session": "^1.12.1",
+    "moment": "^2.10.6",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.0.0",
+    "passport-facebook-token": "^3.0.6",
+    "passport-oauth": "^1.0.0",
     "path": "^0.12.7",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.0",
     "redux": "^3.0.4",
     "redux-thunk": "^1.0.0",
-    "superagent": "^1.5.0"
+    "superagent": "^1.5.0",
+    "body-parser": "^1.14.1",
+    "redux-request": "^0.6.2"
   },
   "devDependencies": {
     "babel": "^6.1.18",

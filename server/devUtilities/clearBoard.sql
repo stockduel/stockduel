@@ -1,7 +1,0 @@
---delete dependency tables first
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS trades CASCADE;
-DROP TABLE IF EXISTS stockprices_archive CASCADE;
-DROP TABLE IF EXISTS matches CASCADE;
-DROP TABLE IF EXISTS stocks CASCADE;
-DROP TABLE IF EXISTS stock_prices CASCADE;
