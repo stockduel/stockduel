@@ -6,9 +6,17 @@ var stocks = require('./stocksRoute');
 var matches = require('./matchesRoute');
 var users = require('./usersRoute');
 
-router.use('/auth', auth);
-router.use('/stocks', stocks);
-router.use('/matches', matches);
-router.use('/users', users);
+module.exports = function (knex) {
 
-module.exports = router;
+  auth = auth(knex);
+  stocks = stocks(knex);
+  matches = matches(knex);
+  users = users(knex);
+
+  router.use('/auth', auth);
+  router.use('/stocks', stocks);
+  router.use('/matches', matches);
+  router.use('/users', users);
+
+  return router;
+};
