@@ -1,14 +1,31 @@
 var chai = require('chai');
 var expect = chai.expect;
-var request = require('supertest');
 var Promise = require('bluebird');
 var knex = require('knex');
 
-var app = require('../../index');
-var config = require('../../db/knexfile');
+var config = require('../knexfile');
+var stocksController = require('../dbcontrollers/stocksController');
+
+
+// ============= Helpers ============= \\
+function camelCaseToSnake(string) {
+  return string.replace(/\.?([A-Z]+)/g, function (x, y) {
+    return "_" + y.toLowerCase();
+  }).replace(/^_/, "");
+}
+
+function keysToLowerCase(arrayOfObjects) {
+  return arrayOfObjects.map(function (obj) {
+    var o = {};
+    for (var key in obj) {
+      o[camelCaseToSnake(key)] = obj[key];
+    }
+    return o;
+  });
+}
 
 // ============= Test Data ============= \\
-describe('stocksRoute', function () {
+describe('stocksController', function () {
 
   var stocks = [{
     "symbol": "FB",
@@ -122,6 +139,8 @@ describe('stocksRoute', function () {
   before(function (done) {
     //init db
     knex = knex(config['development']);
+    //init ctrlr
+    stocksController = stocksController(knex);
     //insert test cases
     Promise.all([
       knex('stocks').insert(stocks),
@@ -146,81 +165,64 @@ describe('stocksRoute', function () {
       });
   });
 
-  describe('/stocks/?search=', function () {
-    describe('GET', function () {
-      var search = 'F';
-      var searchCase = 'fAceBOOK';
+  // ============= Tests ============= \\
+  describe('getStock', function () {
+    var symbol = stocks[0].symbol;
+    var fakeSymbol = 'BOB';
 
-      it('responds with a 200 (OK)', function (done) {
-        request(app)
-          .get('/stocks/?search=' + search)
-          .expect(200, done);
-      });
-
-      it('responds with stocks matching the query', function (done) {
-        request(app)
-          .get('/stocks/?search=' + search)
-          .expect(function (response) {
-            var stocks = response.body;
-            expect(stocks).to.be.a('object');
-            expect(stocks.data.length).to.equal(2);
-          })
-          .expect(200, done);
-      });
-
-      it('should be case insensitive', function (done) {
-        request(app)
-          .get('/stocks/?search=' + searchCase)
-          .expect(function (response) {
-            var stocks = response.body;
-            expect(stocks).to.be.a('object');
-            expect(stocks.data.length).to.equal(1);
-          })
-          .expect(200, done);
-      });
+    it('should retrieve the stock profile for a valid symbol', function (done) {
+      stocksController.getStock(symbol)
+        .then(function (response) {
+          expect(response).to.be.a('object');
+          for (var prop in stocks[0]) {
+            expect(response[prop]).to.equal(stocks[0][prop]);
+          }
+          done();
+        });
     });
-  });
-  describe('/stocks/:symbol', function () {
-    describe('GET', function () {
-      var validSymbol = stocks[0].symbol;
-      var validSymbolCase = 'fB';
-      var invalidSymbol = 'FKSYMBL';
 
-      it('responds with a 200 (OK) for valid symbols', function (done) {
-        request(app)
-          .get('/stocks/' + validSymbol)
-          .expect(200, done);
-      });
-
-      it('responds with a 404 (NOT FOUND) for invalid symbols', function (done) {
-        request(app)
-          .get('/stocks/' + invalidSymbol)
-          .expect(404, done);
-      });
-
-      it('responds with the requested stock', function (done) {
-        request(app)
-          .get('/stocks/' + validSymbol)
-          .expect(function (res) {
-            var stock = res.body.data;
-            for (var prop in stocks[0]) {
-              expect(stock[prop]).to.equal(stocks[0][prop]);
-            }
-          })
-          .expect(200, done);
-      });
-
-      it('should be case insensitive', function (done) {
-        request(app)
-          .get('/stocks/' + validSymbolCase)
-          .expect(function (res) {
-            var stock = res.body.data;
-            for (var prop in stocks[0]) {
-              expect(stock[prop]).to.equal(stocks[0][prop]);
-            }
-          })
-          .expect(200, done);
-      });
+    it('should not retrieve a stock profile for an invalid symbol', function (done) {
+      stocksController.getStock(fakeSymbol)
+        .then(function (response) {
+          expect(response).to.equal(null);
+          done();
+        });
     });
+
   });
+
+  describe('searchStock', function () {
+    var symbolLike = 'F';
+    var fakeSymbol = 'BOB';
+    var nameAndSymbol = 'A';
+
+    it('should retrieve the stock profile for a query symbol with matches', function (done) {
+      stocksController.searchStock(symbolLike)
+        .then(function (response) {
+          expect(response).to.be.a('array');
+          expect(response.length).to.equal(2);
+          done();
+        });
+    });
+
+    it('should not retrieve any stock profiles for a query symbol with no matches', function (done) {
+      stocksController.searchStock(fakeSymbol)
+        .then(function (response) {
+          expect(response).to.be.a('array');
+          expect(response.length).to.equal(0);
+          done();
+        });
+    });
+
+    it('should retrieve stock profiles for matches to symbol or name', function (done) {
+      stocksController.searchStock(nameAndSymbol)
+        .then(function (response) {
+          expect(response).to.be.a('array');
+          expect(response.length).to.equal(2);
+          done();
+        });
+    });
+
+  });
+
 });
