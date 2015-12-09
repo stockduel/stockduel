@@ -16,17 +16,15 @@ var knex = require('knex')(config[ENV]);
 
 
 // ============= Build tables ============= \\
-  (function(knexInstance) {
+(function (knexInstance) {
 
-    var builders = [users, matches, stocks, trades, stock_prices, stockprices_archive];
+  var builders = [users, matches, stocks, trades, stock_prices, stockprices_archive];
 
-    builders.forEach(function(builder) {
-      builder(knexInstance);
-    });
+  builders.forEach(function (builder) {
+    builder(knexInstance);
+  });
 
-  }(knex));
+}(knex));
 
 
 module.exports = knex;
-
-
