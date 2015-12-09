@@ -47,7 +47,7 @@ export default function buyReducer(state, action) {
     var oldStockList = UpdatedCash.getIn(['portfolio', 'stocks']);
 
     // set newStocksArray to the list plus newStockMap
-    var newStocksArray = oldStockList.push(newStockMap);
+    newStocksArray = oldStockList.push(newStockMap);
 
   }
     // get new version of state by rolling in newStocksArray

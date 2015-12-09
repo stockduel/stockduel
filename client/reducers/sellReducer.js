@@ -50,11 +50,8 @@ export default function sellReducer(state, action) {
       return stock;
     });
     // modify newStocksArray if there is a stock to remove
-    if (stockIdxToRemove !== undefined) {
-      finalStocksArray = newStocksArray.remove(stockIdxToRemove);
-    } else {
-      finalStocksArray = newStocksArray;
-    }
+  finalStocksArray = stockIdxToRemove === undefined ? newStocksArray : newStocksArray.remove(stockIdxToRemove);
+
 
     // get new version of state by rolling in newStocksArray
   var UpdatedCashAndStocks = UpdatedCash.setIn(['portfolio', 'stocks'], finalStocksArray);

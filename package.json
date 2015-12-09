@@ -19,8 +19,8 @@
     "path": "^0.12.7",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
-    "redux-request": "^0.6.2"
-    "bluebird": "^3.0.6",
+    "redux-request": "^0.6.2",
+    "bluebird": "^3.0.6"
   },
   "devDependencies": {
     "babel": "^6.1.18",
