@@ -1,6 +1,6 @@
 import {List, Map, fromJS} from 'immutable';
 import {expect} from 'chai';
-
+import store from '../../store/store.js'
 import reducer from '../reducer';
 
 describe('buyReducer', () => {

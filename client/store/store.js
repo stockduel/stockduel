@@ -1,13 +1,13 @@
 import React from 'react';
-import requestMiddleware from 'redux-request';
+import thunk from 'redux-thunk';
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import reducer from './reducer';
+import reducer from '../reducers/reducer.js';
 
 
 //THIS FILE DOES NOT WORK YET
 
 
-const createStoreWithMiddleware = applyMiddleware(requestMiddleware)(createStore);
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
 
-const store = createStoreWithMiddleware(reducer);
+export const store = createStoreWithMiddleware(reducer);
