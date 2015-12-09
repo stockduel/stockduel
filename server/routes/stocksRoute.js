@@ -1,24 +1,38 @@
 var express = require('express');
 var router = express.Router();
+var stocksController = require('../db/dbcontrollers/stocksController');
 
-router.param('symbol', function (req, res, next, symbol) {
-  req.symbol = symbol;
-  next();
-});
+module.exports = function (knex) {
+  stocksController = stocksController(knex);
 
-router.route('/')
-  .get(function (req, res) {
-    var search = req.query.search;
-    res.json({
-      search: search
-    });
+  router.param('symbol', function (req, res, next, symbol) {
+    req.symbol = symbol;
+    next();
   });
 
-router.route('/:symbol')
-  .get(function (req, res) {
-    res.json({
-      symbol: req.symbol
+  router.route('/')
+    .get(function (req, res) {
+      var search = req.query.search;
+      stocksController.searchStock(search).then(function (response) {
+        res.json({
+          data: response
+        });
+      });
     });
-  });
 
-module.exports = router;
+  router.route('/:symbol')
+    .get(function (req, res) {
+      var symbol = req.symbol;
+      stocksController.getStock(symbol).then(function (response) {
+        if (response === null) {
+          res.sendStatus(404);
+        } else {
+          res.json({
+            data: response
+          });
+        }
+      });
+    });
+
+  return router;
+};
