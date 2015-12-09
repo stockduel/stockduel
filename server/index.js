@@ -3,7 +3,7 @@ var app = express();
 var knex = require('./db/index.js');
 var port = process.env.PORT || 8080;
 
-var router = require('./routes/index');
+var router = require('./routes/index')(knex);
 app.use(router);
 
 app.get('/', function (req, res) {
