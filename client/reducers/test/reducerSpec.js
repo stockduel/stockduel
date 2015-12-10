@@ -1,8 +1,14 @@
+/*
+  THIS TEST IS NOT UP TO DATE
+  USE actionsSpec.js INSTEAD
+*/
+
 import {List, Map, fromJS} from 'immutable';
 import {expect} from 'chai';
-import store from '../../store/store.js'
+import {store} from '../../store/store.js'
 import reducer from '../reducer';
 
+console.log('type of STORE DISPATCH', typeof store.dispatch);
 describe('buyReducer', () => {
 
   const initialState = fromJS({
@@ -36,7 +42,7 @@ describe('buyReducer', () => {
         matchId: '456',
         portfolio: {
           stocks: [{
-            stockSymbol: '789',
+            stockSymbol: 'GOOG',
             shares: '10'
           }],
           totalValue: '1000000',

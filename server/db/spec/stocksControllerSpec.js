@@ -6,55 +6,37 @@ var knex = require('knex');
 var config = require('../knexfile');
 var stocksController = require('../dbcontrollers/stocksController');
 
-
-// ============= Helpers ============= \\
-function camelCaseToSnake(string) {
-  return string.replace(/\.?([A-Z]+)/g, function (x, y) {
-    return "_" + y.toLowerCase();
-  }).replace(/^_/, "");
-}
-
-function keysToLowerCase(arrayOfObjects) {
-  return arrayOfObjects.map(function (obj) {
-    var o = {};
-    for (var key in obj) {
-      o[camelCaseToSnake(key)] = obj[key];
-    }
-    return o;
-  });
-}
-
 // ============= Test Data ============= \\
 describe('stocksController', function () {
 
   var stocks = [{
-    "symbol": "FB",
-    "name": "Facebook, Inc.",
+    "symbol": "TEST",
+    "name": "Test, Inc.",
     "sector": "Technology",
     "industry": "Computer Software: Programming, Data Processing",
     "exchange": "NASDAQ"
   }, {
-    "symbol": "GOOG",
-    "name": "Alphabet Inc.",
+    "symbol": "FAKE",
+    "name": "Test Inc.",
     "sector": "Technology",
     "industry": "Computer Software: Programming, Data Processing",
     "exchange": "NASDAQ"
   }, {
-    "symbol": "AMZN",
-    "name": "Amazon.com, Inc.",
+    "symbol": "XYZ",
+    "name": "XYZ.com, Inc.",
     "sector": "Consumer Services",
     "industry": "Catalog/Specialty Distribution",
     "exchange": "NASDAQ"
   }, {
-    "symbol": "FLWS",
-    "name": "1-800 FLOWERS.COM, Inc.",
+    "symbol": "XYZZ",
+    "name": "1-800 XYZZ.COM, Inc.",
     "sector": "Consumer Services",
     "industry": "Other Specialty Stores",
     "exchange": "NASDAQ"
   }, ];
 
   var prices = [{
-    "symbol": "FB",
+    "symbol": "TEST",
     "bid": "104.76",
     "ask": "104.78",
     "change": "-1.41",
@@ -72,9 +54,10 @@ describe('stocksController', function () {
     "pe_ratio": "105.19",
     "peg_ratio": "1.63",
     "volume": "1.63",
-    "percent_change": "-1.33%"
+    "percent_change": "-1.33%",
+    "timestamp": "TESTING"
   }, {
-    "symbol": "GOOG",
+    "symbol": "FAKE",
     "bid": "758.01",
     "ask": "758.66",
     "change": "-8.41",
@@ -92,9 +75,10 @@ describe('stocksController', function () {
     "pe_ratio": "31.97",
     "peg_ratio": "1.55",
     "volume": "1.55",
-    "percent_change": "-1.10%"
+    "percent_change": "-1.10%",
+    "timestamp": "TESTING"
   }, {
-    "symbol": "AMZN",
+    "symbol": "XYZ",
     "bid": "663.81",
     "ask": "664.19",
     "change": "-8.65",
@@ -112,9 +96,10 @@ describe('stocksController', function () {
     "pe_ratio": "951.28",
     "peg_ratio": "5.92",
     "volume": "5.92",
-    "percent_change": "-1.29%"
+    "percent_change": "-1.29%",
+    "timestamp": "TESTING"
   }, {
-    "symbol": "FLWS",
+    "symbol": "XYZZ",
     "bid": "8.49",
     "ask": "8.50",
     "change": "+0.41",
@@ -132,7 +117,8 @@ describe('stocksController', function () {
     "pe_ratio": "28.68",
     "peg_ratio": "1.07",
     "volume": "1.07",
-    "percent_change": "+5.07%"
+    "percent_change": "+5.07%",
+    "timestamp": "TESTING"
   }];
 
   // ============= Setup ============= \\
@@ -192,9 +178,9 @@ describe('stocksController', function () {
   });
 
   describe('searchStock', function () {
-    var symbolLike = 'F';
-    var fakeSymbol = 'BOB';
-    var nameAndSymbol = 'A';
+    var symbolLike = 'XYZ';
+    var fakeSymbol = 'ZZZ';
+    var nameAndSymbol = 'test';
 
     it('should retrieve the stock profile for a query symbol with matches', function (done) {
       stocksController.searchStock(symbolLike)

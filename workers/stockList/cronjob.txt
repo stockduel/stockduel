@@ -1,0 +1,1 @@
+*/15 14-21 * * 1,2,3,4,5,6 path_to_worker/getStockPrices.js >> path_to_worker/logs.txt'

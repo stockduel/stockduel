@@ -42,7 +42,7 @@ export default function buyReducer(state, action) {
     });
   } else {
     // build our new stock map
-    var newStockMap = Map({stockSymbol: action.stockSymbol, shares: action.shares})
+    var newStockMap = Map({stockSymbol: action.stockSymbol, shares: action.shares, price: action.price})
     // get the stock list that already exists
     var oldStockList = UpdatedCash.getIn(['portfolio', 'stocks']);
 
