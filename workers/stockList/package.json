@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "knex migrate:latest --knexfile db/knexfile.js; knex seed:run --knexfile db/knexfile.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tate Thurston <tatethurston@gmail.com>",
   "license": "ISC",

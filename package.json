@@ -5,7 +5,9 @@
   "scripts": {
     "compile": "babel --presets es2015 -d lib/ client/reducers/",
     "test": "npm run compile && mocha --compilers js:babel-core/register client/actions/test",
-    "start": "webpack-dev-server --hot"
+    "start": "webpack-dev-server --hot",
+    "dbup": "knex migrate:latest --knexfile db/knexfile.js; knex seed:run --knexfile db/knexfile.js",
+    "dbdown": "knex migrate:rollback --knexfile db/knexfile.js"
   },
   "repository": {
     "type": "git",
