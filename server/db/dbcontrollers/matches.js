@@ -8,34 +8,22 @@ module.exports = function(knex) {
   /*knex.select('name').from('users')
     .whereIn('id', [1, 2, 3])
     .orWhereIn('id', [4, 5, 6])*/
-
+    //bit of an over kill dont at this point need to search user ID 
+    //from table at this point! Left in as not hurting us to be tidied
   //-------------------create a match-----------------------------//
   
   methods.createMatch = function (userID, startFunds, type) {
 
-    return knex.select('u_id').from('users').where('users.u_id', userID)
-    .then(function (user) {
-      //THIS will need to be atered when head to head not 100% sure how!
-      return user[0].u_id;
-    })
-    .then(function (userId) {
-      //not necessary for MVP but need to be added when have muliple matches
-      //----way to compare the times and to calculate the status-------
-      // var status = utils.getStatus(startDate, endDate);
-      // console.log('utils.methods--------', status);
-
-      //insert the data into the matches table
       return knex.insert([
                         {
-                        'creator_id': userId,
+                        'creator_id': userID,
                         'starting_funds': startFunds,
-                        'challengee': userId,
+                        'challengee': userID,
                         // 'startdate': startDate,
                         // 'enddate': endDate,
                         // 'status': status,
                         'type': type}], '*')
-      .into('matches');
-    })
+      .into('matches')
     .then(function (data) {
       return data;
     });

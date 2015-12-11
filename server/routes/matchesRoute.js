@@ -20,11 +20,11 @@ module.exports = function (knex) {
     .post(function (req, res) {
       var userID = req.body.userID;
       var startFunds = req.body.startFunds;
-      var startDate = req.body.startDate;
-      var endDate = req.body.endDate;
+      // var startDate = req.body.startDate;
+      // var endDate = req.body.endDate;
       var type = req.body.type;
 
-      dbcontrollers.matches.createMatch(userID, startFunds, startDate, endDate, type)
+      dbcontrollers.matches.createMatch(userID, startFunds, type)
       .then(function (match) {
         res.status(200).json({'message': 'Match added', "data": match});
       })
@@ -38,20 +38,20 @@ module.exports = function (knex) {
 
   //testing http://localhost:8080/matches/1 on postman
   router.route('/:matchid')
-  .get(function (req, res) {
+    .get(function (req, res) {
 
-    //get the details of specific match
-    dbcontrollers.matches.getMatch(req.matchid)
-    .then(function (match) {
-      console.log('MATCH GOT', match);
-      res.status(200).json({'message': 'Match retrieved', "data": match});
-    })
-    .catch(function (err) {
-      console.log('Error getting user match',err);
-      res.status(404).json({'message': err});
+      //get the details of specific match
+      dbcontrollers.matches.getMatch(req.matchid)
+      .then(function (match) {
+        console.log('MATCH GOT', match);
+        res.status(200).json({'message': 'Match retrieved', "data": match});
+      })
+      .catch(function (err) {
+        console.log('Error getting user match',err);
+        res.status(404).json({'message': err});
+      });
+
     });
-
-  });
 
   //-----------------------------------------------------------//
   

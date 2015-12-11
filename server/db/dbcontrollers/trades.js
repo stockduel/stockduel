@@ -7,21 +7,19 @@ module.exports = function(knex) {
 
   //-------------------------------------buy a stock controller -----------------------------------------//
   methods.buy = function (userID, matchID, numShares, action, stockTicker) {
-    var stockID;
+
+    console.log('IN TRADES');
     var total;
     var cashRemaining;
     var cashToDate;
     var price;
       
     //get the stock id
-    return knex.select().from('stocks').where('symbol','=', stockTicker)
-    .then(function(stock) {
-      stockID = stock[0].s_id;
-      return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker);
-    })
+    return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker)
     .then(function(ask) {
       price = ask[0].ask;
       total = price * numShares;
+      console.log('TOTAL', total);
       //find the lastest trade from that user in that match
       return knex.select()
       .table('trades')
@@ -49,7 +47,7 @@ module.exports = function(knex) {
       return knex.insert([{
         user_id: userID,
         match_id: matchID,
-        stock_id: stockID,
+        stock_symbol: stockTicker,
         shares: numShares,
         action: action,
         price: price,
@@ -68,18 +66,13 @@ module.exports = function(knex) {
 
   methods.sell = function (userID, matchID, numShares, action, stockTicker) {
     //to be done after buy is working
-    var stockID;
     var total;
     var cashRemaining;
     var cashToDate;
     var price;
       
     //get stock id
-    return knex.select().from('stocks').where('symbol','=', stockTicker)
-    .then(function(stock) {
-      stockID = stock[0].s_id;
-      return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker);
-    })
+    return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker)
     .then(function(ask) {
       price = ask[0].ask;
       total = price * numShares;
@@ -103,7 +96,7 @@ module.exports = function(knex) {
 
       return knex('trades')
       .sum('shares')
-      .where('stock_id','=', stockID)
+      .where('stock_symbol','=', stockTicker)
       .where('match_id','=', matchID)
       .andWhere('user_id','=', userID);
 
@@ -126,7 +119,7 @@ module.exports = function(knex) {
       return knex.insert([{
         user_id: userID,
         match_id: matchID,
-        stock_id: stockID,
+        stock_symbol: stockTicker,
         shares: numShares,
         action: action,
         price: price,
@@ -146,7 +139,7 @@ module.exports = function(knex) {
   methods.getTrades = function(userID, matchID) {
     //join the stock table with the trades and stockprices
     return knex('stocks')
-    .join('trades', 'stocks.s_id', '=', 'trades.stock_id')
+    .join('trades', 'stocks.symbol', '=', 'trades.stock_symbol')
     .join('stock_prices', 'stocks.symbol', '=', 'stock_prices.symbol')
     .then(function (data) {
       var portfolio = data.filter(function (trade) {

@@ -29,7 +29,7 @@ describe('controllers', function() {
   
   });
 
-  it('should not insert the same user into the database multiple times', function() {
+  xit('should not insert the same user into the database multiple times', function() {
 
     return db.methods.users.createUser('annaUser', 'annaPassword', 'anna', 'anna@anna')
     .then(function (user) {
@@ -38,7 +38,7 @@ describe('controllers', function() {
   
   });
 
-  it('should be able to return a specific user', function() {
+  xit('should be able to return a specific user', function() {
 
     return db.methods.users.getUser(2)
     .then(function (user) {
@@ -47,7 +47,7 @@ describe('controllers', function() {
   
   });
 
-  it('return all users details from the users table', function() {
+  xit('return all users details from the users table', function() {
     return db.methods.users.getUsers()
     .then(function (data) {
       expect(data[0].name).to.equal('anna');
@@ -55,7 +55,7 @@ describe('controllers', function() {
   
   });
 
-  it('should insert a match into the matches table', function() {
+  xit('should insert a match into the matches table', function() {
     return db.methods.matches.createMatch('1', '100000', 'solo')
     .then(function(data) {
       expect(data[0].type).to.equal('solo');
@@ -63,7 +63,7 @@ describe('controllers', function() {
     });
   });
 
-  it('should get a specific match from the matches table', function() {
+  xit('should get a specific match from the matches table', function() {
     //when getting matches in test mode need to check that primary id is starting at one -- ask Anna
     return db.methods.matches.getMatch(1)
     .then(function(data) {
@@ -71,7 +71,7 @@ describe('controllers', function() {
     });
   });
 
-  it('should insert a buy into the trades table', function () {
+  xit('should insert a buy into the trades table', function () {
     return db.methods.trades.buy(1,1,12,'buy','TFSC')
     .then(function (data) {
       expect(data[0].shares).to.equal(12);
@@ -90,7 +90,7 @@ describe('controllers', function() {
     //  });
     // });
 
-  it('should insert a sell into the trades table', function () {
+  xit('should insert a sell into the trades table', function () {
     return db.methods.trades.sell(1,1,2,'sell', 'TFSC')
     .then(function (data) {
       expect(data[0].shares).to.equal(2);
@@ -108,7 +108,7 @@ describe('controllers', function() {
     //  });
     // });
 
-  it('should get a user portfolio', function () {
+  xit('should get a user portfolio', function () {
     return db.methods.trades.getTrades(1,1) //take user and match id
     .then(function (data) {
       // expect(data[0].symbol).to.equal('TFSC'); //change when know one
@@ -117,14 +117,6 @@ describe('controllers', function() {
     });
   });
 
-  // xit('should insert a trade into the stocks table', function () {
-
-  //   return db.methods.stocks.insertStock('Google', 'GOOG', 'Software', 'Tech', 'Exchange')
-  //   .then(function (data) {
-  //     expect(data[0].name).to.equal('Google');
-  //   });
-
-  // });
 
   //NEED A WAY TO EMPTY THE TABLES AFTER THE TESTS HAVE BEEN RUN?!
 

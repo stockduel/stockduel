@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
-var knex = require('./db/index.js'); //decide which of these I want
-var db = require('./db/index.js').methods;//or this one
+var knex = require('./db/index.js');
+// var db = require('./db/index.js').methods;//or this one
 var port = process.env.PORT || 8080;
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -93,9 +93,6 @@ passport.use(new FacebookStrategy({
 
 //-------------------------------------------------------//
 
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-
 //remove the req.user property from the request and clear session
 //NOT WORKING ATM :( 
 app.get('/logout', function(req, res){
@@ -103,6 +100,9 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+app.use(morgan('dev'));
+app.use(bodyParser.json());
 
 var router = require('./routes/index')(knex, passport);
 app.use(router);

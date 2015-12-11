@@ -1,10 +1,24 @@
 var express = require('express');
 var router = express.Router();
-var stocksController = require('../db/dbcontrollers/stocksController');
+var dbcontrollers = require('./../db/index.js').methods;
+
 
 module.exports = function (knex) {
   
   //----------------------get user portfolio------------------------------------//
+
+  router
+    .param('matchid', function (req, res, next, matchid) {
+      req.matchid = matchid;
+      next();
+    })
+    .param('userid', function (req, res, next, userid) {
+      req.userid = userid;
+      next();
+    });
+
+
+ //----------------------get user portfolio-----------------------------------//
 
   router.route('/:matchid/:userid')
     .get(function (req, res) {
@@ -17,16 +31,14 @@ module.exports = function (knex) {
         console.log('Error getting portfolio');
         return res.status(404).json({'message': 'Error getting portfolio', 'data': err});
       });
-
     })
 
     //----insert data to the trades table----//
-    //using ('/:matchid/:userid') route from above
-    //NOT USING THE REQ PARAMS here- figured better to use in the req body?!  http://localhost:8080/matches/2/2 url in postman
+    //NOT USING THE REQ PARAMS here- do we want to use req params here?! might just bundle all in the body!
     .post(function (req, res) {
-
-      var userID = req.body.userID;
-      var matchID = req.body.matchID;
+      console.log(req.body);
+      var userID = req.userid;
+      var matchID = req.matchid;
       var numShares = req.body.numShares;
       var action = req.body.action;
       var stockTicker = req.body.stockTicker;
@@ -51,10 +63,9 @@ module.exports = function (knex) {
           return res.status(200).json({'message': 'Not valid trade', 'data': err});
         });
       }
-
     });
 
-    //-----------------------------------------------------------//
+     //-----------------------------------------------------------//
 
   return router;
 
