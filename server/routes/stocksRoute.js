@@ -18,6 +18,7 @@ module.exports = function (knex) {
           data: response
         });
       });
+
     });
 
   router.route('/:symbol')
@@ -36,3 +37,4 @@ module.exports = function (knex) {
 
   return router;
 };
+
