@@ -1,24 +1,10 @@
 import {List, Map, fromJS} from 'immutable';
 import {expect} from 'chai';
-
+import {store} from '../../store/store.js'
 import reducer from '../../reducers/reducer';
 import {buy, sell} from '../actions'
 
 describe('buy action', () => {
-
-  const initialState = fromJS({
-    matches: [{
-      title: 'The Match',
-      matchId: '456',
-      portfolio: {
-        stocks: [],
-        totalValue: '1000000',
-        availableCash: '1000000'
-      },
-      userId: '123'
-    }]
-  });
-
 
   it('handles BUY_STOCK for valid trade for a stock that isn\'t held' , () => {
     const action = buy({
@@ -28,23 +14,24 @@ describe('buy action', () => {
       shares: '10',
       price: '100'
     });
-    const nextState = reducer(initialState, action);
+    store.dispatch(action);
+    const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
-      //need to fill in full state expected here
       [{
         title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
-            shares: '10'
+            shares: '10',
+            price: '100'
           }],
           totalValue: '1000000',
           availableCash: '999000'
         },
-        userId: '123'
       }]
     );
+
   });
 
   it('handles BUY_STOCK for valid trade for a stock that is already held' , () => {
@@ -55,22 +42,23 @@ describe('buy action', () => {
       shares: '10',
       price: '100'
     });
-    const middleState = reducer(initialState, action);
-    const nextState = reducer(middleState, action);
+
+    store.dispatch(action);
+    store.dispatch(action);
+    const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
-      //need to fill in full state expected here
       [{
         title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
-            shares: '20'
+            shares: '30',
+            price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '998000'
-        },
-        userId: '123'
+          availableCash: '997000'
+        }
       }]
     );
   });
@@ -92,27 +80,28 @@ describe('buy action', () => {
       price: '100'
     });
 
-    const state1 = reducer(initialState, action);
-    const state2 = reducer(state1, action2);    
-    const nextState = reducer(state2, action);
+    store.dispatch(action);
+    store.dispatch(action2);    
+    store.dispatch(action);
+    const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
-      //need to fill in full state expected here
       [{
         title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
-            shares: '20'
+            shares: '50',
+            price: '100'
           },
           {
             stockSymbol: 'FB',
-            shares: '10'
+            shares: '10',
+            price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '997000'
-        },
-        userId: '123'
+          availableCash: '994000'
+        }
       }]
     );
   });
@@ -125,38 +114,36 @@ describe('buy action', () => {
       shares: '10000000',
       price: '10'
     });
-    const nextState = reducer(initialState, action);
+    store.dispatch(action);
+    const nextState = store.getState();
 
-    expect(nextState).to.equal(initialState);
+    expect(nextState.get('matches').toJS()).to.deep.equal(
+      [{
+        title: 'The Match',
+        matchId: '456',
+        portfolio: {
+          stocks: [{
+            stockSymbol: 'GOOG',
+            shares: '50',
+            price: '100'
+          },
+          {
+            stockSymbol: 'FB',
+            shares: '10',
+            price: '100'
+          }],
+          totalValue: '1000000',
+          availableCash: '994000'
+        }
+      }]
+    );
   });
 
 });
 
 describe('sell action', () => {
 
-  const initialState = fromJS({
-    matches: [{
-      title: 'The Match',
-      matchId: '456',
-      portfolio: {
-        stocks: [],
-        totalValue: '1000000',
-        availableCash: '1000000'
-      },
-      userId: '123'
-    }]
-  });
-  
   it('handles SELL_STOCK for valid trade', () => {
-    //need to have initial state include a stock so we can execute a valid trade
-    const actionBuy = sell({
-      userId: '123',
-      matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '100',
-      price: '10'
-    });
-
     const actionSell = sell({
       userId: '123',
       matchId: '456',
@@ -164,20 +151,28 @@ describe('sell action', () => {
       shares: '100',
       price: '10'
     });
-    const nextState = reducer(initialState, actionBuy);
-    const finalState = reducer(nextState, actionSell);
+
+    store.dispatch(actionSell);
+    const finalState = store.getState();
 
     expect(finalState.get('matches').toJS()).to.deep.equal(
-      //need to fill in full state expected here
       [{
         title: 'The Match',
         matchId: '456',
         portfolio: {
-          stocks: [],
+          stocks: [{
+            stockSymbol: 'GOOG',
+            shares: '50',
+            price: '100'
+          },
+          {
+            stockSymbol: 'FB',
+            shares: '10',
+            price: '100'
+          }],
           totalValue: '1000000',
-          availableCash: '1000000'
-        },
-        userId: '123'
+          availableCash: '994000'
+        }
       }]
     );
   });
@@ -190,19 +185,27 @@ describe('sell action', () => {
       shares: '100',
       price: '10'
     });
-    const nextState = reducer(initialState, action);
+    store.dispatch(action);
+    const nextState = store.getState();
 
     expect(nextState.get('matches').toJS()).to.deep.equal(
-      //need to fill in full state expected here
       [{
         title: 'The Match',
         matchId: '456',
         portfolio: {
-          stocks: [],
+          stocks: [{
+            stockSymbol: 'GOOG',
+            shares: '50',
+            price: '100'
+          },
+          {
+            stockSymbol: 'FB',
+            shares: '10',
+            price: '100'
+          }],
           totalValue: '1000000',
-          availableCash: '1000000'
-        },
-        userId: '123'
+          availableCash: '994000'
+        }
       }]
     );
   });
