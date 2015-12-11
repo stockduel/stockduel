@@ -17,12 +17,13 @@
   "license": "ISC",
   "homepage": "https://github.com/tatethurston/webpack_react",
   "dependencies": {
+    "bluebird": "^3.0.6",
     "express": "^4.13.3",
     "path": "^0.12.7",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
-    "redux-request": "^0.6.2",
-    "bluebird": "^3.0.6"
+    "redux-thunk": "^1.0.0",
+    "superagent": "^1.5.0"
   },
   "devDependencies": {
     "babel": "^6.1.18",
@@ -37,7 +38,6 @@
     "immutable": "^3.7.5",
     "knex": "^0.9.0",
     "pg": "^4.4.3",
-    "redux-request": "^0.6.2",
     "style-loader": "^0.13.0",
     "superagent": "^1.5.0",
     "webpack": "^1.12.9",
