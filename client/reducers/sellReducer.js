@@ -23,7 +23,7 @@ export default function sellReducer(state, action) {
 
   //add to cash on hand 
   var UpdatedCash = targetMatch.updateIn(['portfolio','availableCash'], cash => {
-    return String(+cash + (action.price * Number(action.shares)) );
+    return String(+cash + (Number(action.price) * Number(action.shares)) );
   });
 
   // update numShares, remove if shares === 0
@@ -42,7 +42,8 @@ export default function sellReducer(state, action) {
 
           var reducedShares = Map({
             stockSymbol: action.stockSymbol,
-            shares: String(Number(stock.get('shares')) - Number(action.shares))
+            shares: String(Number(stock.get('shares')) - Number(action.shares)),
+            price: action.price
           });
           return reducedShares;
         }
