@@ -11,33 +11,33 @@ var config = require('../../db/knexfile');
 describe('stocksRoute', function () {
 
   var stocks = [{
-    "symbol": "FB",
-    "name": "Facebook, Inc.",
+    "symbol": "TEST",
+    "name": "Test, Inc.",
     "sector": "Technology",
     "industry": "Computer Software: Programming, Data Processing",
     "exchange": "NASDAQ"
   }, {
-    "symbol": "GOOG",
-    "name": "Alphabet Inc.",
+    "symbol": "FAKE",
+    "name": "Test Inc.",
     "sector": "Technology",
     "industry": "Computer Software: Programming, Data Processing",
     "exchange": "NASDAQ"
   }, {
-    "symbol": "AMZN",
-    "name": "Amazon.com, Inc.",
+    "symbol": "XYZ",
+    "name": "XYZ.com, Inc.",
     "sector": "Consumer Services",
     "industry": "Catalog/Specialty Distribution",
     "exchange": "NASDAQ"
   }, {
-    "symbol": "FLWS",
-    "name": "1-800 FLOWERS.COM, Inc.",
+    "symbol": "XYZZ",
+    "name": "1-800 XYZZ.COM, Inc.",
     "sector": "Consumer Services",
     "industry": "Other Specialty Stores",
     "exchange": "NASDAQ"
   }, ];
 
   var prices = [{
-    "symbol": "FB",
+    "symbol": "TEST",
     "bid": "104.76",
     "ask": "104.78",
     "change": "-1.41",
@@ -55,9 +55,10 @@ describe('stocksRoute', function () {
     "pe_ratio": "105.19",
     "peg_ratio": "1.63",
     "volume": "1.63",
-    "percent_change": "-1.33%"
+    "percent_change": "-1.33%",
+    "timestamp": "TESTING"
   }, {
-    "symbol": "GOOG",
+    "symbol": "FAKE",
     "bid": "758.01",
     "ask": "758.66",
     "change": "-8.41",
@@ -75,9 +76,10 @@ describe('stocksRoute', function () {
     "pe_ratio": "31.97",
     "peg_ratio": "1.55",
     "volume": "1.55",
-    "percent_change": "-1.10%"
+    "percent_change": "-1.10%",
+    "timestamp": "TESTING"
   }, {
-    "symbol": "AMZN",
+    "symbol": "XYZ",
     "bid": "663.81",
     "ask": "664.19",
     "change": "-8.65",
@@ -95,9 +97,10 @@ describe('stocksRoute', function () {
     "pe_ratio": "951.28",
     "peg_ratio": "5.92",
     "volume": "5.92",
-    "percent_change": "-1.29%"
+    "percent_change": "-1.29%",
+    "timestamp": "TESTING"
   }, {
-    "symbol": "FLWS",
+    "symbol": "XYZZ",
     "bid": "8.49",
     "ask": "8.50",
     "change": "+0.41",
@@ -115,9 +118,9 @@ describe('stocksRoute', function () {
     "pe_ratio": "28.68",
     "peg_ratio": "1.07",
     "volume": "1.07",
-    "percent_change": "+5.07%"
+    "percent_change": "+5.07%",
+    "timestamp": "TESTING"
   }];
-
   // ============= Setup ============= \\
   before(function (done) {
     //init db
@@ -148,8 +151,8 @@ describe('stocksRoute', function () {
 
   describe('/stocks/?search=', function () {
     describe('GET', function () {
-      var search = 'F';
-      var searchCase = 'fAceBOOK';
+      var search = 'TEST';
+      var searchCase = 'tEsT';
 
       it('responds with a 200 (OK)', function (done) {
         request(app)
@@ -174,7 +177,7 @@ describe('stocksRoute', function () {
           .expect(function (response) {
             var stocks = response.body;
             expect(stocks).to.be.a('object');
-            expect(stocks.data.length).to.equal(1);
+            expect(stocks.data.length).to.equal(2);
           })
           .expect(200, done);
       });
@@ -183,7 +186,7 @@ describe('stocksRoute', function () {
   describe('/stocks/:symbol', function () {
     describe('GET', function () {
       var validSymbol = stocks[0].symbol;
-      var validSymbolCase = 'fB';
+      var validSymbolCase = 'tEsT';
       var invalidSymbol = 'FKSYMBL';
 
       it('responds with a 200 (OK) for valid symbols', function (done) {
