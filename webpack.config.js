@@ -1,6 +1,9 @@
 module.exports = {
 
-  entry: './client/app/index.jsx',
+  entry: [
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/only-dev-server',
+    './client/app/index.jsx'],
   output: {
     path: './dist',
     publicPath: 'dist',
