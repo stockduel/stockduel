@@ -108,11 +108,10 @@ describe('controllers', function() {
     //  });
     // });
 
-  xit('should get a user portfolio', function () {
+  it('should get a user portfolio', function () {
     return db.methods.trades.getTrades(1,1) //take user and match id
     .then(function (data) {
       // expect(data[0].symbol).to.equal('TFSC'); //change when know one
-      console.log('DATA', data);
       expect(data[0].name).to.equal('1347 Capital Corp.');
       expect(data[0].action).to.equal('sell');
     });
@@ -127,7 +126,7 @@ describe('controllers', function() {
 
   // });
 
-  //NEED A WAY TO EMPTY THE TABLES AFTER THE TESTS HAVE BEEN RUN
+  //NEED A WAY TO EMPTY THE TABLES AFTER THE TESTS HAVE BEEN RUN?!
 
 });
 
