@@ -18,6 +18,16 @@ module.exports = function (knex) {
           data: response
         });
       });
+    })
+    .post(function (req, res) {
+      //send list of tickers to get updated with lastest price of the stock(ask)
+      var list = req.body.stockArray;
+      stocksController.getPrices(list)
+      .then(function (data) {
+        console.log('DATA!!',data); //might need to tweek how recieved on client
+        return res.status(200).json({'stockArray': data});
+      });
+
     });
 
   router.route('/:symbol')

@@ -2,9 +2,16 @@ var express = require('express');
 var app = express();
 var knex = require('./db/index.js');
 var port = process.env.PORT || 8080;
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+
+app.use(morgan('dev'));
+app.use(bodyParser.json());
 
 var router = require('./routes/index')(knex);
 app.use(router);
+
+
 
 app.get('/', function (req, res) {
   res.send('Hello Huggada!');
