@@ -1,10 +1,9 @@
 var chai = require('chai');
 var expect = chai.expect;
 var Promise = require('bluebird');
-var knex = require('knex');
+var knex = require('../index');
 
-var config = require('../knexfile');
-var stocksController = require('../dbcontrollers/stocksController');
+var stocksController = require('../dbcontrollers/stocksController')(knex);
 
 // ============= Test Data ============= \\
 describe('stocksController', function () {
@@ -123,10 +122,6 @@ describe('stocksController', function () {
 
   // ============= Setup ============= \\
   before(function (done) {
-    //init db
-    knex = knex(config['development']);
-    //init ctrlr
-    stocksController = stocksController(knex);
     //insert test cases
     Promise.all([
       knex('stocks').insert(stocks),
@@ -147,7 +142,11 @@ describe('stocksController', function () {
         })
       ])
       .then(function () {
+        console.log('deleted');
         done();
+      })
+      .catch(function (err) {
+        console.log(err);
       });
   });
 

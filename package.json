@@ -4,7 +4,8 @@
   "description": "Social Trading Platform",
   "scripts": {
     "compile": "babel --presets es2015 -d lib/ client/reducers/",
-    "test": "npm run compile && mocha --compilers js:babel-core/register client/actions/test",
+    "test": "npm run compile && mocha --compilers js:babel-core/register client/actions/test && mocha */spec/*.js",
+    "servertest": "mocha server/db/spec/*.js",
     "start": "webpack-dev-server --hot",
     "dbup": "knex migrate:latest --knexfile db/knexfile.js; knex seed:run --knexfile db/knexfile.js",
     "dbdown": "knex migrate:rollback --knexfile db/knexfile.js"
@@ -23,7 +24,8 @@
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "redux-thunk": "^1.0.0",
-    "superagent": "^1.5.0"
+    "superagent": "^1.5.0",
+    "supertest": "^1.1.0"
   },
   "devDependencies": {
     "babel": "^6.1.18",
