@@ -233,7 +233,6 @@ describe('stocksController', function () {
       });
     });
 
-
   });
 
 });
