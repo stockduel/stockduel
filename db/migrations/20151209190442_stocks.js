@@ -11,8 +11,8 @@ exports.up = function (knex, Promise) {
     stockprices(knex),
     stockpricesArchive(knex),
     matches(knex),
-    trades(knex),
-    users(knex)
+    users(knex),
+    trades(knex)
   ]);
 };
 
@@ -20,9 +20,9 @@ exports.down = function (knex, Promise) {
   return Promise.all([
     knex.schema.dropTable('stock_prices'),
     knex.schema.dropTable('stock_prices_archive'),
-    knex.schema.dropTable('stocks'),
-    knex.schema.dropTable('matches'),
     knex.schema.dropTable('trades'),
-    knex.schema.dropTable('users')
+    knex.schema.dropTable('matches'),
+    knex.schema.dropTable('users'),
+    knex.schema.dropTable('stocks')
   ]);
 };
