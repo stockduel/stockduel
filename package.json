@@ -4,7 +4,7 @@
   "description": "Social Trading Platform",
   "scripts": {
     "compile": "babel --presets es2015 -d lib/ client/reducers/",
-    "test": "npm run compile && mocha --compilers js:babel-core/register client/actions/test && mocha */spec/*.js",
+    "test": "npm run compile && mocha --compilers js:babel-core/register client/reducers/test && mocha **/spec/*.js",
     "servertest": "mocha server/db/spec/*.js",
     "start": "webpack-dev-server --hot",
     "dbup": "knex migrate:latest --knexfile db/knexfile.js; knex seed:run --knexfile db/knexfile.js",

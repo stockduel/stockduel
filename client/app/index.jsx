@@ -12,6 +12,14 @@ import { toJS } from 'immutable';
 import stylesheet from '../assets/stylesheets/style.css'
 var App = React.createClass({
 
+  componentWillMount() {    
+    // get the user id from session
+    let userId = /*GET USER ID FROM SESSION*/
+    
+    // dispatch setInitialState(userId)
+    this.props.setInitialState(userId);
+  },
+
   render() {
     return (
       <div>
