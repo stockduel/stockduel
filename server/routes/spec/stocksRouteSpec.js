@@ -121,6 +121,11 @@ describe('stocksRoute', function () {
     "percent_change": "+5.07%",
     "timestamp": "TESTING"
   }];
+
+  var stockArray = [{'stockSymbol': 'GOOG', 'price': '2.5', 'shares':'3'},
+                {'stockSymbol': 'PIH', 'price': '25', 'shares':'1'},
+                {'stockSymbol': 'FCCY', 'price': '5', 'shares':'7'}];
+
   // ============= Setup ============= \\
   before(function (done) {
     //init db
@@ -148,6 +153,8 @@ describe('stocksRoute', function () {
         done();
       });
   });
+
+  // ============= Tests ============= \\
 
   describe('/stocks/?search=', function () {
     describe('GET', function () {
@@ -183,6 +190,32 @@ describe('stocksRoute', function () {
       });
     });
   });
+
+  describe('/stocks/update', function () {
+    describe('POST', function () {
+
+      it('responds with a 200 (OK)', function (done) {
+        request(app)
+          .post('/stocks/update')
+          .send(stockArray)
+          .expect(200, done);
+      });
+
+      it('responds with a 200 (OK)', function (done) {
+        request(app)
+          .post('/stocks/update')
+          .send(stockArray)
+          .expect(function (response) {
+            var update = response.body;
+            expect(update.stockArray.length).to.equal(3);
+            expect(update.stockArray[0].price).to.not.equal(2.5);
+          })
+          .expect(200, done);
+      });
+
+    });
+  });
+
   describe('/stocks/:symbol', function () {
     describe('GET', function () {
       var validSymbol = stocks[0].symbol;

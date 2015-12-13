@@ -22,26 +22,7 @@ describe('/matches/:matchid', function () {
         }, done);
     });
   });
+
 });
 
-describe('/matches/:matchid/:userid', function () {
-  describe('GET', function () {
-    var matchid = 1234;
-    var userid = 3456;
 
-    it('responds with a 200 (OK)', function (done) {
-      request(app)
-        .get('/matches/' + matchid + '/' + userid)
-        .expect(200, done);
-    });
-
-    it('responds with the match', function (done) {
-      request(app)
-        .get('/matches/' + matchid + '/' + userid)
-        .expect(200, {
-          matchid: matchid,
-          userid: userid
-        }, done);
-    });
-  });
-});

@@ -12,7 +12,7 @@ module.exports = function (knex) {
       .inTable('stocks');
     table.integer('shares');
     table.string('action');
-    table.timestamps();
+    table.timestamp('created_at').defaultTo(knex.fn.now());
     table.float('price');
     table.float('available_cash');
   });

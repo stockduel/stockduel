@@ -20,7 +20,6 @@ module.exports = function (knex) {
     var title = 'solo match';
 
     return knex('matches').insert({
-        'title': title,
         'creator_id': userID,
         'starting_funds': startFunds,
         'challengee': userID,
