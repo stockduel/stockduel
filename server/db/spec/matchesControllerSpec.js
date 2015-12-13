@@ -23,36 +23,37 @@ var matches = [{
 }];
 
 
-// ============= Setup ============= \\
-before(function (done) {
-  //insert users into DB
-  knex('users').insert(users, '*')
-    .then(function (response) {
-      users = response;
-      done();
-    });
-});
-
-// ============= Teardown ============= \\
-after(function (done) {
-  //remove matches
-  Promise.map(matches, function (match) {
-      return knex('matches').where('type', 'TEST').del();
-    })
-    //remove users
-    .then(function () {
-      return Promise.map(users, function (user) {
-        return knex('users').where('u_id', user.u_id).del();
-      });
-    })
-    .then(function () {
-      console.log('deleted')
-      done();
-    });
-
-});
 
 describe('Match Controller', function () {
+
+  // ============= Setup ============= \\
+  before(function (done) {
+    //insert users into DB
+    knex('users').insert(users, '*')
+      .then(function (response) {
+        users = response;
+        done();
+      });
+  });
+
+  // ============= Teardown ============= \\
+  after(function (done) {
+    //remove matches
+    Promise.map(matches, function (match) {
+        return knex('matches').where('type', 'TEST').del();
+      })
+      //remove users
+      .then(function () {
+        return Promise.map(users, function (user) {
+          return knex('users').where('u_id', user.u_id).del();
+        });
+      })
+      .then(function () {
+        console.log('matches after hook');
+        done();
+      });
+
+  });
 
   it('should insert a match into the matches table', function (done) {
     var user = users[0];
