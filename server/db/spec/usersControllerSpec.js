@@ -17,27 +17,27 @@ var users = [{
   email: 'kate@kate'
 }];
 
-// ============= Setup ============= \\
-before(function (done) {
-  done();
-});
-
-// ============= Teardown ============= \\
-after(function (done) {
-  Promise.map(users, function (user) {
-      return knex('users').where('email', user.email).del();
-    })
-    .then(function () {
-      console.log('deleted');
-      done();
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
-});
 
 // ============= Tests ============= \\
 describe('Users Controller', function () {
+  // ============= Setup ============= \\
+  before(function (done) {
+    done();
+  });
+
+  // ============= Teardown ============= \\
+  after(function (done) {
+    Promise.map(users, function (user) {
+        return knex('users').where('email', user.email).del();
+      })
+      .then(function () {
+        console.log('users after hook');
+        done();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+  });
 
   it('should insert a user into the users table', function (done) {
 
