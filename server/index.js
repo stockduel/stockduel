@@ -12,7 +12,6 @@ var router = require('./routes/index')(knex);
 app.use(router);
 
 
-
 app.get('/', function (req, res) {
   res.send('Hello Huggada!');
   //send request to amazon url s3 thing and pipe the response
