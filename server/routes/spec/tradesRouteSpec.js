@@ -40,7 +40,8 @@ var stock = {
 };
 
 
- describe('trade routes', function () {
+
+ describe('/trades/:matchid/:userid', function () {
   // ============= Setup ============= \\
   before(function () {
     //insert users into DB
@@ -73,7 +74,7 @@ var stock = {
   });
 
   // ============= Tests ============= \\
-
+å
     describe('POST to trades', function () {
       var matchid = 1;
       var userid = 1;
@@ -97,7 +98,8 @@ var stock = {
           .expect(200, done);
       });
 
-      it('sell responds with a 200 (OK)', function (done) {
+
+      it('sell responds with a 200 (OK)', function (done) {å
         request(app)
           .post('/trades/' + matchid + '/' + userid)
           .send({ numShares: 5, action: 'sell', stockTicker: 'GOOG' })

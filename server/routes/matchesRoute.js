@@ -14,6 +14,7 @@ module.exports = function (knex) {
 
   router.route('/:matchid')
     .get(function (req, res) {
+      // console.log('YOOYOYOOY')
       res.json({
         matchid: req.matchid
       });
@@ -22,16 +23,6 @@ module.exports = function (knex) {
 
     });
 
-  router.route('/:matchid/:userid')
-    .get(function (req, res) {
-      res.json({
-        matchid: req.matchid,
-        userid: req.userid
-      });
-    })
-    .post(function (req, res) {
-
-    });
 
   return router;
 };
