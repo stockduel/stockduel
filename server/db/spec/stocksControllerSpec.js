@@ -142,7 +142,7 @@ describe('stocksController', function () {
         })
       ])
       .then(function () {
-        console.log('deleted');
+        console.log('stocks after hook');
         done();
       })
       .catch(function (err) {

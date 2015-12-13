@@ -31,55 +31,55 @@ var stock = {
   exchange: 'NASDAQ'
 };
 
-// ============= Setup ============= \\
-before(function (done) {
-  //insert users into DB
-  knex('users').insert(users, '*')
-    .then(function (response) {
-      users = response;
-    })
-    //create a match
-    .then(function () {
-      var user = users[0];
-      var match = matches[0];
-      return matchesController.createMatch(user.u_id, match.startFunds, match.type);
-    })
-    .then(function (createdMatch) {
-      matches[0].m_id = createdMatch.m_id;
-      done();
-    });
-
-});
-
-// ============= Teardown ============= \\
-after(function (done) {
-  //remove trades
-  knex('trades').where({
-      'match_id': matches[0].m_id
-    }).del()
-    //remove matches
-    .then(function () {
-      return Promise.map(matches, function (match) {
-        return knex('matches').where('m_id', match.m_id).del();
-      });
-    })
-    //remove users
-    .then(function () {
-      return Promise.map(users, function (user) {
-        return knex('users').where('u_id', user.u_id).del();
-      });
-    })
-    .then(function () {
-      console.log('deleted');
-      done();
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
-
-});
 
 describe('Trade Controller', function () {
+  // ============= Setup ============= \\
+  before(function (done) {
+    //insert users into DB
+    knex('users').insert(users, '*')
+      .then(function (response) {
+        users = response;
+      })
+      //create a match
+      .then(function () {
+        var user = users[0];
+        var match = matches[0];
+        return matchesController.createMatch(user.u_id, match.startFunds, match.type);
+      })
+      .then(function (createdMatch) {
+        matches[0].m_id = createdMatch.m_id;
+        done();
+      });
+
+  });
+
+  // ============= Teardown ============= \\
+  after(function (done) {
+    //remove trades
+    knex('trades').where({
+        'match_id': matches[0].m_id
+      }).del()
+      //remove matches
+      .then(function () {
+        return Promise.map(matches, function (match) {
+          return knex('matches').where('m_id', match.m_id).del();
+        });
+      })
+      //remove users
+      .then(function () {
+        return Promise.map(users, function (user) {
+          return knex('users').where('u_id', user.u_id).del();
+        });
+      })
+      .then(function () {
+        console.log('deleted');
+        done();
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+
+  });
 
   it('should be able to place a buy trade', function (done) {
     var user = users[0];
