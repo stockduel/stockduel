@@ -19,11 +19,14 @@
   "homepage": "https://github.com/tatethurston/webpack_react",
   "dependencies": {
     "bluebird": "^3.0.6",
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
+    "morgan": "^1.6.1",
     "path": "^0.12.7",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "redux-thunk": "^1.0.0",
+    "request": "^2.67.0",
     "superagent": "^1.5.0",
     "supertest": "^1.1.0"
   },
