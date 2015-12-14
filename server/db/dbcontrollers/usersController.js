@@ -14,12 +14,22 @@ module.exports = function (knex) {
 
   module.getUser = function (userID) {
     return knex.select().table('users').where('u_id', '=', userID)
-      .then(function (user) {
-        return user[0];
+      .then(function (response) {
+        if (response.length === 0) {
+          throw new Error('no user found');
+        }
+        return response[0];
       })
       .catch(function (err) {
         return null;
       });
+  };
+
+  module.searchUsers = function (search) {
+    var searchLike = search + '%';
+    return knex('users')
+      .where(knex.raw('UPPER(username) like UPPER(?)', [searchLike]))
+      .orWhere(knex.raw('UPPER(name) like UPPER(?)', [searchLike]));
   };
 
   //-----------------------creates/check a users details----------------------------------//
