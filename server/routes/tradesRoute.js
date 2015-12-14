@@ -23,11 +23,9 @@ module.exports = function (knex) {
   .get(function (req, res) {
     tradesController.getTrades(req.userid, req.matchid)
     .then(function (portfolio) {
-      console.log('User portfolio', portfolio);
       return res.status(200).json({'message': 'Retrieved portfolio', 'data': portfolio});
     })
     .catch(function (err) {
-      console.log('Error getting portfolio');
       return res.status(400).json({'message': 'Error getting portfolio', 'err': err});
     });
   })

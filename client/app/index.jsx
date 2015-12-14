@@ -22,6 +22,7 @@ var App = React.createClass({
   },
 
 });
+
 render (
   <Provider store={store}>
     <App />

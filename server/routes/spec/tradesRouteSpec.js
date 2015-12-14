@@ -6,30 +6,23 @@ var knex = require('knex');
 var config = require('../../db/knexfile');
 var app = require('../../index');
 
-var users = [{
+var userArray = {
   username: 'annaUser',
   password: 'annaPassword',
   name: 'anna',
   email: 'anna@annars'
-}, {
-  username: 'kateUser',
-  password: 'katePassword',
-  name: 'kate',
-  email: 'kate@katers'
-}];
+};
 
 var trades = [{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'buy' },
 { user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'sell' }];
 
-var matches = [{
-  creator_id: 1,
+var matches = {
   starting_funds: 100000,
-  challengee: 1,
   startdate: 'Sat Dec 12 2015 16:55:38 GMT-0800 (PST)',
   enddate: 'Fri Jan 29 2016 00:00:00 GMT-0800 (PST)',
   status: 'in progress',
   type: 'TEST'
-}];
+};
 
 var stock = {
   name: 'Facebook, Inc.',
@@ -39,16 +32,24 @@ var stock = {
   exchange: 'NASDAQ'
 };
 
-
- describe('/trades/:matchid/:userid', function () {
+describe('trade routes', function () {
   // ============= Setup ============= \\
-  before(function () {
+  before(function (done) {
     //insert users into DB
     knex = knex(config['development']);
-    return knex('users').insert(users)
-    .then(function (user) {
-      return knex('matches').insert(matches);
+
+    return knex('users').insert(userArray, '*')
+    .then(function (userInserted) {
+      userArray = userInserted[0];
+      matches.creator_id = userArray.u_id;
+      matches.challengee = userArray.u_id;
+      return knex('matches').insert(matches, '*');
+    })
+    .then(function (response) {
+      matches = response[0];
+      done();
     });
+
   });
 
   // ============= Teardown ============= \\
@@ -56,28 +57,25 @@ var stock = {
   after(function () {
     //remove trades
     return Promise.map(trades, function (trade) {
-      return knex('trades').where(trade).del();
+      return knex('trades').where('action', trade.action).del();
     })
     .then(function (arrayOfTradeDeletionResults) {
-      return Promise.map(matches, function (match) {
-        return knex('matches').where(match).del();
-      });
+      return knex('matches').where('type', 'TEST').del();
     })
     .then(function(arrayOfMatchDeletionResults) {
-      return Promise.map(users, function (user) {
-        return knex('users').where(user).del();
-      });
+      return knex('users').where('email', 'anna@anna').del();
     });
 
   });
 
   // ============= Tests ============= \\
 
-    describe('POST', function () {
-      var matchid = 1;
-      var userid = 1;
+    describe('POST /trades/:matchid/:userid', function () {
 
-      xit('buy responds with a 200 (OK)', function (done) {
+      it('buy responds with a 200 (OK)', function (done) {
+        var matchid = matches.m_id;
+        var userid = userArray.u_id;
+
         request(app)
           .post('/trades/' + matchid + '/' + userid)
           .send({ numShares: 5, action: 'buy', stockTicker: 'GOOG' })
@@ -85,6 +83,9 @@ var stock = {
       });
 
       it('responds with the buy trade', function (done) {
+        var matchid = matches.m_id;
+        var userid = userArray.u_id;
+
         request(app)
           .post('/trades/' + matchid + '/' + userid)
           .send({ numShares: 5, action: 'buy', stockTicker: 'GOOG' })
@@ -96,7 +97,10 @@ var stock = {
           .expect(200, done);
       });
 
-      xit('sell responds with a 200 (OK)', function (done) {
+      it('sell responds with a 200 (OK)', function (done) {
+        var matchid = matches.m_id;
+        var userid = userArray.u_id;
+
         request(app)
           .post('/trades/' + matchid + '/' + userid)
           .send({ numShares: 5, action: 'sell', stockTicker: 'GOOG' })
@@ -104,6 +108,9 @@ var stock = {
       });
 
       it('responds with the sell trade', function (done) {
+        var matchid = matches.m_id;
+        var userid = userArray.u_id;
+
         request(app)
           .post('/trades/' + matchid + '/' + userid)
           .send({ numShares: 5, action: 'sell', stockTicker: 'GOOG' })
@@ -113,6 +120,36 @@ var stock = {
             expect(sell.data.price).to.be.a('number');
           })
           .expect(200, done);
+
+      });
+
+    });
+
+    describe('GET /trades/:matchid/:userid', function () {
+
+      it('should get portfolio responds with a 200 (OK)', function (done) {
+        var matchid = matches.m_id;
+        var userid = userArray.u_id;
+
+        request(app)
+          .get('/trades/' + matchid + '/' + userid)
+          .expect(200, done);
+
+      });
+
+      it('should respond with the portfolio of the specific user for a specific match', function (done) {
+        var matchid = matches.m_id;
+        var userid = userArray.u_id;
+
+        request(app)
+          .get('/trades/' + matchid + '/' + userid)
+          .expect(function (response) {
+            var portfolio = response.body;
+            expect(portfolio).to.be.a('object');
+            expect(portfolio.data[0].price).to.be.a('number');
+          })
+          .expect(200, done);
+
       });
 
     });

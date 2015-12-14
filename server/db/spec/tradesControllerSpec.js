@@ -85,11 +85,12 @@ describe('Trade Controller', function () {
     var user = users[0];
     var match = matches[0];
     var trade = {
+      action: 'buy',
       shares: 100,
       symbol: stock.symbol
     };
 
-    tradesController.buy(user.u_id, match.m_id, trade.shares, trade.symbol)
+    tradesController.buy(user.u_id, match.m_id, trade.shares, trade.action,trade.symbol)
       .then(function (trade) {
         expect(trade.shares).to.equal(100);
         done();
@@ -112,11 +113,12 @@ describe('Trade Controller', function () {
     var user = users[0];
     var match = matches[0];
     var trade = {
+      action: 'sell',
       shares: 90,
       symbol: 'FB'
     };
 
-    tradesController.sell(user.u_id, match.m_id, trade.shares, trade.symbol)
+    tradesController.sell(user.u_id, match.m_id, trade.shares, trade.action, trade.symbol)
       .then(function (trade) {
         expect(trade.shares).to.equal(90);
         done();
