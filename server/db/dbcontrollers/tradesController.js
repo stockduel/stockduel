@@ -15,7 +15,6 @@ module.exports = function (knex) {
     var price;
 
     //get the stock id
-    console.log(stockTicker);
     return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker)
       .then(function (ask) {
 
@@ -125,8 +124,8 @@ module.exports = function (knex) {
           .into('trades');
 
       })
-      .then(function (trade) {
-        return trade[0];
+      .then(function (response) {
+        return response[0];
       });
   };
 

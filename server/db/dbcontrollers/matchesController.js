@@ -18,7 +18,7 @@ module.exports = function (knex) {
     var endDate = nextWeek;
     var status = 'in progress';
     var title = 'solo match';
-
+    
     return knex('matches').insert({
         'creator_id': userID,
         'starting_funds': startFunds,
@@ -43,6 +43,20 @@ module.exports = function (knex) {
       .then(function (match) {
         return match[0];
       });
+  };
+
+  //---------------------------------------------------------------------//
+
+  module.getUsersMatches = function (userID) {
+    // console.log('MATCH', userID)
+    return knex.select()
+      .table('matches')
+      .where('creator_id', userID)
+      .orWhere('challengee', userID)
+      .then(function (matches) {
+        return matches;
+      });
+
   };
 
   //---------------------------------------------------------------------//
