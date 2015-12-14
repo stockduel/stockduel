@@ -24,7 +24,7 @@ module.exports = function (knex) {
 
   //-----------------------creates/check a users details----------------------------------//
 
-  module.createUser = function (username, password, name, email) {
+  module.findOrCreateUser = function (username, password, name, email) {
 
     return knex.select()
       .table('users')
@@ -32,7 +32,7 @@ module.exports = function (knex) {
       .then(function (user) {
         //if the user is already in the table then return the user
         if (user.length > 0) {
-          throw new Error('user exists!');
+          return user;
         }
         //insert the user into the table
         return knex.insert({

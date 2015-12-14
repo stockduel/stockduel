@@ -1,14 +1,29 @@
 var express = require('express');
-var router = express.Router();
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var auth = require('./authRoute');
 var stocks = require('./stocksRoute');
 var matches = require('./matchesRoute');
 var users = require('./usersRoute');
 
+var passport = require('./auth/index');
+
 module.exports = function (knex) {
 
-  auth = auth(knex);
+  var router = express.Router();
+
+  router.use(express.static('public'));
+  router.use(cookieParser());
+  router.use(bodyParser());
+  router.use(session({
+    secret: 'keyboard cat'
+  }));
+  router.use(passport.initialize());
+  router.use(passport.session());
+
+  auth = auth(knex, passport);
   stocks = stocks(knex);
   matches = matches(knex);
   users = users(knex);
