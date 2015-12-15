@@ -7,6 +7,7 @@ var auth = require('./authRoute');
 var stocks = require('./stocksRoute');
 var matches = require('./matchesRoute');
 var users = require('./usersRoute');
+var trades = require('./tradesRoute');
 
 var passport = require('./auth/index');
 
@@ -18,7 +19,9 @@ module.exports = function (knex) {
   router.use(cookieParser());
   router.use(bodyParser());
   router.use(session({
-    secret: 'keyboard cat'
+    secret: 'stockDuel',
+    resave: false,
+    saveUninitialized: true
   }));
   router.use(passport.initialize());
   router.use(passport.session());
@@ -27,11 +30,13 @@ module.exports = function (knex) {
   stocks = stocks(knex);
   matches = matches(knex);
   users = users(knex);
+  trades = trades(knex);
 
   router.use('/auth', auth);
   router.use('/stocks', stocks);
   router.use('/matches', matches);
   router.use('/users', users);
+  router.use('/trades', trades);
 
   return router;
 };
