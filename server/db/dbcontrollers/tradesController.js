@@ -1,152 +1,185 @@
 var Promise = require('bluebird');
+var stocksController = require('./stocksController');
 
 module.exports = function (knex) {
+  'use strict';
+  var STARTING_CASH = 100000;
+  var stocksCtrl = stocksController(knex);
 
   var module = {};
-  //think about using a Knex transactions to lock down the price while query happening post MVP thing
-  //think about checking that they have less than or equal to 25 stocks post MVP
 
-  //-------------------------------------buy a stock controller -----------------------------------------//
-  module.buy = function (userID, matchID, numShares, action, stockTicker) {
+  var BUY = 'buy';
+  var SELL = 'sell';
 
-    var total;
-    var cashRemaining;
-    var cashToDate;
-    var price;
-
-    //get the stock id
-    return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker)
-      .then(function (ask) {
-
-        price = ask[0].ask;
-        total = price * numShares;
-        //find the lastest trade from that user in that match
-        return knex.select()
-          .table('trades')
-          .where('user_id', '=', userID)
-          .andWhere('match_id', '=', matchID)
-          .orderBy('created_at', 'desc')
-          .limit(1);
-      })
-      .then(function (lastTrade) {
-        //calculate available funds
-        if (lastTrade.length === 0) {
-          cashToDate = '100000';
-          cashRemaining = cashToDate - total;
-        } else {
-          cashToDate = lastTrade[0].available_cash;
-          cashRemaining = lastTrade[0].available_cash - total;
-        }
-        //check have enough to buy
-        if (cashRemaining < 0) {
-          throw new Error('Not a valid trade: you have $' + lastTrade[0].available_cash + ' cash in hand to spend and are trying to buy $' + total + ' of shares');
-        }
-        //insert to trades
-        return knex.insert({
-            user_id: userID,
-            match_id: matchID,
-            symbol: stockTicker,
-            shares: numShares,
-            action: 'buy',
-            price: price,
-            available_cash: cashRemaining
-          }, '*')
-          .into('trades');
-      })
+  var createTrade = function (trade) {
+    return knex.insert(trade, '*').into('trades')
       .then(function (response) {
         return response[0];
+      });
+  };
+
+  module.currentStocks = function (trades) {
+    return trades.reduce(function (portfolio, trade) {
+
+      var action = trade.action;
+      var symbol = trade.symbol;
+      var shares = trade.shares;
+
+      if (portfolio[symbol] === undefined) {
+        portfolio[symbol] = 0;
+      }
+
+      if (action === BUY) {
+        portfolio[symbol] += shares;
+      } else if (action === SELL) {
+        portfolio[symbol] -= shares;
+      }
+
+      if (portfolio[symbol] === 0) {
+        delete portfolio[symbol];
+      }
+
+      return portfolio;
+    }, {});
+  };
+
+  module.getTrades = function (userID, matchID) {
+    return knex.select()
+      .table('trades')
+      .where('user_id', '=', userID)
+      .andWhere('match_id', '=', matchID)
+      .orderBy('created_at', 'desc');
+  };
+
+  module.buy = function (userID, matchID, numShares, stockTicker) {
+
+    return Promise.all([
+        stocksCtrl.getStock(stockTicker),
+        module.getTrades(userID, matchID)
+      ])
+      .then(function (tuple) {
+        var stock = tuple[0];
+        var trades = tuple[1];
+        var availableCash = STARTING_CASH;
+
+        if (stock === null) {
+          throw new Error('stock symbol does not exist');
+        }
+
+        if (trades.length > 0) {
+          availableCash = trades[0].available_cash;
+        }
+
+        if (stock.ask * numShares > availableCash) {
+          throw new Error('insufficent funds');
+        }
+
+        availableCash -= stock.ask * numShares;
+
+        return createTrade({
+          user_id: userID,
+          match_id: matchID,
+          symbol: stockTicker,
+          shares: numShares,
+          action: BUY,
+          price: stock.ask,
+          available_cash: availableCash
+        });
+      })
+      .catch(function (err) {
+        return null;
       });
   };
 
   //-------------------------------------sell a stock controller -----------------------------------------//
 
-  module.sell = function (userID, matchID, numShares, action, stockTicker) {
-    //to be done after buy is working
-    var total;
-    var cashRemaining;
-    var cashToDate;
-    var price;
+  module.sell = function (userID, matchID, numShares, stockTicker) {
 
-    //get stock id
-    return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker)
-      .then(function (ask) {
-        price = ask[0].ask;
-        total = price * numShares;
-        //find the lastest trade from that user in that match
-        return knex.select()
-          .table('trades')
-          .where('user_id', '=', userID)
-          .andWhere('match_id', '=', matchID)
-          .orderBy('created_at', 'desc')
-          .limit(1);
+    return Promise.all([
+        stocksCtrl.getStock(stockTicker),
+        module.getTrades(userID, matchID)
+      ])
+      .then(function (tuple) {
+        var stock = tuple[0];
+        var trades = tuple[1];
+        var portfolio = module.currentStocks(trades);
 
-      })
-      .then(function (lastTrade) {
-        //get the matchID
-        //sum all of the users shares for the match
-        if (lastTrade.length === 0) {
-          throw new Error('You have no ' + stockTicker + ' stocks to sell');
+        if (stock === null) {
+          throw new Error('stock symbol does not exist');
         }
 
-        cashRemaining = lastTrade[0].available_cash;
-
-        return knex('trades')
-          .sum('shares')
-          .where('symbol', '=', stockTicker)
-          .where('match_id', '=', matchID)
-          .andWhere('user_id', '=', userID);
-
-      })
-      .then(function (sharesSum) {
-        //calculate available funds
-        if (sharesSum[0].sum === null) {
-          currShares = 0;
-        } else {
-          currShares = sharesSum[0].sum;
-        }
-        //check have enough to buy
-        if (currShares < numShares) {
-          throw new Error('Not a  valid trade: you only have ' + currShares + ' shares of ' + stockTicker + ' to sell');
+        if (portfolio[stock.symbol] === undefined ||
+          portfolio[stock.symbol] < numShares) {
+          throw new Error('number of shares to sell exceeds number of shares owned');
         }
 
-        cashRemaining = cashRemaining + total;
+        var availableCash = trades[0].available_cash + (stock.bid * numShares);
 
-        //insert to trades
-        return knex.insert({
-            user_id: userID,
-            match_id: matchID,
-            symbol: stockTicker,
-            shares: numShares,
-            action: 'sell',
-            price: price,
-            available_cash: cashRemaining
-          }, '*')
-          .into('trades');
-
+        return createTrade({
+          user_id: userID,
+          match_id: matchID,
+          symbol: stockTicker,
+          shares: numShares,
+          action: SELL,
+          price: stock.bid,
+          available_cash: availableCash
+        });
       })
-      .then(function (response) {
-        return response[0];
+      .catch(function (err) {
+        return null;
       });
   };
 
   //---------------------get user portfolio------------------------------------//
 
-  module.getTrades = function (userID, matchID) {
-    //join the stock table with the trades and stockprices
-    return knex('stocks')
-      .join('trades', 'stocks.symbol', '=', 'trades.symbol')
-      .join('stock_prices', 'stocks.symbol', '=', 'stock_prices.symbol')
-      .then(function (data) {
-        var portfolio = data.filter(function (trade) {
-          if (trade.match_id === parseInt(matchID, 10) && trade.user_id === parseInt(userID, 10)) {
-            return trade;
+  module.getPortfolio = function (userID, matchID) {
+
+    return knex('trades')
+      .join('stock_prices', 'trades.symbol', '=', 'stock_prices.symbol')
+      .join('stocks', 'trades.symbol', '=', 'stocks.symbol')
+      .orderBy('created_at', 'ASC')
+      .then(function (trades) {
+        var portfolio = trades.reduce(function (portfolio, trade) {
+          var symbol = trade.symbol;
+          if (portfolio[symbol] === undefined) {
+            portfolio[symbol] = {
+              symbol: symbol,
+              shares: 0,
+              price: 0,
+              percent_change: trade.percent_change,
+              bid: trade.bid,
+              ask: trade.ask
+            };
           }
+
+          if (trade.action === BUY) {
+            portfolio[symbol].price = (portfolio[symbol].price * portfolio[symbol].shares + trade.price * trade.shares) / (portfolio[symbol].shares + trade.shares);
+            portfolio[symbol].shares += trade.shares;
+          } else if (trade.action === SELL) {
+            portfolio[symbol].shares -= trade.shares;
+          }
+
+          if (portfolio[symbol].shares === 0) {
+            delete portfolio[symbol];
+          }
+
+          return portfolio;
+        }, {});
+
+        var stocks = Object.keys(portfolio).map(function (stock) {
+          var stockData = portfolio[stock];
+          stockData.marketValue = stockData.bid * stockData.shares;
+          stockData.gain_loss = (stockData.marketValue - stockData.price * stockData.shares).toFixed(2);
+          return stockData;
         });
-        return portfolio;
+
+        return {
+          available_cash: trades[trades.length - 1].available_cash,
+          stocks: stocks
+        };
       })
       .catch(function (err) {
-        console.log('Error getting portfolio');
-        return err;
+        return null;
       });
 
   };

@@ -72,7 +72,6 @@ describe('Trade Controller', function () {
         });
       })
       .then(function () {
-        console.log('deleted');
         done();
       })
       .catch(function (err) {
@@ -81,72 +80,138 @@ describe('Trade Controller', function () {
 
   });
 
-  it('should be able to place a buy trade', function (done) {
-    var user = users[0];
-    var match = matches[0];
-    var trade = {
-      action: 'buy',
-      shares: 100,
-      symbol: stock.symbol
-    };
+  describe('current stocks', function () {
+    it('should return the stocks on hand for a given list of trades', function () {
+      var trades = [{
+        action: 'buy',
+        symbol: 'FB',
+        shares: 34,
+        available_cash: 1000
+      }, {
+        action: 'sell',
+        symbol: 'FB',
+        shares: 22,
+        available_cash: 47000
+      }, {
+        action: 'buy',
+        symbol: 'TSLA',
+        shares: 100,
+        available_cash: 55000
+      }, {
+        action: 'buy',
+        symbol: 'TSLA',
+        shares: 34,
+        available_cash: 10000
+      }, {
+        action: 'buy',
+        symbol: 'MSFT',
+        shares: 30,
+        available_cash: 10000
+      }, {
+        action: 'sell',
+        symbol: 'MSFT',
+        shares: 30,
+        available_cash: 10000
+      }];
 
-    tradesController.buy(user.u_id, match.m_id, trade.shares, trade.action,trade.symbol)
-      .then(function (trade) {
-        expect(trade.shares).to.equal(100);
-        done();
-      });
+      var portfolio = tradesController.currentStocks(trades);
+      expect(portfolio).to.be.an('object');
+      expect(portfolio['MSFT']).to.equal(undefined);
+      expect(portfolio['FB']).to.equal(12);
+      expect(portfolio['TSLA']).to.equal(134);
+    });
   });
 
+  describe('buy', function () {
+    it('should be able to place a buy order', function (done) {
+      var user = users[0];
+      var match = matches[0];
+      var trade = {
+        shares: 100,
+        symbol: stock.symbol
+      };
 
-
-  // it('should reject a buy that the user cant afford', function () {
-  //   return tradesController.buy(1,1,200000,'buy','TFSC')
-  //   .then(function (data) {
-  //     console.log('Should not be logged!',data);
-  //   })
-  //  .catch(function (err) {
-  //    console.log(err);
-  //  });
-  // });
-
-  it('should be able to place a sell trade', function (done) {
-    var user = users[0];
-    var match = matches[0];
-    var trade = {
-      action: 'sell',
-      shares: 90,
-      symbol: 'FB'
-    };
-
-    tradesController.sell(user.u_id, match.m_id, trade.shares, trade.action, trade.symbol)
-      .then(function (trade) {
-        expect(trade.shares).to.equal(90);
-        done();
-      });
+      tradesController.buy(user.u_id, match.m_id, trade.shares, trade.symbol)
+        .then(function (trade) {
+          expect(trade.shares).to.equal(100);
+          done();
+        });
+    });
   });
 
+  describe('sell', function (done) {
+    it('should be able to place a sell trade', function (done) {
+      var user = users[0];
+      var match = matches[0];
+      var trade = {
+        shares: 90,
+        symbol: 'FB'
+      };
 
-  // it('should reject a sell if the user does not have that many stocks to sell', function () {
-  //   return tradesController.sell(1,1,5,'sell', 'TFSC')
-  //   .then(function (data) {
-  //      console.log('Should not be logged!',data);
-  //   })
-  //  .catch(function (err) {
-  //    console.log('Error in processing a sell',err);
-  //  });
-  // });
+      tradesController.sell(user.u_id, match.m_id, trade.shares, trade.symbol)
+        .then(function (trade) {
+          expect(trade.shares).to.equal(90);
+          expect(trade.symbol).to.equal('FB');
+          expect(trade.action).to.equal('sell');
+          expect(trade.price).to.be.a('number');
+          done();
+        });
+    });
 
-  it('should be able to get a user portfolio', function (done) {
-    var user = users[0];
-    var match = matches[0];
+    it('should not be able to place a sell trade for unowned stock', function (done) {
+      var user = users[0];
+      var match = matches[0];
+      var trade = {
+        shares: 90,
+        symbol: 'TSLA'
+      };
 
-    return tradesController.getTrades(user.u_id, match.m_id)
-      .then(function (data) {
-        expect(data[0].name).to.equal(stock.name);
-        expect(data[0].action).to.equal('sell');
-        done();
-      });
+      tradesController.sell(user.u_id, match.m_id, trade.shares, trade.symbol)
+        .then(function (trade) {
+          expect(trade).to.equal(null);
+          return tradesController.getTrades(user.u_id, match.m_id);
+        })
+        .then(function (trades) {
+          expect(trades.length).to.equal(2);
+          done();
+        });
+    });
+
+    it('should not be able to place a sell trade more stock than owned', function (done) {
+      var user = users[0];
+      var match = matches[0];
+      var trade = {
+        shares: 90,
+        symbol: 'FB'
+      };
+
+      tradesController.sell(user.u_id, match.m_id, trade.shares, trade.symbol)
+        .then(function (trade) {
+          expect(trade).to.equal(null);
+          return tradesController.getTrades(user.u_id, match.m_id);
+        })
+        .then(function (trades) {
+          expect(trades.length).to.equal(2);
+          done();
+        });
+    });
+
   });
 
+  describe('getPortfolio', function () {
+    it('should be able to get a user portfolio', function (done) {
+      var user = users[0];
+      var match = matches[0];
+
+      tradesController.getPortfolio(user.u_id, match.m_id)
+        .then(function (portfolio) {
+          // console.log(portfolio);
+          expect(portfolio).to.be.an('object');
+          expect(portfolio.stocks.length).to.equal(1);
+          expect(portfolio.available_cash).to.be.a('number');
+          done();
+        });
+    });
+  });
 
 });
