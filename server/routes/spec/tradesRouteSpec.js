@@ -6,49 +6,50 @@ var knex = require('knex');
 var config = require('../../db/knexfile');
 var app = require('../../index');
 
-var userArray = {
-  username: 'annaUser',
-  password: 'annaPassword',
-  name: 'anna',
-  email: 'anna@annars'
-};
-
-var trades = [{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'buy' },
-{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'sell' }];
-
-var matches = {
-  starting_funds: 100000,
-  startdate: 'Sat Dec 12 2015 16:55:38 GMT-0800 (PST)',
-  enddate: 'Fri Jan 29 2016 00:00:00 GMT-0800 (PST)',
-  status: 'in progress',
-  type: 'TEST'
-};
-
-var stock = {
-  name: 'Facebook, Inc.',
-  symbol: 'FB',
-  industry: 'Computer Software: Programming, Data Processing',
-  sector: 'Technology',
-  exchange: 'NASDAQ'
-};
-
-
  describe('/trades/:matchid/:userid', function () {
+
+  // ============= Test Data ============= \\
+
+  var userObj = {
+    username: 'annaUser',
+    password: 'annaPassword',
+    name: 'anna',
+    email: 'anna@annars'
+  };
+
+  var trades = [{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'buy' },
+  { user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'sell' }];
+
+  var match = {
+    starting_funds: 100000,
+    startdate: 'Sat Dec 12 2015 16:55:38 GMT-0800 (PST)',
+    enddate: 'Fri Jan 29 2016 00:00:00 GMT-0800 (PST)',
+    status: 'in progress',
+    type: 'TEST'
+  };
+
+  var stock = {
+    name: 'Facebook, Inc.',
+    symbol: 'FB',
+    industry: 'Computer Software: Programming, Data Processing',
+    sector: 'Technology',
+    exchange: 'NASDAQ'
+  };
 
   // ============= Setup ============= \\
   before(function (done) {
     //insert users into DB
     knex = knex(config['development']);
 
-    return knex('users').insert(userArray, '*')
+    return knex('users').insert(userObj, '*')
     .then(function (userInserted) {
-      userArray = userInserted[0];
-      matches.creator_id = userArray.u_id;
-      matches.challengee = userArray.u_id;
-      return knex('matches').insert(matches, '*');
+      userObj = userInserted[0];
+      match.creator_id = userObj.u_id;
+      match.challengee = userObj.u_id;
+      return knex('matches').insert(match, '*');
     })
     .then(function (response) {
-      matches = response[0];
+      match = response[0];
       done();
     });
 
@@ -56,7 +57,7 @@ var stock = {
 
   // ============= Teardown ============= \\
 
-  after(function () {
+  after(function (done) {
     //remove trades
     return Promise.map(trades, function (trade) {
       return knex('trades').where('action', trade.action).del();
@@ -65,7 +66,11 @@ var stock = {
       return knex('matches').where('type', 'TEST').del();
     })
     .then(function(arrayOfMatchDeletionResults) {
-      return knex('users').where('email', 'anna@anna').del();
+      return knex('users').where('email', 'anna@annars').del();
+    })
+    .then(function () {
+      console.log('matches after hook');
+      done();
     });
 
   });
@@ -75,8 +80,8 @@ var stock = {
     describe('POST /trades/:matchid/:userid', function () {
 
       it('buy responds with a 200 (OK)', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -85,8 +90,8 @@ var stock = {
       });
 
       it('responds with the buy trade', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -100,8 +105,8 @@ var stock = {
       });
 
       it('sell responds with a 200 (OK)', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -110,8 +115,8 @@ var stock = {
       });
 
       it('responds with the sell trade', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -130,8 +135,8 @@ var stock = {
     describe('GET /trades/:matchid/:userid', function () {
 
       it('should get portfolio responds with a 200 (OK)', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .get('/trades/' + matchid + '/' + userid)
@@ -140,8 +145,8 @@ var stock = {
       });
 
       it('should respond with the portfolio of the specific user for a specific match', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .get('/trades/' + matchid + '/' + userid)
@@ -149,6 +154,7 @@ var stock = {
             var portfolio = response.body;
             expect(portfolio).to.be.a('object');
             expect(portfolio.data[0].price).to.be.a('number');
+            //would like to check the user id here but couldn find a way to ask if the creator_id or the challengee had the userid?
           })
           .expect(200, done);
 

@@ -1,4 +1,4 @@
-var FACEBOOK_KEYS = require('./keys.js');
+var FACEBOOK_KEYS = require('./_fb_keys.js');
 var FacebookStrategy = require('passport-facebook');
 
 var usersController = require('../../db/dbcontrollers/usersController');
