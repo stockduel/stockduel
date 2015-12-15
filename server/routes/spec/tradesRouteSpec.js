@@ -85,7 +85,7 @@ var app = require('../../index');
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
-          .send({ numShares: 5, action: 'buy', stockTicker: 'GOOG' })
+          .send({ numShares: 5, stockTicker: 'GOOG', action: 'buy'})
           .expect(200, done);
       });
 
@@ -95,7 +95,7 @@ var app = require('../../index');
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
-          .send({ numShares: 5, action: 'buy', stockTicker: 'GOOG' })
+          .send({ numShares: 5, stockTicker: 'GOOG' , action: 'buy'})
           .expect(function (response) {
             var buy = response.body;
             expect(buy).to.be.a('object');
@@ -110,7 +110,7 @@ var app = require('../../index');
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
-          .send({ numShares: 5, action: 'sell', stockTicker: 'GOOG' })
+          .send({ numShares: 5, stockTicker: 'GOOG', action: 'sell' })
           .expect(200, done);
       });
 
@@ -120,7 +120,7 @@ var app = require('../../index');
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
-          .send({ numShares: 5, action: 'sell', stockTicker: 'GOOG' })
+          .send({ numShares: 5, stockTicker: 'GOOG', action: 'sell' })
           .expect(function (response) {
             var sell = response.body;
             expect(sell).to.be.a('object');
@@ -137,7 +137,6 @@ var app = require('../../index');
       it('should get portfolio responds with a 200 (OK)', function (done) {
         var matchid = match.m_id;
         var userid = userObj.u_id;
-
         request(app)
           .get('/trades/' + matchid + '/' + userid)
           .expect(200, done);

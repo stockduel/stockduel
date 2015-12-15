@@ -23,6 +23,7 @@ module.exports = function (knex) {
   .get(function (req, res) {
     tradesController.getTrades(req.userid, req.matchid)
     .then(function (portfolio) {
+
       return res.status(200).json({'message': 'Retrieved portfolio', 'data': portfolio});
     })
     .catch(function (err) {
@@ -38,10 +39,9 @@ module.exports = function (knex) {
     var numShares = req.body.numShares;
     var action = req.body.action;
     var stockTicker = req.body.stockTicker;
-
     if (action === 'buy') {
 
-      tradesController.buy(userID,matchID,numShares,action,stockTicker)
+      tradesController.buy(userID, matchID, numShares, stockTicker)
       .then(function (data) {
         return res.status(200).json({'message': 'Processed trade', 'data': data});
       })
@@ -50,16 +50,19 @@ module.exports = function (knex) {
         return res.status(400).json({'message': 'Not valid trade', 'err': err});
       });
 
-    } else {
+    } else if (action === 'sell'){
 
-      tradesController.sell(userID,matchID,numShares,action,stockTicker)
+      tradesController.sell(userID, matchID, numShares, stockTicker)
       .then(function (data) {
         return res.status(200).json({'message': 'Processed trade', 'data':data});
       })
       .catch(function (err) {
         return res.status(400).json({'message': 'Not valid trade', 'err': err});
       });
+    } else {
+      return res.status(400).json({ 'message': 'Not a valid action' });
     }
+
   });
 
     //-----------------------------------------------------------//
