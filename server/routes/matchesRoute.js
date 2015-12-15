@@ -31,6 +31,7 @@ module.exports = function (knex) {
         return res.status(200).json({'message': 'Match added', 'data': match});
       })
       .catch(function (err) {
+        console.log('------->',err);
         return res.status(400).json({'message': err});
       });
 

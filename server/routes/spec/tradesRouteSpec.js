@@ -6,34 +6,35 @@ var knex = require('knex');
 var config = require('../../db/knexfile');
 var app = require('../../index');
 
-var userArray = {
-  username: 'annaUser',
-  password: 'annaPassword',
-  name: 'anna',
-  email: 'anna@annars'
-};
-
-var trades = [{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'buy' },
-{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'sell' }];
-
-var matches = {
-  starting_funds: 100000,
-  startdate: 'Sat Dec 12 2015 16:55:38 GMT-0800 (PST)',
-  enddate: 'Fri Jan 29 2016 00:00:00 GMT-0800 (PST)',
-  status: 'in progress',
-  type: 'TEST'
-};
-
-var stock = {
-  name: 'Facebook, Inc.',
-  symbol: 'FB',
-  industry: 'Computer Software: Programming, Data Processing',
-  sector: 'Technology',
-  exchange: 'NASDAQ'
-};
-
-
  describe('/trades/:matchid/:userid', function () {
+
+  // ============= Test Data ============= \\
+
+  var userArray = {
+    username: 'annaUser',
+    password: 'annaPassword',
+    name: 'anna',
+    email: 'anna@annars'
+  };
+
+  var trades = [{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'buy' },
+  { user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'sell' }];
+
+  var matches = {
+    starting_funds: 100000,
+    startdate: 'Sat Dec 12 2015 16:55:38 GMT-0800 (PST)',
+    enddate: 'Fri Jan 29 2016 00:00:00 GMT-0800 (PST)',
+    status: 'in progress',
+    type: 'TEST'
+  };
+
+  var stock = {
+    name: 'Facebook, Inc.',
+    symbol: 'FB',
+    industry: 'Computer Software: Programming, Data Processing',
+    sector: 'Technology',
+    exchange: 'NASDAQ'
+  };
 
   // ============= Setup ============= \\
   before(function (done) {
@@ -56,7 +57,7 @@ var stock = {
 
   // ============= Teardown ============= \\
 
-  after(function () {
+  after(function (done) {
     //remove trades
     return Promise.map(trades, function (trade) {
       return knex('trades').where('action', trade.action).del();
@@ -65,7 +66,11 @@ var stock = {
       return knex('matches').where('type', 'TEST').del();
     })
     .then(function(arrayOfMatchDeletionResults) {
-      return knex('users').where('email', 'anna@anna').del();
+      return knex('users').where('email', 'anna@annars').del();
+    })
+    .then(function () {
+      console.log('matches after hook');
+      done();
     });
 
   });
@@ -149,6 +154,7 @@ var stock = {
             var portfolio = response.body;
             expect(portfolio).to.be.a('object');
             expect(portfolio.data[0].price).to.be.a('number');
+            //would like to check the user id here but couldn find a way to ask if the creator_id or the challengee had the userid?
           })
           .expect(200, done);
 
