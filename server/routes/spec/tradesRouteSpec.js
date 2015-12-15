@@ -10,7 +10,7 @@ var app = require('../../index');
 
   // ============= Test Data ============= \\
 
-  var userArray = {
+  var userObj = {
     username: 'annaUser',
     password: 'annaPassword',
     name: 'anna',
@@ -20,7 +20,7 @@ var app = require('../../index');
   var trades = [{ user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'buy' },
   { user_id: 1, match_id: 1, symbol: 'GOOG', shares: 5, action: 'sell' }];
 
-  var matches = {
+  var match = {
     starting_funds: 100000,
     startdate: 'Sat Dec 12 2015 16:55:38 GMT-0800 (PST)',
     enddate: 'Fri Jan 29 2016 00:00:00 GMT-0800 (PST)',
@@ -41,15 +41,15 @@ var app = require('../../index');
     //insert users into DB
     knex = knex(config['development']);
 
-    return knex('users').insert(userArray, '*')
+    return knex('users').insert(userObj, '*')
     .then(function (userInserted) {
-      userArray = userInserted[0];
-      matches.creator_id = userArray.u_id;
-      matches.challengee = userArray.u_id;
-      return knex('matches').insert(matches, '*');
+      userObj = userInserted[0];
+      match.creator_id = userObj.u_id;
+      match.challengee = userObj.u_id;
+      return knex('matches').insert(match, '*');
     })
     .then(function (response) {
-      matches = response[0];
+      match = response[0];
       done();
     });
 
@@ -80,8 +80,8 @@ var app = require('../../index');
     describe('POST /trades/:matchid/:userid', function () {
 
       it('buy responds with a 200 (OK)', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -90,8 +90,8 @@ var app = require('../../index');
       });
 
       it('responds with the buy trade', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -105,8 +105,8 @@ var app = require('../../index');
       });
 
       it('sell responds with a 200 (OK)', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -115,8 +115,8 @@ var app = require('../../index');
       });
 
       it('responds with the sell trade', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .post('/trades/' + matchid + '/' + userid)
@@ -135,8 +135,8 @@ var app = require('../../index');
     describe('GET /trades/:matchid/:userid', function () {
 
       it('should get portfolio responds with a 200 (OK)', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .get('/trades/' + matchid + '/' + userid)
@@ -145,8 +145,8 @@ var app = require('../../index');
       });
 
       it('should respond with the portfolio of the specific user for a specific match', function (done) {
-        var matchid = matches.m_id;
-        var userid = userArray.u_id;
+        var matchid = match.m_id;
+        var userid = userObj.u_id;
 
         request(app)
           .get('/trades/' + matchid + '/' + userid)
