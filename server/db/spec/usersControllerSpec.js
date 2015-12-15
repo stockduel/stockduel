@@ -6,15 +6,15 @@ var knex = require('../index');
 var usersController = require('../dbcontrollers/usersController')(knex);
 
 var users = [{
-  username: 'annaUser',
-  password: 'annaPassword',
-  name: 'anna',
-  email: 'anna@anna'
+  username: 'TESTannaUser',
+  password: 'TESTannaPassword',
+  name: 'TESTanna',
+  email: 'TESTanna@anna'
 }, {
-  username: 'kateUser',
-  password: 'katePassword',
-  name: 'kate',
-  email: 'kate@kate'
+  username: 'TESTkateUser',
+  password: 'TESTkatePassword',
+  name: 'TESTkate',
+  email: 'TESTkate@kate'
 }];
 
 
@@ -31,7 +31,6 @@ describe('Users Controller', function () {
         return knex('users').where('email', user.email).del();
       })
       .then(function () {
-        console.log('users after hook');
         done();
       })
       .catch(function (err) {
@@ -39,49 +38,101 @@ describe('Users Controller', function () {
       });
   });
 
-  it('should insert a user into the users table', function (done) {
+  describe('findOrCreateUser', function () {
 
-    var user = users[0];
-    usersController.createUser(user.username, user.password, user.name, user.email)
-      .then(function (user) {
-        expect(user.name).to.equal('anna');
-        done();
-      });
+    it('should insert a user into the users table', function (done) {
 
-  });
+      var user = users[0];
+      usersController.findOrCreateUser(user.username, user.password, user.name, user.email)
+        .then(function (user) {
+          expect(user.name).to.equal('TESTanna');
+          done();
+        });
 
-  // it('should not insert the same user into the database multiple times', function (done) {
+    });
 
-  //   usersController.createUser('annaUser', 'annaPassword', 'anna', 'anna@anna')
-  //     .catch(function (err) {
-  //       expect(err.message).to.equal('user exists!');
-  //       done();
-  //     });
-  // });
+    it('should not insert the same user into the database multiple times', function (done) {
 
-  it('should be able to return a specific user', function (done) {
-    var user = users[1];
-    usersController.createUser(user.username, user.password, user.name, user.email)
-      .then(function (user) {
-        return user.u_id;
-      })
-      .then(function (id) {
-        return usersController.getUser(id);
-      })
-      .then(function (user) {
-        expect(user.name).to.equal('kate');
-        done();
-      });
+      var user = users[0];
+      usersController.findOrCreateUser(user.username, user.password, user.name, user.email)
+        .then(function () {
+          return knex('users').where('email', user.email);
+        })
+        .then(function (response) {
+          expect(response.length).to.equal(1);
+          done();
+        });
+    });
 
   });
 
-  //TODO: This doesn't seem necessary
-  xit('return all users from the users table', function (done) {
-    return usersController.getUsers()
-      .then(function (users) {
-        expect(users.length).to.equal(2);
-        done();
-      });
+  describe('getUser', function () {
+
+    it('should be able to return a specific user', function (done) {
+      var user = users[1];
+      usersController.findOrCreateUser(user.username, user.password, user.name, user.email)
+        .then(function (insertedUser) {
+          return insertedUser.u_id;
+        })
+        .then(function (id) {
+          return usersController.getUser(id);
+        })
+        .then(function (foundUser) {
+          expect(foundUser.name).to.equal(user.name);
+          done();
+        });
+
+    });
 
   });
+
+
+  describe('searchUsers', function () {
+
+    it('should find a user by searching by username', function (done) {
+      usersController.searchUsers('TESTannaUser')
+        .then(function (response) {
+          expect(response[0].name).to.equal(users[0].name);
+          done();
+        });
+    });
+
+    it('should find a user by searching by name', function (done) {
+      usersController.searchUsers('TESTanna')
+        .then(function (response) {
+          expect(response[0].name).to.equal(users[0].name);
+          done();
+        });
+    });
+
+    it('should find a user regardless of case', function (done) {
+      Promise.all([
+          usersController.searchUsers('TESTANnAUsEr')
+          .then(function (response) {
+            expect(response[0].name).to.equal(users[0].name);
+          }),
+          usersController.searchUsers('TESTaNNa')
+          .then(function (response) {
+            expect(response[0].name).to.equal(users[0].name);
+          })
+        ])
+        .then(function () {
+          done();
+        });
+    });
+
+    it('should find all users that match the search query', function (done) {
+      usersController.searchUsers('TeSt')
+        .then(function (response) {
+          expect(response[0].name).to.equal(users[0].name);
+          expect(response[1].name).to.equal(users[1].name);
+          expect(response.length).to.equal(users.length);
+        })
+        .then(function () {
+          done();
+        });
+    });
+
+  });
+
 });
