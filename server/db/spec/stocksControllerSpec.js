@@ -151,7 +151,7 @@ describe('stocksController', function () {
   });
 
   // ============= Tests ============= \\
-  xdescribe('getStock', function () {
+  describe('getStock', function () {
     var symbol = stocks[0].symbol;
     var fakeSymbol = 'BOB';
 
@@ -176,7 +176,7 @@ describe('stocksController', function () {
 
   });
 
-  xdescribe('searchStock', function () {
+  describe('searchStock', function () {
     var symbolLike = 'XYZ';
     var fakeSymbol = 'ZZZ';
     var nameAndSymbol = 'test';

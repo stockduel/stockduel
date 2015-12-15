@@ -12,5 +12,6 @@ module.exports = function (knex) {
         table.string('enddate');
         table.string('status');
         table.string('type');
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     });
 };
