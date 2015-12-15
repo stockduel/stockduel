@@ -19,7 +19,9 @@ module.exports = function (knex) {
   router.use(cookieParser());
   router.use(bodyParser());
   router.use(session({
-    secret: 'keyboard cat'
+    secret: 'stockDuel',
+    resave: false,
+    saveUninitialized: true
   }));
   router.use(passport.initialize());
   router.use(passport.session());

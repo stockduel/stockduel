@@ -155,26 +155,4 @@ var stock = {
       });
     });
 
-    describe('GET user portfolio', function () {
-
-      it('should get portfolio responds with a 200 (OK)', function (done) {
-        request(app)
-          .get('/trades/' + matchid + '/' + userid)
-          .expect(200, done);
-      });
-
-      it('should respond with the portfolio of the specific user for a specific match', function (done) {
-        request(app)
-          .get('/trades/' + matchid + '/' + userid)
-          .expect(function (response) {
-            var portfolio = response.body;
-            expect(portfolio).to.be.a('object');
-            expect(portfolio.data[0].price).to.be.a('number');
-          })
-          .expect(200, done);
-      });
-
-    });
-
-
 });

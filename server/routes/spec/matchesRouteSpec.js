@@ -123,7 +123,7 @@ var match1 = {
 
   });
 
-  //WORKING ON THIS!!
+
   describe('GET /matches/user/:userid', function () {
 
     //get user matches

@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 
 app.use(morgan('dev'));
+
 app.use(bodyParser.json());
 
 var router = require('./routes/index')(knex);
