@@ -7,7 +7,7 @@ module.exports = function (knex) {
   //think about checking that they have less than or equal to 25 stocks post MVP
 
   //-------------------------------------buy a stock controller -----------------------------------------//
-  module.buy = function (userID, matchID, numShares, stockTicker) {
+  module.buy = function (userID, matchID, numShares, action, stockTicker) {
 
     var total;
     var cashRemaining;
@@ -17,6 +17,7 @@ module.exports = function (knex) {
     //get the stock id
     return knex.select('ask').from('stock_prices').where('symbol', '=', stockTicker)
       .then(function (ask) {
+
         price = ask[0].ask;
         total = price * numShares;
         //find the lastest trade from that user in that match
@@ -59,7 +60,7 @@ module.exports = function (knex) {
 
   //-------------------------------------sell a stock controller -----------------------------------------//
 
-  module.sell = function (userID, matchID, numShares, stockTicker) {
+  module.sell = function (userID, matchID, numShares, action, stockTicker) {
     //to be done after buy is working
     var total;
     var cashRemaining;
@@ -123,8 +124,8 @@ module.exports = function (knex) {
           .into('trades');
 
       })
-      .then(function (trade) {
-        return trade[0];
+      .then(function (response) {
+        return response[0];
       });
   };
 
