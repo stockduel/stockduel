@@ -15,12 +15,6 @@ var users = {
   password: 'annaPassword',
   name: 'anna',
   email: 'anna@annars'};
-// }, {
-//   username: 'kateUser',
-//   password: 'katePassword',
-//   name: 'kate',
-//   email: 'kate@katers'
-// };
 
 var matches = {
   creator_id: 1,
@@ -33,9 +27,9 @@ var matches = {
 };
 
 var match1 = {
-  userID: 1,
+  // userID: 1,
   startFunds: '100000',
-  trype: 'solo match'
+  type: 'solo match'
 };
 
   // ============= Make table data ============= \\
@@ -49,6 +43,7 @@ var match1 = {
       users = user[0];
       matches.creator_id = user[0].u_id;
       matches.challengee = user[0].u_id;
+      match1.userID = user[0].u_id;
       done();
     });
 
@@ -97,7 +92,7 @@ var match1 = {
     });
   });
 
-  describe('GET /matches/', function () {
+  describe('GET /matches/:matchid', function () {
 
     it('responds with a 200 (OK)', function (done) {
       var matchid = matches.m_id;
@@ -116,6 +111,7 @@ var match1 = {
           var match = response.body;
           expect(match).to.be.a('object');
           expect(match.data.creator_id).to.be.a('number');
+          expect(match.data.m_id).to.equal(matchid);
         })
         .expect(200, done);
 

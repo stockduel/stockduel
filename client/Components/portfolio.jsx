@@ -18,7 +18,7 @@ var Portfolio = React.createClass({
     const { buy, sell, symbol, shares, matchId, userId, price } = this.props;
     return (
       <div>
-        <h2>You have ${this.props.portfolio.get('availableCash')} in your portfolio.</h2>
+        <h2>Lucus and CJ ${this.props.portfolio.get('availableCash')} in your portfolio.</h2>
         <h4>Buy some stocks:</h4> 
         <input id="symbolInput" type="text" placeholder="Stock symbol . . ." />
         <input id="numSharesInput" type="number" min="5" step="5" />
