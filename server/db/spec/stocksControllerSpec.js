@@ -210,4 +210,28 @@ describe('stocksController', function () {
 
   });
 
+  describe('update prices', function () {
+
+    it('should return an object with the prices updated', function (done) {
+    stocksController.updatePrices([{'stockSymbol': 'GOOG', 'price': '2.5', 'shares':'3'}])
+      .then(function (response) {
+        expect(response.length).to.equal(1);
+        expect(response[0].price).to.not.be.undefined;
+        done();
+      });
+    });
+
+    it('should pass multiple objects and return with the prices updated', function (done) {
+    stocksController.updatePrices([{'stockSymbol': 'GOOG', 'price': '2.5', 'shares':'3'},
+                                {'stockSymbol': 'PIH', 'price': '25', 'shares':'1'},
+                                {'stockSymbol': 'FCCY', 'price': '5', 'shares':'7'}])
+      .then(function (response) {
+        expect(response.length).to.equal(3);
+        expect(response[0].price).to.not.be.undefined;
+        done();
+      });
+    });
+
+  });
+
 });
