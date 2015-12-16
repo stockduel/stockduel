@@ -10,6 +10,8 @@ module.exports = function (knex) {
     next();
   });
 
+  //--------------search stock function---------------------------//
+
   router.route('/')
     .get(function (req, res) {
       var search = req.query.search;
@@ -20,6 +22,8 @@ module.exports = function (knex) {
           });
         });
     });
+
+  //--------------update the stock prices---------------------------//
 
   router.route('/update')
     .post(function (req, res) {
@@ -37,6 +41,8 @@ module.exports = function (knex) {
         });
     });
 
+  //--------------get a specific stocks information---------------------------//
+
   router.route('/:symbol')
     .get(function (req, res) {
       var symbol = req.symbol;
@@ -50,6 +56,8 @@ module.exports = function (knex) {
         }
       });
     });
+
+  //-----------------------------------------------------------------------//
 
   return router;
 };

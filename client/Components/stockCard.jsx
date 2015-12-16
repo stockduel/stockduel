@@ -18,9 +18,9 @@ export const Stock = React.createClass({
           let numSharesToSell = Number(document.getElementById(this.props.inputID).value);
           let sellOptions = {
             numShares: numSharesToSell,
-            stockTicker: stockSymbol,
-            matchID: matchID,
-            userID: userID,
+            stockTicker: symbol,
+            matchId: matchId,
+            userId: userId,
             action: 'sell',
             // hardcode price until AJAX call works
             // price: '112'
