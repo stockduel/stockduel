@@ -10,15 +10,15 @@ describe('buy action', () => {
     const action = buy({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '10',
-      price: '100'
+      stockTicker: 'GOOG',
+      numShares: '10',
+      price: '100',
+      action: 'buy'
     });
     store.dispatch(action);
     const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
@@ -38,9 +38,10 @@ describe('buy action', () => {
     const action = buy({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '10',
-      price: '100'
+      stockTicker: 'GOOG',
+      numShares: '10',
+      price: '100',
+      action: 'buy'
     });
 
     store.dispatch(action);
@@ -48,7 +49,6 @@ describe('buy action', () => {
     const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
@@ -67,17 +67,19 @@ describe('buy action', () => {
     const action = buy({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '10',
-      price: '100'
+      stockTicker: 'GOOG',
+      numShares: '10',
+      price: '100',
+      action: 'buy'
     });
 
     const action2 = buy({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'FB',
-      shares: '10',
-      price: '100'
+      stockTicker: 'FB',
+      numShares: '10',
+      price: '100',
+      action: 'buy'
     });
 
     store.dispatch(action);
@@ -86,7 +88,6 @@ describe('buy action', () => {
     const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
@@ -110,16 +111,16 @@ describe('buy action', () => {
     const action = buy({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '10000000',
-      price: '10'
+      stockTicker: 'GOOG',
+      numShares: '10000000',
+      price: '10',
+      action: 'buy'
     });
     store.dispatch(action);
     const nextState = store.getState();
 
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
@@ -147,9 +148,10 @@ describe('sell action', () => {
     const actionSell = sell({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '100',
-      price: '10'
+      stockTicker: 'GOOG',
+      numShares: '100',
+      price: '10',
+      action: 'sell'
     });
 
     store.dispatch(actionSell);
@@ -157,7 +159,6 @@ describe('sell action', () => {
 
     expect(finalState.get('matches').toJS()).to.deep.equal(
       [{
-        title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
@@ -181,16 +182,16 @@ describe('sell action', () => {
     const action = sell({
       userId: '123',
       matchId: '456',
-      stockSymbol: 'GOOG',
-      shares: '100',
-      price: '10'
+      stockTicker: 'GOOG',
+      numShares: '100',
+      price: '10',
+      action: 'sell'
     });
     store.dispatch(action);
     const nextState = store.getState();
 
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        title: 'The Match',
         matchId: '456',
         portfolio: {
           stocks: [{
