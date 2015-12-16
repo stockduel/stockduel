@@ -3,33 +3,38 @@ import store from '../store/store.js';
 export const BUY_STOCK = 'BUY_STOCK';
 export const SELL_STOCK = 'SELL_STOCK';
 export const UPDATE_PRICES = 'UPDATE_PRICES';
+export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
+export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 
 export function buySync(options) {
   return {
     type: BUY_STOCK,
     userId: options.userId,
     matchId: options.matchId,
-    stockSymbol: options.stockSymbol,
+    //buyReducer uses these keys; options value is the name needed by backend
+    stockSymbol: options.stockTicker,
     price: options.price,
-    shares: options.shares
+    //buyReducer uses these keys; options value is the name needed by backend
+    shares: options.numShares
   }
 }
 
 export function buy(options) {
   return (dispatch) => {
-  //   request.post('/matches/' + options.matchId + '/' + options.userId)
-  //   .send(options)
-  //   .end(function(err, res) {
-  //     if (err) {
-  //       // handle error
-  //     } else {
-  //       dispatch(Object.assign({}, res.body, {type: BUY_STOCK}));  // expects server to respond with action object
-  //     }
+   //requires: numShares, action (buy), stockTicker
+    return request.post('/trades/' + options.matchId + '/' + options.userId)
+    .send(options)
+    .end(function(err, res) {
+      if (err) {
+        // handle error
+        return dispatch({type: 'FAILED_TRADE'});
+      } else {
+        options.price = String(res.body.data.price);
+        return dispatch(buySync(options));
+      }
 
-  //   });
-  //   };
-   dispatch(buySync(options));
- }
+    });
+    };
 }
 
 
@@ -38,24 +43,29 @@ export function sellSync(options) {
     type: SELL_STOCK,
     userId: options.userId,
     matchId: options.matchId,
-    stockSymbol: options.stockSymbol,
+    //buyReducer uses these keys; options value is the name needed by backend
+    stockSymbol: options.stockTicker,
     price: options.price,
-    shares: options.shares
+    //buyReducer uses these keys; options value is the name needed by backend
+    shares: options.numShares
   }
 }
 export function sell(options) {
   return (dispatch) => {
-    // request.post('/matches/' + options.matchId + '/' + options.userId)
-    // .send(options)
-    // .end(function(err, res){
-    //   if (err) {
-    //     return {type: 'EAT_PANCAKES'};
-    //   } else {
-    //     return dispatch(Object.assign({}, res.body, {type: SELL_STOCK}));  // expects server to respond with action object
-    //   }
-    // });
-  dispatch(sellSync(options));
-  }
+    //  requires: numShares, action (sell), stockTicker
+    return request.post('/trades/' + options.matchId + '/' + options.userId)
+    .send(options)
+    .end(function(err, res) {
+      if (err) {
+        // handle error
+        return dispatch({type: 'FAILED_TRADE'});
+      } else {
+        options.price = String(res.body.data.price);
+        return dispatch(sellSync(options));
+      }
+
+    });
+    };
 }
 
 export function updatePricesSync(updatedStockArray) {
@@ -69,7 +79,46 @@ export function updatePrices(oldStockArray) {
   return (dispatch) => {
     // AJAX call to get new prices
     // success callback pass in data as portoflio.stocks array
-
-    dispatch(updatePricesSync(oldStockArray));
+    //request.post('stocks/')
+    request.post('/stocks/')
+    .send(oldStockArray)
+    .end(function(err, res){
+      if(err) {
+        //handle error
+        dispatch({type: 'FAILED_TO_LOAD_PRICES'});
+      } else {
+        dispatch(updatePricesSync(res.body.stockArray));
+      }
+    });
+    // dispatch(updatePricesSync(oldStockArray));
     };
  }
+
+ export function setCurrentMatch(matchId) {
+    return {
+     type: SET_CURRENT_MATCH,
+     currentMatchId: matchId
+     };
+  }
+
+  export function setInitialStateSync(state) {
+    return {
+      type: SET_INITIAL_STATE,
+      state
+    }
+  }
+
+  export function setInitialState(userId) {
+    return (dispatch) => {
+      request.get('/users/' + userId)
+      .end(function(err, res){
+        if(err) {
+          //handle error
+          dispatch({type: 'FAILED_TO_LOAD_STATE'});
+        } else {
+          dispatch(setInitialStateSync(res.body));
+        }
+      });
+    };
+   }
+

@@ -1,7 +1,6 @@
 module.exports = function (knex) {
     return knex.schema.createTableIfNotExists('matches', function (table) {
         table.increments('m_id').primary();
-        table.string('title');
         table.integer('creator_id')
             .references('u_id')
             .inTable('users');
@@ -13,5 +12,6 @@ module.exports = function (knex) {
         table.string('enddate');
         table.string('status');
         table.string('type');
+        table.timestamp('created_at').defaultTo(knex.fn.now());
     });
 };

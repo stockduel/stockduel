@@ -13,15 +13,15 @@ describe('buyReducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      title: 'The Match',
       matchId: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
         availableCash: '1000000'
       },
-      userId: '123'
-    }]
+    }],
+    userId: '123',
+    currentMatchId: '456'
   });
 
 
@@ -38,17 +38,17 @@ describe('buyReducer', () => {
     expect(nextState.get('matches').toJS()).to.deep.equal(
       //need to fill in full state expected here
       [{
-        title: 'The Match',
+
         matchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
-            shares: '10'
+            shares: '10',
+            price: '100'
           }],
           totalValue: '1000000',
           availableCash: '999000'
-        },
-        userId: '123'
+        }
       }]
     );
   });
@@ -67,17 +67,17 @@ describe('buyReducer', () => {
     expect(nextState.get('matches').toJS()).to.deep.equal(
       //need to fill in full state expected here
       [{
-        title: 'The Match',
+
         matchId: '456',
         portfolio: {
           stocks: [{
+            price: '100',
             stockSymbol: 'GOOG',
             shares: '20'
           }],
           totalValue: '1000000',
           availableCash: '998000'
-        },
-        userId: '123'
+        }
       }]
     );
   });
@@ -107,21 +107,22 @@ describe('buyReducer', () => {
     expect(nextState.get('matches').toJS()).to.deep.equal(
       //need to fill in full state expected here
       [{
-        title: 'The Match',
+
         matchId: '456',
         portfolio: {
           stocks: [{
+            price: '100',
             stockSymbol: 'GOOG',
             shares: '20'
           },
           {
+            price: '100',
             stockSymbol: 'FB',
             shares: '10'
           }],
           totalValue: '1000000',
           availableCash: '997000'
-        },
-        userId: '123'
+        }
       }]
     );
   });
@@ -146,14 +147,12 @@ describe('sellReducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      title: 'The Match',
       matchId: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
         availableCash: '1000000'
-      },
-      userId: '123'
+      }
     }]
   });
   
@@ -182,14 +181,13 @@ describe('sellReducer', () => {
     expect(finalState.get('matches').toJS()).to.deep.equal(
       //need to fill in full state expected here
       [{
-        title: 'The Match',
+
         matchId: '456',
         portfolio: {
           stocks: [],
           totalValue: '1000000',
           availableCash: '1000000'
-        },
-        userId: '123'
+        }
       }]
     );
   });
@@ -208,14 +206,13 @@ describe('sellReducer', () => {
     expect(nextState.get('matches').toJS()).to.deep.equal(
       //need to fill in full state expected here
       [{
-        title: 'The Match',
+
         matchId: '456',
         portfolio: {
           stocks: [],
           totalValue: '1000000',
           availableCash: '1000000'
-        },
-        userId: '123'
+        }
       }]
     );
   });
@@ -226,14 +223,12 @@ describe('general reducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      title: 'The Match',
       matchId: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
         availableCash: '1000000'
-      },
-      userId: '123'
+      }
     }]
   });
 
