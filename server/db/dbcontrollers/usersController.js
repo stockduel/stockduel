@@ -32,14 +32,21 @@ module.exports = function (knex) {
     // for each match
       // get portfolio
 
-    getUsersMatches(userID).then(function(matchArary) {
+    return getUsersMatches(userID).then(function(matchArary) {
       return Promise.map(matchArray, function(matchObj) {
-        return getPortfolio(userID, matchObj.m_id);
+        return {
+            matchId: matchObj.m_id,
+            portfolio: getPortfolio(userID, matchObj.m_id)
+          };
       })
     })
     .then(function(fullMatchArray) {
       console.log('FULL MATCH ARRAY', fullMatchArray);
-      return fullMatchArray;
+      return {
+        userId: userID,
+        currentMatchId: fullMatchArray[0] ? fullMatchArray[0].matchId : null,
+        Matches: fullMatchArray
+      };
     })
     .catch(function(err) {
       console.error(err);
