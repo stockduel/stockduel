@@ -1,6 +1,6 @@
-var ENV_TRAVIS = false;
+var TRAVIS = process.env.TRAVIS || false;
 
-if(!ENV_TRAVIS) {
+if(!TRAVIS) {
   var FACEBOOK_KEYS = require('./_fb_keys.js');
 }
 var FacebookStrategy = require('passport-facebook');
