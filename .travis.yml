@@ -2,10 +2,13 @@ language: node_js
 node_js:
   - "node"
 
+services:
+  -postgresql
+
 env:
   -PORT:'8080'
-  -TRAVIS:true  
+  -TRAVIS:true
 
-# before_script:
-#   - npm install -g gulp
-# script: gulp
+before_script:
+  - psql -c 'create database stockduel;' -U postgres
+  - npm run dbup

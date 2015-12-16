@@ -16,7 +16,9 @@ console.log('clientSecret is ', clientSecret);
 
 
 
-var clientID = process.env.FB_CLIENT || require (./_fb_keys.js).clientID
+var clientID = process.env.T || require ('./_fb_keysgfjhgkjkjhkh.js').clientID;
+
+console.log(clientID);
 
 module.exports = function (knex) {
   var usersCtrl = usersController(knex);
