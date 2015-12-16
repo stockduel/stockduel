@@ -1,4 +1,8 @@
-var FACEBOOK_KEYS = require('./_fb_keys.js');
+var ENV_TRAVIS = false;
+
+if(!ENV_TRAVIS) {
+  var FACEBOOK_KEYS = require('./_fb_keys.js');
+}
 var FacebookStrategy = require('passport-facebook');
 
 var usersController = require('../../db/dbcontrollers/usersController');

@@ -4,6 +4,7 @@ node_js:
 
 env:
   -PORT:'8080'
+  -ENV_TRAVIS:true  
 
 # before_script:
 #   - npm install -g gulp
