@@ -16,6 +16,7 @@ module.exports = function (knex) {
 
 
   var module = {};
+
   //-------------------------select all user details-------------------------------//
 
   module.getUsers = function () {
@@ -24,6 +25,7 @@ module.exports = function (knex) {
         return null;
       });
   };
+
 
   //-----------------------get a specific users details---------------------------------//
 

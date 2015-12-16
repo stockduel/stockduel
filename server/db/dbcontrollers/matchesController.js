@@ -1,6 +1,10 @@
-//matched controllers WORK OUT FOR HEAD TO HEADS!!!
+var Promise = require('bluebird');
+
+var tradesController = require('./tradesController');
+
 module.exports = function (knex) {
   var module = {};
+  var tradesCtrl = tradesController(knex);
 
   //how to get multiple ids when have head to head matches--------//
   /*knex.select('name').from('users')
@@ -18,7 +22,7 @@ module.exports = function (knex) {
     var endDate = nextWeek;
     var status = 'in progress';
     var title = 'solo match';
-    
+
     return knex('matches').insert({
         'creator_id': userID,
         'starting_funds': startFunds,
@@ -32,6 +36,18 @@ module.exports = function (knex) {
         return match[0];
       });
 
+  };
+
+  module.getAllMatches = function (userid) {
+    return module.getUsersMatches(userid)
+      .then(function (matches) {
+        return Promise.map(matches, function (match) {
+          return tradesCtrl.getPortfolio(userid, match.m_id);
+        });
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
   };
 
   //---------------------get specific match-------------------------------//

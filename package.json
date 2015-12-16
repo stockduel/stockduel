@@ -5,8 +5,8 @@
   "scripts": {
     "compile": "babel --presets es2015 -d lib/ client/reducers/",
     "test": "npm run compile && mocha --compilers js:babel-core/register client/reducers/test && mocha **/spec/*.js",
-    "servertest": "mocha server/db/spec/*.js",
-    "start": "webpack-dev-server --hot",
+    "servertest": "mocha server/**/spec/*js",
+    "start": "webpack-dev-server --inline --hot",
     "dbup": "knex migrate:latest --knexfile db/knexfile.js; knex seed:run --knexfile db/knexfile.js",
     "dbdown": "knex migrate:rollback --knexfile db/knexfile.js"
   },
@@ -24,6 +24,7 @@
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "material-ui": "^0.13.4",
+    "mocha": "^2.3.4",
     "morgan": "^1.6.1",
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",

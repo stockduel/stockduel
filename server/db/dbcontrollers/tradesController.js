@@ -134,7 +134,10 @@ module.exports = function (knex) {
 
   module.getPortfolio = function (userID, matchID) {
 
-    return knex('trades')
+    return knex('trades').where({
+        user_id: userID,
+        match_id: matchID
+      })
       .join('stock_prices', 'trades.symbol', '=', 'stock_prices.symbol')
       .join('stocks', 'trades.symbol', '=', 'stocks.symbol')
       .orderBy('created_at', 'ASC')
@@ -175,7 +178,8 @@ module.exports = function (knex) {
         });
 
         return {
-          totalValue: runningSum + available_cash,
+          userID: userID,
+          matchID: matchID,
           available_cash: trades[trades.length - 1].available_cash,
           stocks: stocks
         };
