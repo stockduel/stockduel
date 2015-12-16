@@ -8,10 +8,8 @@ var FacebookStrategy = require('passport-facebook');
 
 var usersController = require('../../db/dbcontrollers/usersController');
 
-var CLIENT_ID;
-var CLIENT_SECRET;
-var clientID = TRAVIS ? CLIENT_ID : FACEBOOK_KEYS.CLIENT_ID;
-var clientSecret = TRAVIS ? CLIENT_SECRET : FACEBOOK_KEYS.CLIENT_SECRET;
+var clientID = TRAVIS ? process.env.CLIENT_ID : FACEBOOK_KEYS.CLIENT_ID;
+var clientSecret = TRAVIS ? process.env.CLIENT_SECRET : FACEBOOK_KEYS.CLIENT_SECRET;
 
 module.exports = function (knex) {
   var usersCtrl = usersController(knex);
