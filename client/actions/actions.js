@@ -80,7 +80,7 @@ export function updatePrices(oldStockArray) {
     // AJAX call to get new prices
     // success callback pass in data as portoflio.stocks array
     //request.post('stocks/')
-    request.post('/stocks/')
+    request.post('/stocks/update')
     .send(oldStockArray)
     .end(function(err, res){
       if(err) {

@@ -21,7 +21,7 @@ export const Stock = React.createClass({
             stockTicker: symbol,
             matchId: matchId,
             userId: userId,
-            action: 'sell'
+            action: 'sell',
             // hardcode price until AJAX call works
             price: '112'
           };
