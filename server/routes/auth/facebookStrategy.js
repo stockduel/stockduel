@@ -1,20 +1,15 @@
-var TRAVIS = process.env.TRAVIS || false;
-
-//don't use this file if it's travis
-if(!TRAVIS) {
-  var FACEBOOK_KEYS = require('./_fb_keys.js');
-}
 var FacebookStrategy = require('passport-facebook');
-
 var usersController = require('../../db/dbcontrollers/usersController');
 
-var clientID = TRAVIS ? process.env.CLIENT_ID : FACEBOOK_KEYS.CLIENT_ID;
-var clientSecret = TRAVIS ? process.env.CLIENT_SECRET : FACEBOOK_KEYS.CLIENT_SECRET;
-console.log(JSON.stringify(process.env, null, 4));
-console.log('clientID is ', clientID);
-console.log('clientSecret is ', clientSecret);
+// var clientID = TRAVIS ? process.env.CLIENT_ID : FACEBOOK_KEYS.CLIENT_ID;
+// var clientSecret = TRAVIS ? process.env.CLIENT_SECRET : FACEBOOK_KEYS.CLIENT_SECRET;
+var clientID = process.env.CLIENT_ID || require ('./_fb_keys').CLIENT_ID;
+var clientSecret = process.env.CLIENT_SECRET || require ('./_fb_keys').CLIENT_SECRET;
 
-var clientID = process.env.T || require ('./_fb_keysgfjhgkjkjhkh.js').clientID;
+
+console.log(JSON.stringify(process.env, null, 4));
+
+
 
 console.log(clientID);
 
