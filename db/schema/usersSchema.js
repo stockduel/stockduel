@@ -4,7 +4,8 @@ module.exports = function (knex) {
     table.string('username');
     table.string('password');
     table.string('name');
-    table.string('email');
+    table.string('email')
+      .unique();
     table.timestamp('created_at').defaultTo(knex.fn.now());
   });
 };
