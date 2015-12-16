@@ -1,9 +1,6 @@
 module.exports = function (knex) {
     return knex.schema.createTableIfNotExists('stock_prices', function (table) {
         table.increments('stockprice_id').primary();
-        table.integer('stock_id')
-            .references('s_id')
-            .inTable('stocks');
         table.string('symbol')
             .unique();
         table.string('bid');

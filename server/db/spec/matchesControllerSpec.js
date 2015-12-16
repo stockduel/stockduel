@@ -49,7 +49,7 @@ describe('Match Controller', function () {
         });
       })
       .then(function () {
-        console.log('matches after hook');
+        // console.log('matches after hook');
         done();
       });
 
@@ -82,6 +82,16 @@ describe('Match Controller', function () {
             expect(foundMatch.type).to.equal(match.type);
             done();
           });
+      });
+  });
+
+  it('should get the matches for a user', function (done) {
+    var userID = 1;
+
+    matchesController.getUsersMatches(userID)
+      .then(function (matches) {
+        expect(matches).to.be.a('array');
+        done();
       });
   });
 

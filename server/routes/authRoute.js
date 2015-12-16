@@ -1,17 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-module.exports = function (knex) {
+module.exports = function (knex, passport) {
 
-  router.route('/facebook')
-    .get(function (req, res) {
+  router.get('/facebook', passport.authenticate('facebook', {
+    scope: ['email']
+  }));
 
-    });
-
-  router.route('/facebook/callback')
-    .get(function (req, res) {
-
-    });
+  router.get('/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/auth/facebook'
+  }));
 
   return router;
 };
