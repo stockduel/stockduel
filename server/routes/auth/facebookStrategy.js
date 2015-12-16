@@ -10,8 +10,13 @@ var usersController = require('../../db/dbcontrollers/usersController');
 
 var clientID = TRAVIS ? process.env.CLIENT_ID : FACEBOOK_KEYS.CLIENT_ID;
 var clientSecret = TRAVIS ? process.env.CLIENT_SECRET : FACEBOOK_KEYS.CLIENT_SECRET;
+console.log(JSON.stringify(process.env, null, 4));
 console.log('clientID is ', clientID);
 console.log('clientSecret is ', clientSecret);
+
+
+
+var clientID = process.env.FB_CLIENT || require (./_fb_keys.js).clientID
 
 module.exports = function (knex) {
   var usersCtrl = usersController(knex);
