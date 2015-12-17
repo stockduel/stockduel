@@ -134,7 +134,10 @@ module.exports = function (knex) {
 
   module.getPortfolio = function (userID, matchID) {
 
-    return knex('trades')
+    return knex('trades').where({
+        user_id: userID,
+        match_id: matchID
+      })
       .join('stock_prices', 'trades.symbol', '=', 'stock_prices.symbol')
       .join('stocks', 'trades.symbol', '=', 'stocks.symbol')
       .orderBy('created_at', 'ASC')
@@ -165,20 +168,25 @@ module.exports = function (knex) {
 
           return portfolio;
         }, {});
-
+        var runningSum = 0;
         var stocks = Object.keys(portfolio).map(function (stock) {
           var stockData = portfolio[stock];
           stockData.marketValue = stockData.bid * stockData.shares;
+          runningSum += stockData.marketValue;
           stockData.gain_loss = (stockData.marketValue - stockData.price * stockData.shares).toFixed(2);
           return stockData;
         });
 
         return {
+          totalValue: runningSum + trades[trades.length - 1].available_cash,
+          userID: userID,
+          matchID: matchID,
           available_cash: trades[trades.length - 1].available_cash,
           stocks: stocks
         };
       })
       .catch(function (err) {
+        console.error(err);
         return null;
       });
 

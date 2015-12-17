@@ -4,39 +4,41 @@ import React from 'react';
 import { render } from 'react-dom';
 import { store } from '../store/store.js';
 import { Provider } from 'react-redux';
+import { AppConnected } from '../Components/app.jsx';
 import { PortfolioConnected } from '../Components/portfolio.jsx';
+import { Home } from '../Components/home.jsx';
+import { StateGenConnected } from '../Components/stateGen.jsx';
 // import { buy } from '../actions/actions.js';
 import { toJS } from 'immutable';
+import { Router, Route, Link } from 'react-router';
 
 // hot swap css
-import stylesheet from '../assets/stylesheets/style.css'
-var App = React.createClass({
+import stylesheet from '../assets/stylesheets/style.css';
 
-  // componentWillMount() {    
-  //   // get the user id from session
-  //   let userId = GET USER ID FROM SESSION
-    
-  //   // dispatch setInitialState(userId)
-  //   this.props.setInitialState(userId);
-  // },
 
+var AppWithStore = React.createClass({
   render() {
     return (
+      <Provider store={store}>
       <div>
-        <h1>This. Is. Stockduel.</h1>
-        <button>Login</button>
-        <PortfolioConnected />
+        <AppConnected />
+          {this.props.children}
       </div>
-    )
-  },
-
+      </Provider>
+    );
+  }
 });
 
-render (
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('app')
+render ((
+    <Router>
+      <Route path="/" component={AppWithStore}>
+        <Route path="home" component={Home} />
+        <Route path="portfolio" component={PortfolioConnected} />
+        <Route path="_=_" component={StateGenConnected} />
+      </Route>
+    </Router>
+  ),
+  document.body
 );
 
 

@@ -27,7 +27,6 @@ var matches = {
 };
 
 var match1 = {
-  // userID: 1,
   startFunds: '100000',
   type: 'solo match'
 };

@@ -7,13 +7,12 @@ import { toJS } from 'immutable';
 import { Stock } from './stockCard.jsx';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
-import request from 'superagent';
 
 var Portfolio = React.createClass({
-  componentWillMount() {
-    // setTimeout(()=> this.props.updatePrices(this.props.portfolio.get('stocks')), 5000);
-    this.props.updatePrices(this.props.portfolio.get('stocks'));
-  },
+  // componentWillMount() {
+  //   // setTimeout(()=> this.props.updatePrices(this.props.portfolio.get('stocks')), 5000);
+  //   this.props.updatePrices(this.props.portfolio.get('stocks'));
+  // },
   render() {
     const { buy, sell, matchId, userId } = this.props;
     const availableCash = this.props.portfolio.get('availableCash');

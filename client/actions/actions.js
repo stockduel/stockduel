@@ -108,15 +108,21 @@ export function updatePrices(oldStockArray) {
     }
   }
 
-  export function setInitialState(userId) {
+  export function setInitialState() {
     return (dispatch) => {
-      request.get('/users/' + userId)
-      .end(function(err, res){
+      /* 
+        this action will be called when user attempts to log in.
+        response will include userId and state
+       */
+      request.get('/state')
+        .end(function(err, res){
         if(err) {
           //handle error
+          console.log('There was an error on GET from route /state', err)
           dispatch({type: 'FAILED_TO_LOAD_STATE'});
         } else {
           dispatch(setInitialStateSync(res.body));
+          window.location.hash="#/";
         }
       });
     };
