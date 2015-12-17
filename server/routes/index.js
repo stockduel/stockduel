@@ -8,6 +8,7 @@ var stocks = require('./stocksRoute');
 var matches = require('./matchesRoute');
 var users = require('./usersRoute');
 var trades = require('./tradesRoute');
+var state = require('./stateRoute');
 
 var passport = require('./auth/index');
 
@@ -31,12 +32,14 @@ module.exports = function (knex) {
   matches = matches(knex);
   users = users(knex);
   trades = trades(knex);
+  state = state(knex);
 
   router.use('/auth', auth);
   router.use('/stocks', stocks);
   router.use('/matches', matches);
   router.use('/users', users);
   router.use('/trades', trades);
+  router.use('/state', state);
 
   return router;
 };
