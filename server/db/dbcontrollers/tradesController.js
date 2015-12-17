@@ -178,6 +178,7 @@ module.exports = function (knex) {
         });
 
         return {
+          totalValue: runningSum + trades[trades.length - 1].available_cash,
           userID: userID,
           matchID: matchID,
           available_cash: trades[trades.length - 1].available_cash,
@@ -185,6 +186,7 @@ module.exports = function (knex) {
         };
       })
       .catch(function (err) {
+        console.error(err);
         return null;
       });
 
