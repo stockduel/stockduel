@@ -1,5 +1,4 @@
 module.exports = {
-
   development: {
     client: 'postgresql',
     connection: {
@@ -16,5 +15,4 @@ module.exports = {
       password: 'postgres'
     }
   }
-
 };
