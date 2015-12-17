@@ -1,19 +1,4 @@
-/*
-(userId, matchId) :: { available_cash, stocks[] }
-*/
-var tradesController = require('./tradesController');
-
-// userId :: matches[]
-var matchesController = require('./matchesController');
-
-var Promise = require('bluebird');
-
 module.exports = function (knex) {
-  var getUsersMatches = matchesController(knex).getUsersMatches;
-  var getPortfolio = tradesController(knex).getPortfolio;
-
-
-
 
   var module = {};
 
@@ -30,40 +15,17 @@ module.exports = function (knex) {
   //-----------------------get a specific users details---------------------------------//
 
   module.getUser = function (userID) {
-    // get matches array
-    // for each match
-      // get portfolio
-
-    return getUsersMatches(userID).then(function(matchArary) {
-      return Promise.map(matchArray, function(matchObj) {
-        return {
-            matchId: matchObj.m_id,
-            portfolio: getPortfolio(userID, matchObj.m_id)
-          };
+    return knex.select().table('users').where('u_id', '=', userID)
+      .then(function (response) {
+        if (response.length === 0) {
+          throw new Error('no user found');
+        }
+        return response[0];
       })
-    })
-    .then(function(fullMatchArray) {
-      console.log('FULL MATCH ARRAY', fullMatchArray);
-      return {
-        userId: userID,
-        currentMatchId: fullMatchArray[0] ? fullMatchArray[0].matchId : null,
-        Matches: fullMatchArray
-      };
-    })
-    .catch(function(err) {
-      console.error(err);
-    });
-  //   return knex.select().table('users').where('u_id', '=', userID)
-  //     .then(function (response) {
-  //       if (response.length === 0) {
-  //         throw new Error('no user found');
-  //       }
-  //       return response[0];
-  //     })
-  //     .catch(function (err) {
-  //       return null;
-  //     });
-  // };
+      .catch(function (err) {
+        return null;
+      });
+  };
 
   module.searchUsers = function (search) {
     var searchLike = search + '%';
