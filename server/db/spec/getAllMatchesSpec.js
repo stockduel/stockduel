@@ -162,7 +162,7 @@ describe('getInitialState Controller', function () {
         .then(function (matches) {
           expect(matches).to.be.an('array');
           expect(matches.length).to.equal(2);
-          expect(matches[0].available_cash).to.be.a('number');
+          expect(matches[0].portfolio.available_cash).to.be.a('number');
           done();
         });
     });
