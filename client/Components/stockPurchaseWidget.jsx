@@ -8,7 +8,7 @@ import { toJS } from 'immutable';
 export const StockPurchase = React.createClass({
 
   render() {
-    const { buy, symbol, shares, matchId, userId, price } = this.props;
+    const { buy, stockSymbol, shares, matchID, userID, price } = this.props;
     
     return (
       <div>
@@ -19,13 +19,12 @@ export const StockPurchase = React.createClass({
              let buyOptions = {
                numShares: +document.getElementById('numSharesInput').value,
                stockTicker: document.getElementById('symbolInput').value.toUpperCase(),
-               matchId: this.props.matchId,
-               userId: this.props.userId,
+               matchID: this.props.matchID,
+               userID: this.props.userID,
                action: 'buy'/*,*/
                //this price is here just so it doesn't break right now; really this will come from async call
                // price: '111' 
              }
-             console.log('buyOptions ', buyOptions);
              buy(buyOptions); // triggers action creator in actions.js
            }}>Purchase</button>
       </div>

@@ -5,12 +5,13 @@ export const SELL_STOCK = 'SELL_STOCK';
 export const UPDATE_PRICES = 'UPDATE_PRICES';
 export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
+export const CREATE_MATCH = 'CREATE_MATCH';
 
 export function buySync(options) {
   return {
     type: BUY_STOCK,
-    userId: options.userId,
-    matchId: options.matchId,
+    userID: options.userID,
+    matchID: options.matchID,
     //buyReducer uses these keys; options value is the name needed by backend
     stockSymbol: options.stockTicker,
     price: options.price,
@@ -22,7 +23,7 @@ export function buySync(options) {
 export function buy(options) {
   return (dispatch) => {
    //requires: numShares, action (buy), stockTicker
-    return request.post('/trades/' + options.matchId + '/' + options.userId)
+    return request.post('/trades/' + options.matchID + '/' + options.userID)
     .send(options)
     .end(function(err, res) {
       if (err) {
@@ -41,8 +42,8 @@ export function buy(options) {
 export function sellSync(options) {
   return {
     type: SELL_STOCK,
-    userId: options.userId,
-    matchId: options.matchId,
+    userID: options.userID,
+    matchID: options.matchID,
     //buyReducer uses these keys; options value is the name needed by backend
     stockSymbol: options.stockTicker,
     price: options.price,
@@ -53,7 +54,7 @@ export function sellSync(options) {
 export function sell(options) {
   return (dispatch) => {
     //  requires: numShares, action (sell), stockTicker
-    return request.post('/trades/' + options.matchId + '/' + options.userId)
+    return request.post('/trades/' + options.matchID + '/' + options.userID)
     .send(options)
     .end(function(err, res) {
       if (err) {
@@ -94,10 +95,10 @@ export function updatePrices(oldStockArray) {
     };
  }
 
- export function setCurrentMatch(matchId) {
+ export function setCurrentMatch(matchID) {
     return {
      type: SET_CURRENT_MATCH,
-     currentMatchId: matchId
+     currentMatchID: matchID
      };
   }
 
@@ -127,4 +128,42 @@ export function updatePrices(oldStockArray) {
       });
     };
    }
+
+   export function createMatchSync(options) {
+     return {
+       type: CREATE_MATCH,
+       currentMatchID: options.m_id,
+       match: {
+         portfolio: {
+           stocks: [],
+           availableCash: options.starting_funds,
+           totalValue: options.starting_funds   
+         },
+         matchID: options.m_id,
+       }
+     }
+   }
+
+   //this will need to be updated once we support matches with two players
+   export function createMatch(createOptions) {
+
+    var options = {
+      userID: createOptions.userId,
+      //these will need to come in from the front end once we have two player matches
+      startFunds: 100000,
+      type: 'solo match'
+    };
+     return (dispatch) => {
+       request.post('/matches/')
+       .send(options)
+       .end(function(err, res){
+         if(err) {
+           //handle error
+           dispatch({type: 'FAILED_TO_CREATE_MATCH'});
+         } else {
+           dispatch(createMatchSync(res.body.data));
+         }
+       });
+     };
+    }
 

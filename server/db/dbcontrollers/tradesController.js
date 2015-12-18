@@ -114,7 +114,6 @@ module.exports = function (knex) {
         }
 
         var availableCash = trades[0].available_cash + (stock.bid * numShares);
-
         return createTrade({
           user_id: userID,
           match_id: matchID,
@@ -143,10 +142,10 @@ module.exports = function (knex) {
       .orderBy('created_at', 'ASC')
       .then(function (trades) {
         var portfolio = trades.reduce(function (portfolio, trade) {
-          var symbol = trade.symbol;
-          if (portfolio[symbol] === undefined) {
-            portfolio[symbol] = {
-              symbol: symbol,
+          var stockSymbol = trade.symbol;
+          if (portfolio[stockSymbol] === undefined) {
+            portfolio[stockSymbol] = {
+              stockSymbol: stockSymbol,
               shares: 0,
               price: 0,
               percent_change: trade.percent_change,
@@ -156,14 +155,14 @@ module.exports = function (knex) {
           }
 
           if (trade.action === BUY) {
-            portfolio[symbol].price = (portfolio[symbol].price * portfolio[symbol].shares + trade.price * trade.shares) / (portfolio[symbol].shares + trade.shares);
-            portfolio[symbol].shares += trade.shares;
+            portfolio[stockSymbol].price = (portfolio[stockSymbol].price * portfolio[stockSymbol].shares + trade.price * trade.shares) / (portfolio[stockSymbol].shares + trade.shares);
+            portfolio[stockSymbol].shares += trade.shares;
           } else if (trade.action === SELL) {
-            portfolio[symbol].shares -= trade.shares;
+            portfolio[stockSymbol].shares -= trade.shares;
           }
 
-          if (portfolio[symbol].shares === 0) {
-            delete portfolio[symbol];
+          if (portfolio[stockSymbol].shares === 0) {
+            delete portfolio[stockSymbol];
           }
 
           return portfolio;
@@ -178,11 +177,12 @@ module.exports = function (knex) {
         });
 
         return {
-          totalValue: runningSum + trades[trades.length - 1].available_cash,
-          userID: userID,
-          matchID: matchID,
-          available_cash: trades[trades.length - 1].available_cash,
-          stocks: stocks
+          portfolio: {
+            totalValue: runningSum + trades[trades.length - 1].available_cash,
+            available_cash: trades[trades.length - 1].available_cash,
+            stocks: stocks            
+          },
+          matchID: matchID
         };
       })
       .catch(function (err) {
