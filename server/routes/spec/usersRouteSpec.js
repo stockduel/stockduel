@@ -7,22 +7,20 @@ var knex = require('../../db/index');
 var usersController = require('../../db/dbcontrollers/usersController')(knex);
 var app = require('../../index');
 
-var users = [{
-  username: 'TESTannaUser',
-  password: 'TESTannaPassword',
-  name: 'TESTanna',
-  email: 'TESTanna@anna'
-}, {
-  username: 'TESTkateUser',
-  password: 'TESTkatePassword',
-  name: 'TESTkate',
-  email: 'TESTkate@kate'
-}];
-
-
-// ============= Tests ============= \\
-
 describe('/users', function () {
+
+  var users = [{
+    username: 'TESTannaUser',
+    password: 'TESTannaPassword',
+    name: 'TESTanna',
+    email: 'TESTanna@anna'
+  }, {
+    username: 'TESTkateUser',
+    password: 'TESTkatePassword',
+    name: 'TESTkate',
+    email: 'TESTkate@kate'
+  }];
+
   // ============= Setup ============= \\
   before(function (done) {
     knex('users').insert(users, '*')
@@ -39,12 +37,8 @@ describe('/users', function () {
       })
       .then(function () {
         done();
-      })
-      .catch(function (err) {
-        console.log(err);
       });
   });
-
 
   describe('/:userid', function () {
     describe('GET', function () {
@@ -85,7 +79,7 @@ describe('/users', function () {
 
   });
 
-  describe('searchUsers', function () {
+  describe('/?search=', function () {
     describe('GET', function () {
       var search = 'TEST';
       var searchCase = 'tEsT';
@@ -118,7 +112,6 @@ describe('/users', function () {
           .expect(200, done);
       });
     });
-
   });
 
 });
