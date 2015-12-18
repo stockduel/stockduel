@@ -22,7 +22,7 @@ export default function sellReducer(state, action) {
   }
 
   //add to cash on hand 
-  var UpdatedCash = targetMatch.updateIn(['portfolio','availableCash'], cash => {
+  var UpdatedCash = targetMatch.updateIn(['portfolio','available_cash'], cash => {
     return String(+cash + (Number(action.price) * Number(action.shares)) );
   });
 

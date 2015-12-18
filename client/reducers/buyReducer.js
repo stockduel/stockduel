@@ -12,13 +12,13 @@ export default function buyReducer(state, action) {
   });
 
   //check to see if trade is valid (aka portfolio has enough cash on hand)
-  if ( action.price * action.shares > Number(targetMatch.getIn( ['portfolio', 'availableCash'] )) ) {
+  if ( action.price * action.shares > Number(targetMatch.getIn( ['portfolio', 'available_cash'] )) ) {
     return state;
     //get some sort of error message to the user; may not happen here, but needs to happen somewhere
   }
 
   //reduce cash on hand 
-  var matchWithUpdatedCash = targetMatch.updateIn(['portfolio','availableCash'], cash => {
+  var matchWithUpdatedCash = targetMatch.updateIn(['portfolio','available_cash'], cash => {
     return String(+cash - (action.price * action.shares) );
   });
 
