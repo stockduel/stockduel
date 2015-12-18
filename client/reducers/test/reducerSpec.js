@@ -16,7 +16,7 @@ describe('buyReducer', () => {
       portfolio: {
         stocks: [],
         totalValue: '1000000',
-        availableCash: '1000000'
+        available_cash: '1000000'
       },
     }],
     userID: '123',
@@ -46,7 +46,7 @@ describe('buyReducer', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '999000'
+          available_cash: '999000'
         }
       }]
     );
@@ -75,7 +75,7 @@ describe('buyReducer', () => {
             shares: '20'
           }],
           totalValue: '1000000',
-          availableCash: '998000'
+          available_cash: '998000'
         }
       }]
     );
@@ -120,7 +120,7 @@ describe('buyReducer', () => {
             shares: '10'
           }],
           totalValue: '1000000',
-          availableCash: '997000'
+          available_cash: '997000'
         }
       }]
     );
@@ -150,7 +150,7 @@ describe('sellReducer', () => {
       portfolio: {
         stocks: [],
         totalValue: '1000000',
-        availableCash: '1000000'
+        available_cash: '1000000'
       }
     }]
   });
@@ -185,7 +185,7 @@ describe('sellReducer', () => {
         portfolio: {
           stocks: [],
           totalValue: '1000000',
-          availableCash: '1000000'
+          available_cash: '1000000'
         }
       }]
     );
@@ -210,7 +210,7 @@ describe('sellReducer', () => {
         portfolio: {
           stocks: [],
           totalValue: '1000000',
-          availableCash: '1000000'
+          available_cash: '1000000'
         }
       }]
     );
@@ -231,7 +231,7 @@ describe('Create Match reducer', () => {
       match: {
         portfolio: [],
         matchID: 1,
-        availableCash: 100000,
+        available_cash: 100000,
         totalValue: 100000
       }
     };
@@ -251,7 +251,7 @@ describe('general reducer', () => {
       portfolio: {
         stocks: [],
         totalValue: '1000000',
-        availableCash: '1000000'
+        available_cash: '1000000'
       }
     }]
   });

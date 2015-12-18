@@ -17,21 +17,23 @@ var Portfolio = React.createClass({
   // },
   render() {
     const { buy, sell, createMatch, matchID, userID, portfolio } = this.props;
-    let availableCash;
+    let available_cash;
     let portfolioValue;
     if ( this.props.portfolio ) {
-      availableCash = +this.props.portfolio.get('availableCash');
+      console.log(this.props.portfolio.get('available_cash'));
+      console.log(this.props.portfolio.toJS());
+      available_cash = +this.props.portfolio.get('available_cash');
       portfolioValue = this.props.portfolio.get('stocks').reduce( (memo, stockObj) => {
         return memo += (+stockObj.get('price') * +stockObj.get('shares'));
-      }, +availableCash);
+      }, +available_cash);
     }
     let visibleComponent;
     visibleComponent = this.props.currentMatchID ? PortfolioView : CreateMatch;
     return React.createElement(
         visibleComponent,
-        {availableCash, createMatch, buy, sell, matchID, userID, portfolioValue, portfolio}
+        {available_cash, createMatch, buy, sell, matchID, userID, portfolioValue, portfolio}
       );
-      // <visibleComponent {...this.props} availableCash={availableCash} portfolioValue={portfolioValue}/>
+      // <visibleComponent {...this.props} available_cash={available_cash} portfolioValue={portfolioValue}/>
     //);
     // if ( !matchId ) {
     //   return (
@@ -50,6 +52,7 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
+  console.log('state is ', state.toJS());
   let targetMatch;
   state.get('matches').forEach(function(match, index) {
     
