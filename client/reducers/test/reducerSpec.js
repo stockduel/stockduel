@@ -8,28 +8,27 @@ import {expect} from 'chai';
 import {store} from '../../store/store.js'
 import reducer from '../reducer';
 
-console.log('type of STORE DISPATCH', typeof store.dispatch);
 describe('buyReducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      matchId: '456',
+      matchID: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
         availableCash: '1000000'
       },
     }],
-    userId: '123',
-    currentMatchId: '456'
+    userID: '123',
+    currentMatchID: '456'
   });
 
 
   it('handles BUY_STOCK for valid trade for a stock that isn\'t held' , () => {
     const action = {
       type: 'BUY_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '10',
       price: '100'
@@ -39,7 +38,7 @@ describe('buyReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchId: '456',
+        matchID: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
@@ -56,8 +55,8 @@ describe('buyReducer', () => {
   it('handles BUY_STOCK for valid trade for a stock that is already held' , () => {
     const action = {
       type: 'BUY_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '10',
       price: '100'
@@ -68,7 +67,7 @@ describe('buyReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchId: '456',
+        matchID: '456',
         portfolio: {
           stocks: [{
             price: '100',
@@ -85,8 +84,8 @@ describe('buyReducer', () => {
   it('handles BUY_STOCK for valid trade for a stock that is already held and another stock is held' , () => {
     const action = {
       type: 'BUY_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '10',
       price: '100'
@@ -94,8 +93,8 @@ describe('buyReducer', () => {
 
     const action2 = {
       type: 'BUY_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'FB',
       shares: '10',
       price: '100'
@@ -108,7 +107,7 @@ describe('buyReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchId: '456',
+        matchID: '456',
         portfolio: {
           stocks: [{
             price: '100',
@@ -130,8 +129,8 @@ describe('buyReducer', () => {
   it('does not update state for BUY_STOCK with invalid trade', () => {
     const action = {
       type: 'BUY_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '10000000',
       price: '10'
@@ -147,7 +146,7 @@ describe('sellReducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      matchId: '456',
+      matchID: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
@@ -160,8 +159,8 @@ describe('sellReducer', () => {
     //need to have initial state include a stock so we can execute a valid trade
     const actionBuy = {
       type: 'BUY_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '100',
       price: '10'
@@ -169,8 +168,8 @@ describe('sellReducer', () => {
 
     const actionSell = {
       type: 'SELL_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '100',
       price: '10'
@@ -182,7 +181,7 @@ describe('sellReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchId: '456',
+        matchID: '456',
         portfolio: {
           stocks: [],
           totalValue: '1000000',
@@ -195,8 +194,8 @@ describe('sellReducer', () => {
   it('does not update state for SELL_STOCK with invalid trade', () => {
     const action = {
       type: 'SELL_STOCK',
-      userId: '123',
-      matchId: '456',
+      userID: '123',
+      matchID: '456',
       stockSymbol: 'GOOG',
       shares: '100',
       price: '10'
@@ -207,7 +206,7 @@ describe('sellReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchId: '456',
+        matchID: '456',
         portfolio: {
           stocks: [],
           totalValue: '1000000',
@@ -219,11 +218,36 @@ describe('sellReducer', () => {
 
 });
 
+describe('Create Match reducer', () => {
+
+  const initialState = fromJS({
+    matches: []
+  });
+
+  it('adds a new match to the user', () => {
+    const action = {
+      type: 'CREATE_MATCH',
+      currentMatchID: 1,
+      match: {
+        portfolio: [],
+        matchID: 1,
+        availableCash: 100000,
+        totalValue: 100000
+      }
+    };
+    const nextState = reducer(initialState, action);
+
+    expect(nextState.get('matches').count()).to.equal(1);
+
+  });
+
+});
+
 describe('general reducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      matchId: '456',
+      matchID: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',

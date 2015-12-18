@@ -5,35 +5,43 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import { Stock } from './stockCard.jsx';
+import { CreateMatch } from './createMatch.jsx';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
+import { PortfolioView } from './portfolioView.jsx';
 import * as Actions from '../actions/actions.js';
-import request from 'superagent';
 
 var Portfolio = React.createClass({
-  componentWillMount() {
-    // setTimeout(()=> this.props.updatePrices(this.props.portfolio.get('stocks')), 5000);
-    this.props.updatePrices(this.props.portfolio.get('stocks'));
-  },
+  // componentWillMount() {
+  //   // setTimeout(()=> this.props.updatePrices(this.props.portfolio.get('stocks')), 5000);
+  //   this.props.updatePrices(this.props.portfolio.get('stocks'));
+  // },
   render() {
-    const { buy, sell, matchId, userId } = this.props;
-    const availableCash = this.props.portfolio.get('availableCash');
+    const { buy, sell, createMatch, matchID, userID, portfolio } = this.props;
+    let availableCash;
+    let portfolioValue;
+    if ( this.props.portfolio ) {
+      availableCash = +this.props.portfolio.get('availableCash');
+      portfolioValue = this.props.portfolio.get('stocks').reduce( (memo, stockObj) => {
+        return memo += (+stockObj.get('price') * +stockObj.get('shares'));
+      }, +availableCash);
+    }
+    let visibleComponent;
+    visibleComponent = this.props.currentMatchID ? PortfolioView : CreateMatch;
+    return React.createElement(
+        visibleComponent,
+        {availableCash, createMatch, buy, sell, matchID, userID, portfolioValue, portfolio}
+      );
+      // <visibleComponent {...this.props} availableCash={availableCash} portfolioValue={portfolioValue}/>
+    //);
+    // if ( !matchId ) {
+    //   return (
+    //     <div>
+    //       <CreateMatch userId={userId} createMatch={createMatch} />
+    //     </div>
+    //     );
     //check this to make sure it works; may need a 'return'
-    let portfolioValue = this.props.portfolio.get('stocks').reduce( (memo, stockObj) => {
-      memo += (stockObj.price * stockObj.shares);
-    }, availableCash);
-    return (
-      <div>
-        <h2>You have ${this.props.portfolio.get('availableCash')} available cash.</h2>
-        <h2>Your portfolio is worth ${portfolioValue}.</h2>
-        <StockPurchase buy={buy} matchId={matchId} userId={userId} />
-        <ul>
-          {this.props.portfolio.get('stocks').map(stockObj => {
-            // TODO: condense props into one object and pass it through as attribute
-            return <Stock key={stockObj.get('stockSymbol')} sell={sell} matchId={matchId} userId={userId} symbol={stockObj.get('stockSymbol')} shares={stockObj.get('shares')} price={stockObj.get('price')} />
-          })}
-        </ul>
-      </div>
-    );
+    
+    // );
   }
 
 });
@@ -44,14 +52,16 @@ function mapStateToProps(state) {
   */
   let targetMatch;
   state.get('matches').forEach(function(match, index) {
-    if (match.get('matchId') === state.get('currentMatchId')) {
+    
+    if (match && match.get('matchID') === state.get('currentMatchID')) {
       targetMatch = match;
     }
   });
   return {
-    portfolio: targetMatch.get('portfolio'),
-    matchId: targetMatch.get('matchId'),
-    userId: state.get('userId')
+    portfolio: targetMatch ? targetMatch.get('portfolio'): null,
+    matchID: targetMatch ? targetMatch.get('matchID'): null,
+    userID: state.get('userID'),
+    currentMatchID: state.get('currentMatchID')
   };
 }
 

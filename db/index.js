@@ -1,5 +1,7 @@
+var knex = require('knex');
 var config = require('./knexfile.js');
-var env = 'development';
-var knex = require('knex')(config);
 
-module.exports = knex;
+var ENV = process.env.ENVIRONMENT || 'development';
+var db = knex(config[ENV]);
+
+module.exports = db;

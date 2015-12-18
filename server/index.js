@@ -1,28 +1,27 @@
 var express = require('express');
-var app = express();
 var knex = require('./db/index.js');
-var port = process.env.PORT || 8080;
+var router = require('./routes/index');
+
+//TODO: do we need these? -tate
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+//
 
+var port = process.env.PORT || 8080;
+var pathToClient = __dirname + '/../client';
 
+var app = express();
+
+//TODO: do we need these? -tate
 app.use(morgan('dev'));
-
 app.use(bodyParser.json());
+//
 
-var router = require('./routes/index')(knex);
-app.use(router);
+app.use(router(knex));
+app.use('/', express.static(pathToClient));
 
-//serving the main file currently!
-app.use('/', express.static(__dirname + '/../client'));
+app.listen(port);
+console.log("Express server listening on port", port);
 
-app.listen(port, function (error) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log("Express server listening on port", port);
-  }
-});
-
-
+//export app for testing routes
 module.exports = app;

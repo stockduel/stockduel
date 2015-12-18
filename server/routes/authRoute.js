@@ -11,15 +11,10 @@ module.exports = function (knex, passport) {
     scope: ['email']
   }));
 
-  router.get('/facebook/callback', passport.authenticate('facebook'), function (req, res) {
-    var userId = req.user.u_id;
-    matchesCtrl.getAllMatches(userId).then(function (matches) {
-      res.json({
-        user: req.user,
-        matches: matches
-      });
-    });
-  });
+  router.get('/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/' //TODO: redirect to a better place if facebook fails
+  }));
 
   return router;
 };

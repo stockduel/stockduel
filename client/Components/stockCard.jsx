@@ -8,22 +8,22 @@ import { toJS } from 'immutable';
 export const Stock = React.createClass({
 
   render() {
-    const { sell, symbol, shares, matchId, userId, price } = this.props;
+    const { sell, stockSymbol, shares, matchID, userID, price } = this.props;
     
     return (
       <div>
-        <p> {symbol} : {shares} at ${price} </p>
-        <input type="number" id="sellSharesInput" min="1" max={shares} step="1" />
+        <p> {stockSymbol} : {shares} at ${price} </p>
+        <input type="number" id={this.props.inputID} min="1" max={shares} step="1" />
         <button onClick={() => {
-          let numSharesToSell = document.getElementById('sellSharesInput').value;
+          let numSharesToSell = Number(document.getElementById(this.props.inputID).value);
           let sellOptions = {
             numShares: numSharesToSell,
-            stockTicker: symbol,
-            matchId: matchId,
-            userId: userId,
-            action: 'sell'
+            stockTicker: stockSymbol,
+            matchID: matchID,
+            userID: userID,
+            action: 'sell',
             // hardcode price until AJAX call works
-            price: '112'
+            // price: '112'
           };
           sell(sellOptions); // trigger action creator in actions.js
         }}> Sell </button>

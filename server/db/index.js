@@ -1,8 +1,7 @@
-var ENV = 'development';
-var DATABASE = 'stockduel';
-
+var knex = require('knex');
 var config = require('./knexfile.js');
-var knex = require('knex')(config[ENV]);
 
+var ENV = process.env.ENVIRONMENT || 'development';
+var db = knex(config[ENV]);
 
-module.exports = knex;
+module.exports = db;

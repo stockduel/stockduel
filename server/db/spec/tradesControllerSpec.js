@@ -207,8 +207,8 @@ describe('Trade Controller', function () {
         .then(function (portfolio) {
           // console.log(portfolio);
           expect(portfolio).to.be.an('object');
-          expect(portfolio.stocks.length).to.equal(1);
-          expect(portfolio.available_cash).to.be.a('number');
+          expect(portfolio.portfolio.stocks.length).to.equal(1);
+          expect(portfolio.portfolio.available_cash).to.be.a('number');
           done();
         });
     });

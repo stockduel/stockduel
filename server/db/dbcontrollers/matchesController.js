@@ -21,7 +21,7 @@ module.exports = function (knex) {
     var startDate = new Date();
     var endDate = nextWeek;
     var status = 'in progress';
-    var title = 'solo match';
+    // var title = 'solo match';
 
     return knex('matches').insert({
         'creator_id': userID,
