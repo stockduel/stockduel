@@ -26,7 +26,7 @@ let App = React.createClass({
       })
   },
   render() {
-    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userId } = this.props;
+    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userID } = this.props;
     return (
       <div>
        <AppBar
