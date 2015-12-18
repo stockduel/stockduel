@@ -17,6 +17,7 @@ import stylesheet from '../assets/stylesheets/style.css';
 
 
 var AppWithStore = React.createClass({
+
   render() {
     return (
       <Provider store={store}>

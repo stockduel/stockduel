@@ -60,21 +60,21 @@ module.exports = function (knex) {
       .then(function (tuple) {
         var stock = tuple[0];
         var trades = tuple[1];
-        var availableCash = STARTING_CASH;
+        var available_cash = STARTING_CASH;
 
         if (stock === null) {
           throw new Error('stock symbol does not exist');
         }
 
         if (trades.length > 0) {
-          availableCash = trades[0].available_cash;
+          available_cash = trades[0].available_cash;
         }
 
-        if (stock.ask * numShares > availableCash) {
+        if (stock.ask * numShares > available_cash) {
           throw new Error('insufficent funds');
         }
 
-        availableCash -= stock.ask * numShares;
+        available_cash -= stock.ask * numShares;
 
         return createTrade({
           user_id: userID,
@@ -83,7 +83,7 @@ module.exports = function (knex) {
           shares: numShares,
           action: BUY,
           price: stock.ask,
-          available_cash: availableCash
+          available_cash: available_cash
         });
       })
       .catch(function (err) {
@@ -113,7 +113,7 @@ module.exports = function (knex) {
           throw new Error('number of shares to sell exceeds number of shares owned');
         }
 
-        var availableCash = trades[0].available_cash + (stock.bid * numShares);
+        var available_cash = trades[0].available_cash + (stock.bid * numShares);
         return createTrade({
           user_id: userID,
           match_id: matchID,
@@ -121,7 +121,7 @@ module.exports = function (knex) {
           shares: numShares,
           action: SELL,
           price: stock.bid,
-          available_cash: availableCash
+          available_cash: available_cash
         });
       })
       .catch(function (err) {

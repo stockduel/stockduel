@@ -27,7 +27,7 @@ describe('buy action', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '999000'
+          available_cash: '999000'
         },
       }]
     );
@@ -57,7 +57,7 @@ describe('buy action', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '997000'
+          available_cash: '997000'
         }
       }]
     );
@@ -101,7 +101,7 @@ describe('buy action', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '994000'
+          available_cash: '994000'
         }
       }]
     );
@@ -134,7 +134,7 @@ describe('buy action', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '994000'
+          available_cash: '994000'
         }
       }]
     );
@@ -172,7 +172,7 @@ describe('sell action', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '994000'
+          available_cash: '994000'
         }
       }]
     );
@@ -205,7 +205,7 @@ describe('sell action', () => {
             price: '100'
           }],
           totalValue: '1000000',
-          availableCash: '994000'
+          available_cash: '994000'
         }
       }]
     );
