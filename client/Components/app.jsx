@@ -25,6 +25,11 @@ let App = React.createClass({
         */
       })
   },
+
+  componentWillMount() {
+      this.props.setInitialState(); // get the userId  
+  },
+  
   render() {
     const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userID } = this.props;
     return (

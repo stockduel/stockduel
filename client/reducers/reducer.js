@@ -22,7 +22,7 @@ import {fromJS, toJS} from 'immutable';
 //         //we need to calculate on the front end
 //         totalValue: '1000000',
 //         //cash_in_hand
-//         availableCash: '1000000'
+//         available_cash: '1000000'
 //       }
 //     }]
 //   });
@@ -39,7 +39,7 @@ const initialState = fromJS({
         //we need to calculate on the front end
         totalValue: '',
         //cash_in_hand
-        availableCash: ''
+        available_cash: ''
       }
     }]
   });
