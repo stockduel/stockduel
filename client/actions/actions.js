@@ -26,7 +26,7 @@ export function buy(options) {
     return request.post('/trades/' + options.matchID + '/' + options.userID)
     .send(options)
     .end(function(err, res) {
-      if (err) {
+      if (err || !res.body.data) {
         // handle error
         return dispatch({type: 'FAILED_TRADE'});
       } else {
@@ -57,7 +57,7 @@ export function sell(options) {
     return request.post('/trades/' + options.matchID + '/' + options.userID)
     .send(options)
     .end(function(err, res) {
-      if (err) {
+      if (err || !res.body.data) {
         // handle error
         return dispatch({type: 'FAILED_TRADE'});
       } else {
@@ -136,7 +136,7 @@ export function updatePrices(oldStockArray) {
        match: {
          portfolio: {
            stocks: [],
-           availableCash: options.starting_funds,
+           available_cash: options.starting_funds,
            totalValue: options.starting_funds   
          },
          matchID: options.m_id,
@@ -148,7 +148,7 @@ export function updatePrices(oldStockArray) {
    export function createMatch(createOptions) {
 
     var options = {
-      userID: createOptions.userId,
+      userID: createOptions.userID,
       //these will need to come in from the front end once we have two player matches
       startFunds: 100000,
       type: 'solo match'
