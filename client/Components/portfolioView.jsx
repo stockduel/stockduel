@@ -14,7 +14,6 @@ export const PortfolioView = React.createClass({
   // },
   render() {
     const { buy, sell, createMatch, matchID, userID, portfolioValue, available_cash } = this.props;
-    
     return (
       <div>
         <h2>You have ${available_cash.toFixed(2)} available cash.</h2>

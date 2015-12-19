@@ -59,6 +59,7 @@ export function sell(options) {
     .end(function(err, res) {
       if (err || !res.body.data) {
         // handle error
+        console.log('err:', err, 'res.body', res.body);
         return dispatch({type: 'FAILED_TRADE'});
       } else {
         options.price = String(res.body.data.price);
@@ -135,7 +136,7 @@ export function updatePrices(oldStockArray) {
        type: CREATE_MATCH,
        currentMatchID: options.m_id,
        match: {
-        matchID: options.m_id,
+        m_id: options.m_id,
         challengee: options.challengee, 
         startDate: options.startdate,
         endDate: options.enddate,
