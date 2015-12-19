@@ -2,6 +2,7 @@ import {List, Map, toJS} from 'immutable';
 
 
 export default function buyReducer(state, action) {
+  console.log('IN REDUCER BUYING')
   var targetMatch;
   var targetMatchIndex;
   state.get('matches').forEach(function(match, index) {
@@ -33,7 +34,6 @@ export default function buyReducer(state, action) {
   })
 
   var newStocksArray;
-
   if ( targetStock ) {  // user already holds the stock being bought
     newStocksArray = matchWithUpdatedCash.getIn(['portfolio', 'stocks']).map(function(stock, index) {
       if( index === targetStockIndex ) {
@@ -51,6 +51,7 @@ export default function buyReducer(state, action) {
     newStocksArray = oldStockList.push(newStockMap);
 
   }
+
     // get new version of state by rolling in newStocksArray
     var matchWithUpdatedCashAndStocks = matchWithUpdatedCash.setIn(['portfolio', 'stocks'], newStocksArray);
 

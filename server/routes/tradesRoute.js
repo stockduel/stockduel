@@ -17,6 +17,7 @@ module.exports = function (knex) {
 
   router.route('/:matchid/:userid')
     .get(function (req, res) {
+      console.log('in route', req.userid, req.matchid)
       tradesController.getPortfolio(req.userid, req.matchid)
         .then(function (portfolio) {
           res.status(200).json({
@@ -31,7 +32,7 @@ module.exports = function (knex) {
     })
 
   .post(function (req, res) {
-
+    console.log('in route BUY server', req.matchid)
     var userID = req.userid;
     var matchID = req.matchid;
     var numShares = req.body.numShares;

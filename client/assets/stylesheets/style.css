@@ -2,3 +2,23 @@ h1 {
   font-family: serif;
   color: blue;
 }
+
+.centerButton {
+  float: right;
+  margin-bottom: 10px;
+}
+
+.spaceUnder {
+  padding-bottom: 19px;
+}
+
+.matchTitleBox {
+  font-size: 15px;
+}
+
+body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Raleway', sans-serif;
+}

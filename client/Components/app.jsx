@@ -32,13 +32,16 @@ let App = React.createClass({
   
   render() {
     const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userID } = this.props;
+
     return (
       <div>
-       <AppBar
+       <AppBar 
+          style={{backgroundImage: 'url('+'http://hypertext.net/images/weblog/linen-backgrounds/dark_linen-640x960.png'+')', fontfamily: 'Raleway, sans-serif' }}
           title={<span>This. Is. StockDuel.</span>}
           iconElementRight={<FlatButton linkButton={true} href="/auth/facebook" label="Login" primary={true} />} />
         <Link to="/home">to home</Link><br/>
         <Link to="/portfolio">to portfolio</Link>
+        <Link to="/search">to search stocks</Link>
       </div>
     )
   }
@@ -50,6 +53,7 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
+  console.log('this is state:', state.toJS());
   return state.toJS();
 }
 
