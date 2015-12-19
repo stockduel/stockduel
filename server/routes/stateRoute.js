@@ -8,7 +8,7 @@ module.exports = function (knex) {
 
   router.get('/', function (req, res) {
     var userID = req.user.u_id;
-    matchesCtrl.getAllMatches(userID).then(function (matches) { // array of objects: see tradesController at module.getPortfolio for objects' formats
+    matchesCtrl.getUsersMatches(userID).then(function (matches) { // array of objects: see tradesController at module.getPortfolio for objects' formats
         var currentMatchID = matches[0] ? matches[0].matchID : null; // matchID !== matchId (undefined)
         // return object with keys that conform to redux state object
         res.json({
