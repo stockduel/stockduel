@@ -6,33 +6,37 @@ var knex = require('../index');
 var tradesController = require('../dbcontrollers/tradesController')(knex);
 var matchesController = require('../dbcontrollers/matchesController')(knex);
 
-var users = [{
-  username: 'annaUser',
-  password: 'annaPassword',
-  name: 'anna',
-  email: 'anna@annars'
-}, {
-  username: 'kateUser',
-  password: 'katePassword',
-  name: 'kate',
-  email: 'kate@katers'
-}];
-
-var matches = [{
-  startFunds: 100000,
-  type: 'TEST'
-}];
-
-var stock = {
-  name: 'Facebook, Inc.',
-  symbol: 'FB',
-  industry: 'Computer Software: Programming, Data Processing',
-  sector: 'Technology',
-  exchange: 'NASDAQ'
-};
-
-
 describe('Trade Controller', function () {
+  var users = [{
+    username: 'annaUser',
+    password: 'annaPassword',
+    name: 'anna',
+    email: 'anna@annars'
+  }, {
+    username: 'kateUser',
+    password: 'katePassword',
+    name: 'kate',
+    email: 'kate@katers'
+  }];
+
+  var today = Date.now();
+  var threeDaysLater = today + (3 * 24 * 60 * 60 * 1000);
+
+  var matches = [{
+    startFunds: 100000,
+    type: 'solo',
+    startDate: new Date(today),
+    endDate: new Date(threeDaysLater)
+  }];
+
+  var stock = {
+    name: 'Facebook, Inc.',
+    symbol: 'FB',
+    industry: 'Computer Software: Programming, Data Processing',
+    sector: 'Technology',
+    exchange: 'NASDAQ'
+  };
+
   // ============= Setup ============= \\
   before(function (done) {
     //insert users into DB
@@ -44,7 +48,7 @@ describe('Trade Controller', function () {
       .then(function () {
         var user = users[0];
         var match = matches[0];
-        return matchesController.createMatch(user.u_id, match.startFunds, match.type);
+        return matchesController.createMatch(user.u_id, match.startFunds, match.type, match.startDate, match.endDate);
       })
       .then(function (createdMatch) {
         matches[0].m_id = createdMatch.m_id;
@@ -73,9 +77,6 @@ describe('Trade Controller', function () {
       })
       .then(function () {
         done();
-      })
-      .catch(function (err) {
-        console.log(err);
       });
 
   });

@@ -115,7 +115,7 @@ export function updatePrices(oldStockArray) {
         this action will be called when user attempts to log in.
         response will include userId and state
        */
-      request.get('/state')
+      request.get('/state/')
         .end(function(err, res){
         if(err) {
           //handle error
@@ -130,32 +130,33 @@ export function updatePrices(oldStockArray) {
    }
 
    export function createMatchSync(options) {
+    enddate: "2016-01-01T14:00:00.000Z"
      return {
        type: CREATE_MATCH,
        currentMatchID: options.m_id,
        match: {
-         portfolio: {
-           stocks: [],
-           available_cash: options.starting_funds,
-           totalValue: options.starting_funds   
-         },
-         matchID: options.m_id,
+        matchID: options.m_id,
+        challengee: options.challengee, 
+        startDate: options.startdate,
+        endDate: options.enddate,
+        starting_funds: options.starting_funds,
+        status: options.status,
+        type: options.type,
+        winner: options.winner,
+        portfolio: {
+          stocks: [],
+          available_cash: options.starting_funds,
+          totalValue: options.starting_funds   
+        }
        }
      }
    }
 
    //this will need to be updated once we support matches with two players
    export function createMatch(createOptions) {
-
-    var options = {
-      userID: createOptions.userID,
-      //these will need to come in from the front end once we have two player matches
-      startFunds: 100000,
-      type: 'solo match'
-    };
      return (dispatch) => {
        request.post('/matches/')
-       .send(options)
+       .send(createOptions)
        .end(function(err, res){
          if(err) {
            //handle error

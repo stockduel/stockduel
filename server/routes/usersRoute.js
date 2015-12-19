@@ -3,7 +3,6 @@ var router = express.Router();
 var usersController = require('../db/dbcontrollers/usersController');
 
 module.exports = function (knex) {
-  //initalize controller with knex connection
   usersCtrl = usersController(knex);
 
   router.param('userid', function (req, res, next, userid) {
@@ -14,11 +13,12 @@ module.exports = function (knex) {
   router.route('/')
     .get(function (req, res) {
       var search = req.query.search;
-      usersCtrl.searchUsers(search).then(function (response) {
-        res.json({
-          data: response
+      usersCtrl.searchUsers(search)
+        .then(function (response) {
+          res.json({
+            data: response
+          });
         });
-      });
     });
 
   router.route('/:userid')
