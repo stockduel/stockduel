@@ -160,7 +160,6 @@ export function updatePrices(oldStockArray) {
 
    //this will need to be updated once we support matches with two players
    export function createMatch(createOptions) {
-    console.log('here', createOptions);
      return (dispatch) => {
        request.post('/matches/')
        .send(createOptions)
