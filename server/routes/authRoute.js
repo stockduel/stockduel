@@ -4,7 +4,6 @@ var router = express.Router();
 var matchesController = require('../db/dbcontrollers/matchesController.js');
 
 module.exports = function (knex, passport) {
-
   var matchesCtrl = matchesController(knex);
 
   router.get('/facebook', passport.authenticate('facebook', {

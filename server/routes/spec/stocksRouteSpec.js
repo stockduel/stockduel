@@ -122,9 +122,19 @@ describe('stocksRoute', function () {
     "timestamp": "TESTING"
   }];
 
-  var stockArray = [{'stockSymbol': 'GOOG', 'price': '2.5', 'shares':'3'},
-                {'stockSymbol': 'PIH', 'price': '25', 'shares':'1'},
-                {'stockSymbol': 'FCCY', 'price': '5', 'shares':'7'}];
+  var stockArray = [{
+    'stockSymbol': 'GOOG',
+    'price': '2.5',
+    'shares': '3'
+  }, {
+    'stockSymbol': 'PIH',
+    'price': '25',
+    'shares': '1'
+  }, {
+    'stockSymbol': 'FCCY',
+    'price': '5',
+    'shares': '7'
+  }];
 
   // ============= Setup ============= \\
   before(function (done) {
@@ -156,7 +166,7 @@ describe('stocksRoute', function () {
 
   // ============= Tests ============= \\
 
-  describe('/stocks/?search=', function () {
+  describe('/?search=', function () {
     describe('GET', function () {
       var search = 'TEST';
       var searchCase = 'tEsT';
@@ -191,7 +201,7 @@ describe('stocksRoute', function () {
     });
   });
 
-  describe('/stocks/update', function () {
+  describe('/update', function () {
     describe('POST', function () {
 
       it('responds with a 200 (OK)', function (done) {
@@ -207,8 +217,8 @@ describe('stocksRoute', function () {
           .send(stockArray)
           .expect(function (response) {
             var update = response.body;
-            expect(update.stockArray.length).to.equal(3);
-            expect(update.stockArray[0].price).to.not.equal(2.5);
+            expect(update.data.length).to.equal(3);
+            expect(update.data[0].price).to.not.equal(2.5);
           })
           .expect(200, done);
       });
@@ -216,7 +226,7 @@ describe('stocksRoute', function () {
     });
   });
 
-  describe('/stocks/:symbol', function () {
+  describe('/:symbol', function () {
     describe('GET', function () {
       var validSymbol = stocks[0].symbol;
       var validSymbolCase = 'tEsT';

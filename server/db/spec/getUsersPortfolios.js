@@ -8,7 +8,7 @@ var matchesController = require('../dbcontrollers/matchesController')(knex);
 var usersController = require('../dbcontrollers/usersController')(knex);
 
 
-describe('getInitialState Controller', function () {
+describe('getUsersPortfolios', function () {
 
   var users = [{
     username: 'annaUser',
@@ -22,12 +22,19 @@ describe('getInitialState Controller', function () {
     email: 'kate@katers'
   }];
 
+  var today = Date.now();
+  var threeDaysLater = today + (3 * 24 * 60 * 60 * 1000);
+
   var matches = [{
     startFunds: 100000,
-    type: 'TEST'
+    type: 'solo',
+    startDate: new Date(today),
+    endDate: new Date(threeDaysLater)
   }, {
-    startFunds: 100000,
-    type: 'TEST2'
+    startFunds: 500000,
+    type: 'solo',
+    startDate: new Date(today),
+    endDate: new Date(threeDaysLater)
   }];
 
   var stock = {
@@ -49,7 +56,7 @@ describe('getInitialState Controller', function () {
       .then(function () {
         var user = users[0];
         return Promise.map(matches, function (match) {
-          return matchesController.createMatch(user.u_id, match.startFunds, match.type);
+          return matchesController.createMatch(user.u_id, match.startFunds, match.type, match.startDate, match.endDate);
         });
       })
       .then(function (createdMatches) {
@@ -83,9 +90,6 @@ describe('getInitialState Controller', function () {
       })
       .then(function () {
         done();
-      })
-      .catch(function (err) {
-        console.log(err);
       });
 
   });
@@ -94,9 +98,6 @@ describe('getInitialState Controller', function () {
     it('should be able to place a buy order', function (done) {
       var user = users[0];
       var match = matches[0];
-
-      console.log(match.m_id);
-
       var trade = {
         shares: 100,
         symbol: stock.symbol
@@ -114,9 +115,6 @@ describe('getInitialState Controller', function () {
     it('should be able to place a sell trade', function (done) {
       var user = users[0];
       var match = matches[0];
-
-      console.log(match.m_id);
-
       var trade = {
         shares: 90,
         symbol: 'FB'
@@ -138,8 +136,6 @@ describe('getInitialState Controller', function () {
     it('should be able to place a buy order', function (done) {
       var user = users[0];
       var match = matches[1];
-
-      console.log(match.m_id);
       var trade = {
         shares: 100,
         symbol: stock.symbol
@@ -154,11 +150,11 @@ describe('getInitialState Controller', function () {
   });
 
 
-  describe('getInitialState', function () {
+  describe('getUsersPortfolios', function () {
     it('should be able to get all the things', function (done) {
       var user = users[0];
 
-      matchesController.getAllMatches(user.u_id)
+      matchesController.getUsersPortfolios(user.u_id)
         .then(function (matches) {
           expect(matches).to.be.an('array');
           expect(matches.length).to.equal(2);

@@ -13,23 +13,28 @@ module.exports = function (knex) {
   router.route('/')
     .get(function (req, res) {
       var search = req.query.search;
-      stocksController.searchStock(search).then(function (response) {
-        res.json({
-          data: response
+      stocksController.searchStock(search)
+        .then(function (response) {
+          res.json({
+            data: response
+          });
         });
-      });
     });
 
   router.route('/update')
     .post(function (req, res) {
-      //send list of tickers to get updated with lastest price of the stock(ask)
       var list = req.body;
       stocksController.updatePrices(list)
-      .then(function (data) {
-        // console.log('DATA!!', data); //might need to tweek how recieved on client
-        return res.status(200).json({'stockArray': data});
-      });
-
+        .then(function (stockArray) {
+          res.status(200).json({
+            data: stockArray
+          });
+        })
+        .catch(function (err) {
+          res.status(400).json({
+            message: err
+          });
+        });
     });
 
   router.route('/:symbol')

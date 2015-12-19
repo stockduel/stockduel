@@ -3,35 +3,33 @@ var router = express.Router();
 var tradesController = require('../db/dbcontrollers/tradesController.js');
 
 module.exports = function (knex) {
-
   tradesController = tradesController(knex);
 
   router
-  .param('matchid', function (req, res, next, matchid) {
-    req.matchid = matchid;
-    next();
-  })
-  .param('userid', function (req, res, next, userid) {
-    req.userid = userid;
-    next();
-  });
-
-
-  // //----------------------get user portfolio-----------------------------------//
+    .param('matchid', function (req, res, next, matchid) {
+      req.matchid = matchid;
+      next();
+    })
+    .param('userid', function (req, res, next, userid) {
+      req.userid = userid;
+      next();
+    });
 
   router.route('/:matchid/:userid')
-  .get(function (req, res) {
-    tradesController.getTrades(req.userid, req.matchid)
-    .then(function (portfolio) {
-
-      return res.status(200).json({'message': 'Retrieved portfolio', 'data': portfolio});
+    .get(function (req, res) {
+      tradesController.getTrades(req.userid, req.matchid)
+        .then(function (portfolio) {
+          res.status(200).json({
+            data: portfolio
+          });
+        })
+        .catch(function (err) {
+          res.status(400).json({
+            message: err
+          });
+        });
     })
-    .catch(function (err) {
-      return res.status(400).json({'message': 'Error getting portfolio', 'err': err});
-    });
-  })
 
-   //----insert data to the trades table----//
   .post(function (req, res) {
 
     var userID = req.userid;
@@ -39,33 +37,33 @@ module.exports = function (knex) {
     var numShares = req.body.numShares;
     var action = req.body.action;
     var stockTicker = req.body.stockTicker;
-    if (action === 'buy') {
 
-      tradesController.buy(userID, matchID, numShares, stockTicker)
-      .then(function (data) {
-        return res.status(200).json({'message': 'Processed trade', 'data': data});
-      })
-      .catch(function (err) {
-        console.log(err);
-        return res.status(400).json({'message': 'Not valid trade', 'err': err});
+    var actions = {
+      'buy': tradesController.buy,
+      'sell': tradesController.sell
+    };
+
+    if (actions[action] === undefined) {
+      res.status(400).json({
+        message: 'Not a valid action'
       });
-
-    } else if (action === 'sell'){
-
-      tradesController.sell(userID, matchID, numShares, stockTicker)
-      .then(function (data) {
-        return res.status(200).json({'message': 'Processed trade', 'data':data});
-      })
-      .catch(function (err) {
-        return res.status(400).json({'message': 'Not valid trade', 'err': err});
-      });
-    } else {
-      return res.status(400).json({ 'message': 'Not a valid action' });
     }
+
+    actions[action](userID, matchID, numShares, stockTicker)
+      .then(function (data) {
+        res.status(200).json({
+          data: data
+        });
+      })
+      .catch(function (err) {
+        res.status(400).json({
+          message: err
+        });
+      });
 
   });
 
-    //-----------------------------------------------------------//
+  //-----------------------------------------------------------//
 
   return router;
 };
