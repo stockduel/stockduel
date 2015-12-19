@@ -38,11 +38,10 @@ export const CreateMatch = React.createClass({
 
     let menuItems = [
       { payload: '1', text: '' },
-      { payload: '2', text: '$10,000' },
-      { payload: '3', text: '$50,000' },
-      { payload: '4', text: '$100,000' },
-      { payload: '5', text: '$500,000' },
-      { payload: '6', text: '$1,000,000' }
+      { payload: '2', text: '$50,000' },
+      { payload: '3', text: '$100,000' },
+      { payload: '4', text: '$500,000' },
+      { payload: '5', text: '$1,000,000' }
 
     ];
 
@@ -89,7 +88,6 @@ export const CreateMatch = React.createClass({
                 <h5>Start Funds:</h5>
                   <DropDownMenu menuItems={menuItems} 
                     onChange={function (event, index, menuItem) {
-                      console.log('drop-down-menu', event, index, menuItem)
                       startFunds = menuItem.text;
                     }}/>
               </div>
@@ -110,7 +108,7 @@ export const CreateMatch = React.createClass({
                   let end = document.getElementById('finishDate').value;
                   
                   //startFunds and typeOfMatch
-                  console.log('oTHERS', matchType, startFunds);
+                  console.log('userID',userID);
 
                   //time formats
                   let dStart = start.split('-');
@@ -141,7 +139,7 @@ export const CreateMatch = React.createClass({
                         alert('Please set both match type and starting funds for this match.')
                       } else {
                         let createOptions = {
-                          userID: this.props.userID,
+                          userID: userID,
                           startDate: dateFormatStart,
                           endDate: dateFormatEnd,
                           startFunds: startFunds,

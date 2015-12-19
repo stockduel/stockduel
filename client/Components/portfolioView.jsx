@@ -9,11 +9,11 @@ import * as Actions from '../actions/actions.js';
 
 export const PortfolioView = React.createClass({
 
-  componentWillMount() {
-    let matchID = this.props.matchID;
-    let userID = this.props.userID;
-    this.props.getMatchPortfolio(matchID, userID);
-  },
+  // componentWillMount() {
+  //   let matchID = this.props.matchID;
+  //   let userID = this.props.userID;
+  //   this.props.getMatchPortfolio(matchID, userID);
+  // },
 
   render() {
 

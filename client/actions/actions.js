@@ -160,7 +160,7 @@ export function updatePrices(oldStockArray) {
 
    //this will need to be updated once we support matches with two players
    export function createMatch(createOptions) {
-
+    console.log('here', createOptions);
     var options = {
       userID: createOptions.userID,
       //these will need to come in from the front end once we have two player matches

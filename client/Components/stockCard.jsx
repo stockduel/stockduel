@@ -30,6 +30,7 @@ export const Stock = React.createClass({
           };
           sell(sellOptions); // trigger action creator in actions.js
         }}> Sell </button>
+
       </div>
     );
   }
