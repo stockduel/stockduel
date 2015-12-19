@@ -6,30 +6,27 @@ module.exports = function (knex) {
   var module = {};
   var tradesCtrl = tradesController(knex);
 
-  //how to get multiple ids when have head to head matches--------//
-  /*knex.select('name').from('users')
-    .whereIn('id', [1, 2, 3])
-    .orWhereIn('id', [4, 5, 6])*/
-  //bit of an over kill dont at this point need to search user ID 
-  //from table at this point! Left in as not hurting us to be tidied
-  //-------------------create a match-----------------------------//
+  var PENDING = 'pending';
+  var SOLO = 'solo';
 
-  module.createMatch = function (userID, startFunds, type) {
+  /* A match requires a creater (userid) {string}, starting funds {number}
+   the type (solo or head to head) {string}, start date {date}, end date
+   {date} */
 
-    //TODO: match logic
-    var nextWeek = Date(Date.now() + (7 * 24 * 60 * 60 * 1000));
-    var startDate = new Date();
-    var endDate = nextWeek;
-    var status = 'in progress';
-    // var title = 'solo match';
+  module.createMatch = function (userID, startFunds, type, startDate, endDate) {
+
+    var challengee = null;
+    if (type === SOLO) {
+      challengee = userID;
+    }
 
     return knex('matches').insert({
         'creator_id': userID,
         'starting_funds': startFunds,
-        'challengee': userID,
         'startdate': startDate,
         'enddate': endDate,
-        'status': status,
+        'status': PENDING,
+        'challengee': challengee,
         'type': type
       }, '*')
       .then(function (match) {
@@ -38,21 +35,43 @@ module.exports = function (knex) {
 
   };
 
-  module.getAllMatches = function (userid) {
+  module.joinMatch = function (matchID, userID) {
+    return knex('matches').where({
+        challengee: null,
+        m_id: matchID
+      })
+      .update({
+        challengee: userID,
+      }, '*')
+      .then(function (match) {
+        if (match.length < 1) {
+          return null;
+        }
+        return match[0];
+      });
+  };
+
+  // Return all joinable matches
+
+  module.getAllJoinableMatches = function () {
+    return knex('matches').where({
+      'status': PENDING,
+      'challengee': null
+    });
+  };
+
+  // Return all portfolios for a user. userid {string}
+  module.getUsersPortfolios = function (userid) {
     return module.getUsersMatches(userid)
       .then(function (matches) {
         return Promise.map(matches, function (match) {
           return tradesCtrl.getPortfolio(userid, match.m_id);
         });
-      })
-      .catch(function (err) {
-        console.log(err);
       });
   };
 
-  //---------------------get specific match-------------------------------//
+  // Return a specific match. matchID {string}
 
-  //function to get a match of a certain id
   module.getMatch = function (matchID) {
     return knex.select()
       .table('matches').where('m_id', '=', matchID)
@@ -61,10 +80,9 @@ module.exports = function (knex) {
       });
   };
 
-  //---------------------------------------------------------------------//
+  // Get all matches for a user. userid {string}
 
   module.getUsersMatches = function (userID) {
-    // console.log('MATCH', userID)
     return knex.select()
       .table('matches')
       .where('creator_id', userID)
@@ -74,8 +92,6 @@ module.exports = function (knex) {
       });
 
   };
-
-  //---------------------------------------------------------------------//
 
   return module;
 

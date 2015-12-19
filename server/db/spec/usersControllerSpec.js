@@ -5,36 +5,29 @@ var knex = require('../index');
 
 var usersController = require('../dbcontrollers/usersController')(knex);
 
-var users = [{
-  username: 'TESTannaUser',
-  password: 'TESTannaPassword',
-  name: 'TESTanna',
-  email: 'TESTanna@anna'
-}, {
-  username: 'TESTkateUser',
-  password: 'TESTkatePassword',
-  name: 'TESTkate',
-  email: 'TESTkate@kate'
-}];
-
-
-// ============= Tests ============= \\
 describe('Users Controller', function () {
-  // ============= Setup ============= \\
+  var users = [{
+    username: 'TESTannaUser',
+    password: 'TESTannaPassword',
+    name: 'TESTanna',
+    email: 'TESTanna@anna'
+  }, {
+    username: 'TESTkateUser',
+    password: 'TESTkatePassword',
+    name: 'TESTkate',
+    email: 'TESTkate@kate'
+  }];
+
   before(function (done) {
     done();
   });
 
-  // ============= Teardown ============= \\
   after(function (done) {
     Promise.map(users, function (user) {
         return knex('users').where('email', user.email).del();
       })
       .then(function () {
         done();
-      })
-      .catch(function (err) {
-        console.log(err);
       });
   });
 

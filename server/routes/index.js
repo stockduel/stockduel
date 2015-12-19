@@ -16,7 +16,6 @@ module.exports = function (knex) {
 
   var router = express.Router();
 
-  router.use(express.static('public'));
   router.use(cookieParser());
   router.use(bodyParser());
   router.use(session({
