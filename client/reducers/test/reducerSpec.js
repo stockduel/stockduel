@@ -14,7 +14,7 @@ describe('buyReducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      matchID: '456',
+      m_id: '456',
       challengee: '123', 
       startDate: START_DATE,
       endDate: END_DATE,
@@ -47,7 +47,7 @@ describe('buyReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchID: '456',
+        m_id: '456',
         challengee: '123', 
         startDate: START_DATE,
         endDate: END_DATE,
@@ -83,7 +83,7 @@ describe('buyReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchID: '456',
+        m_id: '456',
         challengee: '123', 
         startDate: START_DATE,
         endDate: END_DATE,
@@ -130,7 +130,7 @@ describe('buyReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchID: '456',
+        m_id: '456',
         challengee: '123', 
         startDate: START_DATE,
         endDate: END_DATE,
@@ -178,7 +178,7 @@ describe('sellReducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      matchID: '456',
+      m_id: '456',
       challengee: '123', 
       startDate: START_DATE,
       endDate: END_DATE,
@@ -220,7 +220,7 @@ describe('sellReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchID: '456',
+        m_id: '456',
         challengee: '123', 
         startDate: START_DATE,
         endDate: END_DATE,
@@ -252,7 +252,7 @@ describe('sellReducer', () => {
       //need to fill in full state expected here
       [{
 
-        matchID: '456',
+        m_id: '456',
         challengee: '123', 
         startDate: START_DATE,
         endDate: END_DATE,
@@ -312,7 +312,7 @@ describe('general reducer', () => {
 
   const initialState = fromJS({
     matches: [{
-      matchID: '456',
+      m_id: '456',
       challengee: '123', 
       startDate: START_DATE,
       endDate: END_DATE,

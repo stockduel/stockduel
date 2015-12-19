@@ -5,7 +5,7 @@ export default function buyReducer(state, action) {
   var targetMatch;
   var targetMatchIndex;
   state.get('matches').forEach(function(match, index) {
-    if (match.get('matchID') === action.matchID) {
+    if (match.get('m_id') === action.matchID) {
       targetMatch = match;
       targetMatchIndex = index;
     }

@@ -19,8 +19,9 @@ var Portfolio = React.createClass({
     const { buy, sell, createMatch, matchID, userID, portfolio } = this.props;
     let available_cash;
     let portfolioValue;
-    if ( this.props.portfolio ) {
-      available_cash = +this.props.portfolio.get('available_cash');
+    if ( portfolio ) {
+      // portfolio is an immutableJS object -- access its keys with .get method
+      available_cash = +portfolio.get('available_cash');
       portfolioValue = this.props.portfolio.get('stocks').reduce( (memo, stockObj) => {
         return memo += (+stockObj.get('price') * +stockObj.get('shares'));
       }, +available_cash);
@@ -50,17 +51,17 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
-  if (typeof state.toJS === 'function') console.dir(state.toJS());
   let targetMatch;
   state.get('matches').forEach(function(match, index) {
     
-    if (match && match.get('matchID') === state.get('currentMatchID')) {
+    if (match && match.get('m_id') === state.get('currentMatchID')) {
+      console.log('FOUND A MATCH!')
       targetMatch = match;
     }
   });
   return {
     portfolio: targetMatch ? targetMatch.get('portfolio'): null,
-    matchID: targetMatch ? targetMatch.get('matchID'): null,
+    matchID: targetMatch ? targetMatch.get('m_id'): null,
     userID: state.get('userID'),
     currentMatchID: state.get('currentMatchID')
   };
