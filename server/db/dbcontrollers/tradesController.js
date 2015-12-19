@@ -146,6 +146,7 @@ module.exports = function (knex) {
           if (portfolio[stockSymbol] === undefined) {
             portfolio[stockSymbol] = {
               stockSymbol: stockSymbol,
+              name: trade.name,
               shares: 0,
               price: 0,
               percent_change: trade.percent_change,
@@ -180,7 +181,7 @@ module.exports = function (knex) {
           portfolio: {
             totalValue: runningSum + trades[trades.length - 1].available_cash,
             available_cash: trades[trades.length - 1].available_cash,
-            stocks: stocks            
+            stocks: stocks
           },
           matchID: matchID
         };
