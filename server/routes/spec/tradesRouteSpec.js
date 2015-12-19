@@ -107,7 +107,7 @@ describe('/trades', function () {
           var userid = users[0].u_id;
           var trade = {
             stockTicker: 'GOOG',
-            numShares: 5,
+            numShares: 15,
             action: 'buy'
           };
 
@@ -196,10 +196,10 @@ describe('/trades', function () {
         request(app)
           .get('/trades/' + matchid + '/' + userid)
           .expect(function (response) {
-            var portfolio = response.body;
+            var portfolio = response.body.data.portfolio;
             expect(portfolio).to.be.a('object');
-            expect(portfolio.data[0].price).to.be.a('number');
-            //would like to check the user id here but couldn find a way to ask if the creator_id or the challengee had the userid?
+            expect(portfolio.stocks).to.be.an('array');
+            expect(portfolio.stocks[0].price).to.be.a('number');
           })
           .expect(200, done);
 

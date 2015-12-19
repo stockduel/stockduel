@@ -17,7 +17,7 @@ module.exports = function (knex) {
 
   router.route('/:matchid/:userid')
     .get(function (req, res) {
-      tradesController.getTrades(req.userid, req.matchid)
+      tradesController.getPortfolio(req.userid, req.matchid)
         .then(function (portfolio) {
           res.status(200).json({
             data: portfolio
