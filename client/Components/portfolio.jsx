@@ -20,8 +20,6 @@ var Portfolio = React.createClass({
     let available_cash;
     let portfolioValue;
     if ( this.props.portfolio ) {
-      console.log(this.props.portfolio.get('available_cash'));
-      console.log(this.props.portfolio.toJS());
       available_cash = +this.props.portfolio.get('available_cash');
       portfolioValue = this.props.portfolio.get('stocks').reduce( (memo, stockObj) => {
         return memo += (+stockObj.get('price') * +stockObj.get('shares'));
@@ -52,7 +50,7 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
-  console.log('state is ', state.toJS());
+  if (typeof state.toJS === 'function') console.dir(state.toJS());
   let targetMatch;
   state.get('matches').forEach(function(match, index) {
     

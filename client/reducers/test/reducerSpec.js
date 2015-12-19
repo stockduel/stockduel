@@ -9,10 +9,19 @@ import {store} from '../../store/store.js'
 import reducer from '../reducer';
 
 describe('buyReducer', () => {
+  const START_DATE = new Date();
+  const END_DATE = new Date(START_DATE.getFullYear()+1);
 
   const initialState = fromJS({
     matches: [{
       matchID: '456',
+      challengee: '123', 
+      startDate: START_DATE,
+      endDate: END_DATE,
+      starting_funds: '1000000',
+      status: 'progress',
+      type: 'solo',
+      winner: null,
       portfolio: {
         stocks: [],
         totalValue: '1000000',
@@ -39,6 +48,13 @@ describe('buyReducer', () => {
       [{
 
         matchID: '456',
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'solo',
+        winner: null,
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
@@ -68,6 +84,13 @@ describe('buyReducer', () => {
       [{
 
         matchID: '456',
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'solo',
+        winner: null,
         portfolio: {
           stocks: [{
             price: '100',
@@ -108,6 +131,13 @@ describe('buyReducer', () => {
       [{
 
         matchID: '456',
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'solo',
+        winner: null,
         portfolio: {
           stocks: [{
             price: '100',
@@ -143,10 +173,19 @@ describe('buyReducer', () => {
 });
 
 describe('sellReducer', () => {
+  const START_DATE = new Date();
+  const END_DATE = new Date(START_DATE.getFullYear()+1);
 
   const initialState = fromJS({
     matches: [{
       matchID: '456',
+      challengee: '123', 
+      startDate: START_DATE,
+      endDate: END_DATE,
+      starting_funds: '1000000',
+      status: 'progress',
+      type: 'solo',
+      winner: null,
       portfolio: {
         stocks: [],
         totalValue: '1000000',
@@ -182,6 +221,13 @@ describe('sellReducer', () => {
       [{
 
         matchID: '456',
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'solo',
+        winner: null,
         portfolio: {
           stocks: [],
           totalValue: '1000000',
@@ -207,6 +253,13 @@ describe('sellReducer', () => {
       [{
 
         matchID: '456',
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'solo',
+        winner: null,
         portfolio: {
           stocks: [],
           totalValue: '1000000',
@@ -219,6 +272,8 @@ describe('sellReducer', () => {
 });
 
 describe('Create Match reducer', () => {
+  const START_DATE = new Date();
+  const END_DATE = new Date(START_DATE.getFullYear()+1);
 
   const initialState = fromJS({
     matches: []
@@ -229,10 +284,18 @@ describe('Create Match reducer', () => {
       type: 'CREATE_MATCH',
       currentMatchID: 1,
       match: {
-        portfolio: [],
-        matchID: 1,
-        available_cash: 100000,
-        totalValue: 100000
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'solo',
+        winner: null,
+        portfolio: {
+          available_cash: 100000,
+          totalValue: 100000          
+        },
+        matchID: 1
       }
     };
     const nextState = reducer(initialState, action);
@@ -244,10 +307,19 @@ describe('Create Match reducer', () => {
 });
 
 describe('general reducer', () => {
+  const START_DATE = new Date();
+  const END_DATE = new Date(START_DATE.getFullYear()+1);
 
   const initialState = fromJS({
     matches: [{
       matchID: '456',
+      challengee: '123', 
+      startDate: START_DATE,
+      endDate: END_DATE,
+      starting_funds: '1000000',
+      status: 'progress',
+      type: 'solo',
+      winner: null,
       portfolio: {
         stocks: [],
         totalValue: '1000000',
