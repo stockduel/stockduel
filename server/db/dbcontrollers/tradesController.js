@@ -168,6 +168,7 @@ module.exports = function (knex) {
 
           return portfolio;
         }, {});
+
         var runningSum = 0;
         var stocks = Object.keys(portfolio).map(function (stock) {
           var stockData = portfolio[stock];

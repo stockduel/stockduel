@@ -8,6 +8,7 @@ import { AppConnected } from '../Components/app.jsx';
 import { PortfolioConnected } from '../Components/portfolio.jsx';
 import { Home } from '../Components/home.jsx';
 import { StateGenConnected } from '../Components/stateGen.jsx';
+import { SearchConnected } from '../Components/buyStock.jsx';
 // import { buy } from '../actions/actions.js';
 import { toJS } from 'immutable';
 import { Router, Route, Link } from 'react-router';
@@ -34,11 +35,12 @@ render ((
       <Route path="/" component={AppWithStore}>
         <Route path="home" component={Home} />
         <Route path="portfolio" component={PortfolioConnected} />
+        <Route path="search" component={SearchConnected} />
         <Route path="_=_" component={StateGenConnected} />
       </Route>
     </Router>
   ),
-  document.body
+  document.getElementById('app')
 );
 
 

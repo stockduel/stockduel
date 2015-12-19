@@ -206,7 +206,7 @@ describe('Trade Controller', function () {
 
       tradesController.getPortfolio(user.u_id, match.m_id)
         .then(function (portfolio) {
-          // console.log(portfolio);
+          console.log(portfolio.stocks);
           expect(portfolio).to.be.an('object');
           expect(portfolio.stocks.length).to.equal(1);
           expect(portfolio.available_cash).to.be.a('number');
