@@ -9,7 +9,7 @@ export const Stock = React.createClass({
 
   render() {
     const { sell, stockSymbol, shares, matchID, userID, price } = this.props;
-    
+    console.log('matchID is ' + matchID + ' in Stock');
     return (
       <div>
         <p> {stockSymbol} : {shares} at ${price} </p>

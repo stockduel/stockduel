@@ -37,7 +37,6 @@ module.exports = function (knex) {
     var numShares = req.body.numShares;
     var action = req.body.action;
     var stockTicker = req.body.stockTicker;
-
     var actions = {
       'buy': tradesController.buy,
       'sell': tradesController.sell

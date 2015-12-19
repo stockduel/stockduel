@@ -196,7 +196,7 @@ describe('/trades', function () {
         request(app)
           .get('/trades/' + matchid + '/' + userid)
           .expect(function (response) {
-            var portfolio = response.body.data.portfolio;
+            var portfolio = response.body.data;
             expect(portfolio).to.be.a('object');
             expect(portfolio.stocks).to.be.an('array');
             expect(portfolio.stocks[0].price).to.be.a('number');

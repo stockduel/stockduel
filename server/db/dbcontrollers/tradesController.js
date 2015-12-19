@@ -178,13 +178,10 @@ module.exports = function (knex) {
         });
 
         return {
-          portfolio: {
             totalValue: runningSum + trades[trades.length - 1].available_cash,
             available_cash: trades[trades.length - 1].available_cash,
             stocks: stocks
-          },
-          matchID: matchID
-        };
+          };
       })
       .catch(function (err) {
         console.error(err);
