@@ -8,6 +8,7 @@ import { AppConnected } from '../Components/app.jsx';
 import { PortfolioConnected } from '../Components/portfolio.jsx';
 import { Home } from '../Components/home.jsx';
 import { StateGenConnected } from '../Components/stateGen.jsx';
+import { SearchConnected } from '../Components/buyStock.jsx';
 // import { buy } from '../actions/actions.js';
 import { toJS } from 'immutable';
 import { Router, Route, Link } from 'react-router';
@@ -15,17 +16,6 @@ import { Router, Route, Link } from 'react-router';
 // hot swap css
 import stylesheet from '../assets/stylesheets/style.css';
 
-// dummy component for testing
-// var Dummy = React.createClass({
-//   render() {
-//     return (
-//       <div>
-//         <h1>Dummy Page</h1>
-//         <Link to="/home">to app page</Link>
-//       </div>
-//     );
-//   }
-// })
 
 var AppWithStore = React.createClass({
 
@@ -45,11 +35,12 @@ render ((
       <Route path="/" component={AppWithStore}>
         <Route path="home" component={Home} />
         <Route path="portfolio" component={PortfolioConnected} />
+        <Route path="search" component={SearchConnected} />
         <Route path="_=_" component={StateGenConnected} />
       </Route>
     </Router>
   ),
-  document.body
+  document.getElementById('app')
 );
 
 

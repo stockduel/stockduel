@@ -2,6 +2,7 @@ import {List, Map, toJS} from 'immutable';
 
 
 export default function buyReducer(state, action) {
+  console.log('IN REDUCER BUYING')
   var targetMatch;
   var targetMatchIndex;
   state.get('matches').forEach(function(match, index) {
@@ -60,7 +61,7 @@ export default function buyReducer(state, action) {
     }
     return match;
   });
-
+  console.log('match buy update', newMatchArray);
   var newState = state.set('matches', newMatchArray);
   return newState;
 

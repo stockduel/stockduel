@@ -39,6 +39,7 @@ let App = React.createClass({
           iconElementRight={<FlatButton linkButton={true} href="/auth/facebook" label="Login" primary={true} />} />
         <Link to="/home">to home</Link><br/>
         <Link to="/portfolio">to portfolio</Link>
+        <Link to="/search">to search stocks</Link>
       </div>
     )
   }
@@ -50,6 +51,7 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
+  console.log('this is state:', state);
   return state.toJS();
 }
 
