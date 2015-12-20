@@ -38,7 +38,9 @@ module.exports = function (knex) {
   module.joinMatch = function (matchID, userID) {
     return knex('matches').where({
         challengee: null,
-        m_id: matchID
+        m_id: matchID,
+        status: 'pending',
+        type: 'head'
       })
       .update({
         challengee: userID,
