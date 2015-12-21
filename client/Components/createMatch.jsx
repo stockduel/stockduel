@@ -28,13 +28,13 @@ const CardTitle = require('material-ui/lib/card/card-title');
 const Avatar = require('material-ui/lib/avatar.js');
 const TextField = require('material-ui/lib/text-field');
 
-export const CreateMatch = React.createClass({
+export const CreateMatchDumb = React.createClass({
 
   render() {
 
     let matchType;
     let startFunds;
-    let title;
+    let matchTitle;
     const { userID, createMatch } = this.props;
 
 
@@ -62,7 +62,7 @@ export const CreateMatch = React.createClass({
             <div className="row container">
               <div className="spaceUnder">
                 <TextField onChange={function ()  {
-                  title = arguments[0].target.value;
+                  matchTitle = arguments[0].target.value;
                 }}
                   hintText="Match Title" className="matchTitleBox" />
               </div>
@@ -146,6 +146,7 @@ export const CreateMatch = React.createClass({
                       } else {
                         let createOptions = {
                           userID: userID,
+                          title: matchTitle,
                           startDate: dateFormatStart,
                           endDate: dateFormatEnd,
                           startFunds: startFunds,

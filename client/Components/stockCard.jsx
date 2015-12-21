@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
+import { CurrentStock } from './currentStock.jsx';
 
 const Card = require('material-ui/lib/card/card');
 const CardActions = require('material-ui/lib/card/card-actions');
@@ -16,13 +17,6 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
 export const Stock = React.createClass({
 
-  //place to hold temporary variables
-  getInitialState() {
-      return {
-        numSharesToSell: 0
-      };
-  },
-
   render() {
     var that = this;
     const { sell, stockSymbol, shares, matchID, userID, price, bid, ask, percent_change, gain_loss, marketValue, name } = this.props;
@@ -30,41 +24,13 @@ export const Stock = React.createClass({
     return (
       <div className="container">
 
-        <Card>
-          <div className="row container">
-            <div className="three columns">
-              <h4>{name}<span>{stockSymbol}</span></h4>
-            </div>
+        <Card className="cardMarginBottom">
 
-            <div className="two columns">
-              <h5> Shares: {shares}</h5>
-            </div>
-
-            <div className="two columns">
-              <h5> Total: ${(shares * price).toFixed(2)}</h5>
-            </div>
-
-            <div className="three columns">
-              <input type="number" ref="sellNum" min="1" max={shares} step="1" onChange={function (event) {
-                that.setState({numSharesToSell: event.target.value})
-              }} />
-
-              <RaisedButton label="Sell" onClick={() => {
-                let numSharesToSell = that.state.numSharesToSell;
-                let sellOptions = {
-                  numShares: numSharesToSell,
-                  stockTicker: stockSymbol,
-                  matchID: matchID,
-                  userID: userID,
-                  action: 'sell',
-                };
-                sell(sellOptions);
-              }} />
-            </div>
-
+          <div className="row paddingPortfolio">
+            <CurrentStock sell={sell} shares={shares} matchID={matchID} userID={userID} stockSymbol={stockSymbol} price={price} name={name} />
           </div>
 
-          <CardText>
+          <CardText className="row">
             
            <ul>
              <li>Ask: ${ask}</li>

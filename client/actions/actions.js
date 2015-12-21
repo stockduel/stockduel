@@ -33,7 +33,7 @@ export function buy(options) {
         return dispatch({type: 'FAILED_TRADE'});
       } else {
         options.price = String(res.body.data.price);
-        // return dispatch(getStockInfo(res.body.data.symbol, res.body.data.match_id));
+        console.log('HEAR you on action');
         return dispatch(buySync(options));
       }
 
@@ -42,20 +42,17 @@ export function buy(options) {
 }
 
 
-export function sellSync(options) {
+export function sellSync(matchID, userID, portfolio ) {
   return {
     type: SELL_STOCK,
-    userID: options.userID,
-    matchID: options.matchID,
-    //buyReducer uses these keys; options value is the name needed by backend
-    stockSymbol: options.stockTicker,
-    price: options.price,
-    //buyReducer uses these keys; options value is the name needed by backend
-    shares: options.numShares
+    userID: userID,
+    matchID: matchID,
+    portfolio: portfolio
   }
 }
 
 export function sell(options) {
+
   return (dispatch) => {
     //  requires: numShares, action (sell), stockTicker
     return request.post('/trades/' + options.matchID + '/' + options.userID)
@@ -68,7 +65,9 @@ export function sell(options) {
       } else {
         options.price = String(res.body.data.price);
         console.log('-------> result from server',res.body);
-        return dispatch(sellSync(options));
+        var matchID = options.matchID;
+        var userID = options.userID;
+        return dispatch(sellSync(matchID, userID, res.body.data ));
       }
     });
   };
@@ -141,6 +140,7 @@ export function updatePrices(oldStockArray) {
        currentMatchID: options.m_id,
        match: {
         m_id: options.m_id,
+        title: options.title,
         challengee: options.challengee, 
         startDate: options.startdate,
         endDate: options.enddate,

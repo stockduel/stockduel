@@ -17,7 +17,6 @@ module.exports = function (knex) {
 
   router.route('/:matchid/:userid')
     .get(function (req, res) {
-      console.log('in route', req.userid, req.matchid)
       tradesController.getPortfolio(req.userid, req.matchid)
         .then(function (portfolio) {
           res.status(200).json({
@@ -32,7 +31,6 @@ module.exports = function (knex) {
     })
 
   .post(function (req, res) {
-    console.log('in route BUY server', req.matchid)
     var userID = req.userid;
     var matchID = req.matchid;
     var numShares = req.body.numShares;
@@ -51,6 +49,9 @@ module.exports = function (knex) {
 
     actions[action](userID, matchID, numShares, stockTicker)
       .then(function (data) {
+        //redirect to update portfolio information
+        // res.redirect('/trades/'+data.match_id+'/'+data.user_id);
+        // res.redirect('/stocks/'+data.)
         res.status(200).json({
           data: data
         });
