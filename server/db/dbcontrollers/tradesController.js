@@ -3,7 +3,6 @@ var stocksController = require('./stocksController');
 
 module.exports = function (knex) {
   'use strict';
-  var STARTING_CASH = 100000;
   var stocksCtrl = stocksController(knex);
 
   var module = {};
@@ -18,31 +17,6 @@ module.exports = function (knex) {
       });
   };
 
-  module.currentStocks = function (trades) {
-    return trades.reduce(function (portfolio, trade) {
-
-      var action = trade.action;
-      var symbol = trade.symbol;
-      var shares = trade.shares;
-
-      if (portfolio[symbol] === undefined) {
-        portfolio[symbol] = 0;
-      }
-
-      if (action === BUY) {
-        portfolio[symbol] += shares;
-      } else if (action === SELL) {
-        portfolio[symbol] -= shares;
-      }
-
-      if (portfolio[symbol] === 0) {
-        delete portfolio[symbol];
-      }
-
-      return portfolio;
-    }, {});
-  };
-
   module.getTrades = function (userID, matchID) {
     return knex.select()
       .table('trades')
@@ -55,19 +29,15 @@ module.exports = function (knex) {
 
     return Promise.all([
         stocksCtrl.getStock(stockTicker),
-        module.getTrades(userID, matchID)
+        generatePortfolio(userID, matchID)
       ])
       .then(function (tuple) {
         var stock = tuple[0];
-        var trades = tuple[1];
-        var available_cash = STARTING_CASH;
+        var portfolio = tuple[1];
+        var available_cash = portfolio.available_cash;
 
         if (stock === null) {
           throw new Error('stock symbol does not exist');
-        }
-
-        if (trades.length > 0) {
-          available_cash = trades[0].available_cash;
         }
 
         if (stock.ask * numShares > available_cash) {
@@ -87,33 +57,34 @@ module.exports = function (knex) {
         });
       })
       .catch(function (err) {
+        console.log(err);
         return null;
       });
   };
-
-  //-------------------------------------sell a stock controller -----------------------------------------//
 
   module.sell = function (userID, matchID, numShares, stockTicker) {
 
     return Promise.all([
         stocksCtrl.getStock(stockTicker),
-        module.getTrades(userID, matchID)
+        generatePortfolio(userID, matchID)
       ])
       .then(function (tuple) {
         var stock = tuple[0];
-        var trades = tuple[1];
-        var portfolio = module.currentStocks(trades);
+        var portfolio = tuple[1];
+        var stocks = portfolio.stocks;
+        var available_cash = portfolio.available_cash;
 
         if (stock === null) {
           throw new Error('stock symbol does not exist');
         }
 
-        if (portfolio[stock.symbol] === undefined ||
-          portfolio[stock.symbol] < numShares) {
+        if (stocks[stock.symbol] === undefined ||
+          stocks[stock.symbol].shares < numShares) {
           throw new Error('number of shares to sell exceeds number of shares owned');
         }
 
-        var available_cash = trades[0].available_cash + (stock.bid * numShares);
+        available_cash += stock.bid * numShares;
+
         return createTrade({
           user_id: userID,
           match_id: matchID,
@@ -129,69 +100,113 @@ module.exports = function (knex) {
       });
   };
 
-  //---------------------get user portfolio------------------------------------//
-
-  module.getPortfolio = function (userID, matchID) {
-
+  var getAllTradesWithStockData = function (userID, matchID) {
     return knex('trades').where({
         user_id: userID,
         match_id: matchID
       })
       .join('stock_prices', 'trades.symbol', '=', 'stock_prices.symbol')
       .join('stocks', 'trades.symbol', '=', 'stocks.symbol')
-      .orderBy('created_at', 'ASC')
-      .then(function (trades) {
-        var portfolio = trades.reduce(function (portfolio, trade) {
-          var stockSymbol = trade.symbol;
-          if (portfolio[stockSymbol] === undefined) {
-            portfolio[stockSymbol] = {
-              stockSymbol: stockSymbol,
-              name: trade.name,
-              shares: 0,
-              price: 0,
-              percent_change: trade.percent_change,
-              bid: trade.bid,
-              ask: trade.ask
-            };
-          }
+      .orderBy('created_at', 'ASC');
+  };
 
-          if (trade.action === BUY) {
-            portfolio[stockSymbol].price = (portfolio[stockSymbol].price * portfolio[stockSymbol].shares + trade.price * trade.shares) / (portfolio[stockSymbol].shares + trade.shares);
-            portfolio[stockSymbol].shares += trade.shares;
-          } else if (trade.action === SELL) {
-            portfolio[stockSymbol].shares -= trade.shares;
-          }
+  var costAverage = function (currentPrice, currentShares, newPrice, newShares) {
+    var cost = (currentPrice * currentShares + newPrice * newShares) / (currentShares + newShares);
+    return Number(cost.toFixed(2));
+  };
 
-          if (portfolio[stockSymbol].shares === 0) {
-            delete portfolio[stockSymbol];
-          }
+  module.reduceTradesToPortfolio = function (trades, startingFunds) {
+    var availableCash = startingFunds;
 
-          return portfolio;
-        }, {});
-        var runningSum = 0;
-        var stocks = Object.keys(portfolio).map(function (stock) {
-          var stockData = portfolio[stock];
-          stockData.marketValue = stockData.bid * stockData.shares;
-          runningSum += stockData.marketValue;
-          stockData.gain_loss = (stockData.marketValue - stockData.price * stockData.shares).toFixed(2);
-          return stockData;
-        });
+    var stocks = trades.reduce(function (portfolio, trade) {
 
-        return {
-            totalValue: runningSum + trades[trades.length - 1].available_cash,
-            available_cash: trades[trades.length - 1].available_cash,
-            stocks: stocks
-          };
+      var stock = portfolio[trade.symbol];
+
+      if (stock === undefined) {
+        portfolio[trade.symbol] = {};
+        stock = portfolio[trade.symbol];
+        stock.symbol = trade.symbol;
+        stock.shares = 0;
+        stock.price = 0;
+        stock.bid = trade.bid;
+        stock.ask = trade.ask;
+      }
+
+      if (trade.action === BUY) {
+        availableCash -= (trade.price * trade.shares);
+        stock.price = costAverage(stock.price, stock.shares, trade.price, trade.shares);
+        stock.shares += trade.shares;
+      } else if (trade.action === SELL) {
+        availableCash += (trade.price * trade.shares);
+        stock.shares -= trade.shares;
+      } else {
+        throw new Error('unsupported action type. expected buy or sell');
+      }
+
+      // remove stocks with 0 shares after selling
+      if (stock.shares === 0) {
+        delete portfolio[trade.symbol];
+      }
+
+      return portfolio;
+    }, {});
+
+    return {
+      available_cash: availableCash,
+      stocks: stocks
+    };
+
+  };
+
+  var generatePortfolioMetrics = function (portfolio) {
+    var portfolioValue = 0;
+    var availableCash = portfolio.available_cash;
+
+    var stocks = Object.keys(portfolio.stocks).map(function (stockSymbol) {
+      var stockData = portfolio.stocks[stockSymbol];
+      stockData.marketValue = Number((stockData.bid * stockData.shares).toFixed(2));
+      portfolioValue += stockData.marketValue;
+      stockData.gain_loss = Number((stockData.marketValue - stockData.price * stockData.shares).toFixed(2));
+      return stockData;
+    });
+
+    return {
+      totalValue: portfolioValue + availableCash,
+      available_cash: availableCash,
+      stocks: stocks
+    };
+
+  };
+
+  module.getPortfolio = function (userID, matchID) {
+    return generatePortfolio(userID, matchID)
+      .then(generatePortfolioMetrics);
+  };
+
+  var getMatch = function (matchID) {
+    return knex.select()
+      .table('matches').where('m_id', '=', matchID)
+      .then(function (match) {
+        return match[0];
+      });
+  };
+
+  var generatePortfolio = function (userID, matchID) {
+
+    return Promise.all([
+        getMatch(matchID),
+        getAllTradesWithStockData(userID, matchID)
+      ])
+      .then(function (tuple) {
+        var match = tuple[0];
+        var trades = tuple[1];
+        return module.reduceTradesToPortfolio(trades, match.starting_funds);
       })
       .catch(function (err) {
         console.error(err);
         return null;
       });
-
   };
 
-  //----------------------------------------------------------//
-
   return module;
-
 };

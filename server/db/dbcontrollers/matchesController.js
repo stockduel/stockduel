@@ -68,11 +68,11 @@ module.exports = function (knex) {
       .then(function (matches) {
         return Promise.map(matches, function (match) {
           return tradesCtrl.getPortfolio(userid, match.m_id)
-            .then(function(portfolio){
+            .then(function (portfolio) {
               match.portfolio = portfolio;
               return match; // returns match object with all match info + corresponding portfolio
             });
-        })
+        });
       });
   };
 
