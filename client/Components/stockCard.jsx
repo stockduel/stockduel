@@ -1,5 +1,5 @@
 'use strict';
-//NB.this page need to have the this.props.inputID to work
+
 import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';

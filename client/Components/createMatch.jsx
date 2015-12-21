@@ -1,5 +1,5 @@
 'use strict';
-//NB not yet have text input field for a match title
+
 import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
