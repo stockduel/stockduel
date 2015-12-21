@@ -9,9 +9,9 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
 export const CurrentStock = React.createClass({
 
-  let numSharesToSell;
 
   render() {
+    let numSharesToSell;
 
     const { sell, stockSymbol, shares, matchID, userID, price, name } = this.props;
     
