@@ -43,7 +43,6 @@ export default function addStockReducer(state, action) {
     }
 
   });
-  console.log('HERE----->', newStockArray)
   var newState = state.setIn(['matches', targetMatchIndex,'portfolio','stocks'], newStockArray);
 
   return newState;

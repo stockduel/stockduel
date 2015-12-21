@@ -58,7 +58,6 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
-  console.log('this is state:', state.toJS());
   return state.toJS();
 }
 

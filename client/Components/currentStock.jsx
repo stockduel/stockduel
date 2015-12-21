@@ -9,15 +9,10 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
 export const CurrentStock = React.createClass({
 
-  //place to hold temporary variables
-  getInitialState() {
-      return {
-        numSharesToSell: 0
-      };
-  },
+  let numSharesToSell;
 
   render() {
-    var that = this;
+
     const { sell, stockSymbol, shares, matchID, userID, price, name } = this.props;
     
     return (
@@ -33,12 +28,11 @@ export const CurrentStock = React.createClass({
         </div>
 
         <div className="three columns">
-          <input type="number" ref="sellNum" min="1" max={shares} step="1" onChange={function (event) {
-            that.setState({numSharesToSell: event.target.value})
+          <input type="number" ref="sellNum" min="1" max={shares} step="1" onChange={(event) => {
+            numSharesToSell = event.target.value;
           }} />
 
           <RaisedButton label="Sell" onClick={() => {
-            let numSharesToSell = that.state.numSharesToSell;
             let sellOptions = {
               numShares: numSharesToSell,
               stockTicker: stockSymbol,

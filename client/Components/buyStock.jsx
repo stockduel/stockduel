@@ -31,8 +31,6 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
-  console.log('state is in search', state.toJS());
-  console.log('USERID',state.get('userID') )
   let targetMatch;
   state.get('matches').forEach(function(match, index) {
     
@@ -53,3 +51,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export const SearchConnected = connect(mapStateToProps, mapDispatchToProps)(Buy);
+
+

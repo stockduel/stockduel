@@ -142,7 +142,7 @@ export const CreateMatchDumb = React.createClass({
                       alert('Matches should not start before today, and should not end before they start.');
                     } else {
                       if (!matchType || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
-                        alert('Please set both match type and starting funds for this match.')
+                        alert('Please pick an option for every field')
                       } else {
                         let createOptions = {
                           userID: userID,
