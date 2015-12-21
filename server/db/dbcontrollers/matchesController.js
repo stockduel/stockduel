@@ -13,7 +13,7 @@ module.exports = function (knex) {
    the type (solo or head to head) {string}, start date {date}, end date
    {date} */
 
-  module.createMatch = function (userID, startFunds, type, startDate, endDate) {
+  module.createMatch = function (userID, startFunds, type, startDate, endDate, title) {
 
     var challengee = null;
     if (type === SOLO) {
@@ -27,6 +27,7 @@ module.exports = function (knex) {
         'enddate': endDate,
         'status': PENDING,
         'challengee': challengee,
+        'title': title,
         'type': type
       }, '*')
       .then(function (match) {
@@ -43,7 +44,7 @@ module.exports = function (knex) {
         type: 'head'
       })
       .update({
-        challengee: userID,
+        challengee: userID
       }, '*')
       .then(function (match) {
         if (match.length < 1) {

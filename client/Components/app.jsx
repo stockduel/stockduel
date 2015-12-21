@@ -37,8 +37,13 @@ let App = React.createClass({
        <AppBar
           title={<span>This. Is. StockDuel.</span>}
           iconElementRight={<FlatButton linkButton={true} href="/auth/facebook" label="Login" primary={true} />} />
-        <Link to="/home">to home</Link><br/>
-        <Link to="/portfolio">to portfolio</Link>
+        <Link to="/home">to home</Link>
+        <br/>
+        <Link to="/matches">to matches</Link>
+        <br/>
+        <Link to="/create">create new match</Link>
+        <br/>
+        <Link to="/join">join a match</Link>
       </div>
     )
   }

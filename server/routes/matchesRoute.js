@@ -37,8 +37,8 @@ module.exports = function (knex) {
     var startDate = req.body.startDate;
     var endDate = req.body.endDate;
     var type = req.body.type;
-
-    matchesController.createMatch(userID, startFunds, type, startDate, endDate)
+    var title = req.body.title;
+    matchesController.createMatch(userID, startFunds, type, startDate, endDate, title)
       .then(function (match) {
         return res.status(200).json({
           data: match
@@ -69,7 +69,8 @@ module.exports = function (knex) {
 
   router.route('/:matchid')
     .put(function (req, res) {
-      var userID = req.body.userID;
+      console.log(req.session);
+      var userID = req.session.passport.user.u_id;
 
       matchesController.joinMatch(req.matchid, userID)
         .then(function (match) {
