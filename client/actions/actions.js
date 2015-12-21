@@ -6,6 +6,8 @@ export const UPDATE_PRICES = 'UPDATE_PRICES';
 export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 export const CREATE_MATCH = 'CREATE_MATCH';
+export const ADD_STOCK = 'ADD_STOCK';
+export const GET_PORTFOLIO = 'GET_PORTFOLIO';
 
 export function buySync(options) {
   return {
@@ -17,7 +19,7 @@ export function buySync(options) {
     price: options.price,
     //buyReducer uses these keys; options value is the name needed by backend
     shares: options.numShares
-  }
+  };
 }
 
 export function buy(options) {
@@ -31,27 +33,26 @@ export function buy(options) {
         return dispatch({type: 'FAILED_TRADE'});
       } else {
         options.price = String(res.body.data.price);
+        console.log('HEAR you on action');
         return dispatch(buySync(options));
       }
 
     });
-    };
+  };
 }
 
 
-export function sellSync(options) {
+export function sellSync(matchID, userID, portfolio ) {
   return {
     type: SELL_STOCK,
-    userID: options.userID,
-    matchID: options.matchID,
-    //buyReducer uses these keys; options value is the name needed by backend
-    stockSymbol: options.stockTicker,
-    price: options.price,
-    //buyReducer uses these keys; options value is the name needed by backend
-    shares: options.numShares
+    userID: userID,
+    matchID: matchID,
+    portfolio: portfolio
   }
 }
+
 export function sell(options) {
+
   return (dispatch) => {
     //  requires: numShares, action (sell), stockTicker
     return request.post('/trades/' + options.matchID + '/' + options.userID)
@@ -63,11 +64,13 @@ export function sell(options) {
         return dispatch({type: 'FAILED_TRADE'});
       } else {
         options.price = String(res.body.data.price);
-        return dispatch(sellSync(options));
+        console.log('-------> result from server',res.body);
+        var matchID = options.matchID;
+        var userID = options.userID;
+        return dispatch(sellSync(matchID, userID, res.body.data ));
       }
-
     });
-    };
+  };
 }
 
 export function updatePricesSync(updatedStockArray) {
@@ -137,6 +140,7 @@ export function updatePrices(oldStockArray) {
        currentMatchID: options.m_id,
        match: {
         m_id: options.m_id,
+        title: options.title,
         challengee: options.challengee, 
         startDate: options.startdate,
         endDate: options.enddate,
@@ -164,6 +168,33 @@ export function updatePrices(oldStockArray) {
            dispatch({type: 'FAILED_TO_CREATE_MATCH'});
          } else {
            dispatch(createMatchSync(res.body.data));
+         }
+       });
+     };
+    }
+
+//-------------get the user portfolio/stocks and show----------------//
+
+export function getMatchPortfolioSync(options, matchID) {
+  return {
+    type: GET_PORTFOLIO,
+    matchID: matchID,
+    stocks: options.stocks
+  }
+}
+
+export function getMatchPortfolio(matchID, userID) {
+     return (dispatch) => {
+       request.get('/trades/'+ matchID + '/' + userID)
+       .end(function(err, res){
+         if(err) {
+           //handle error
+           dispatch({type: 'FAILED_TO_CREATE_MATCH'});
+         } else {
+           if (res.body.data) {
+             var data = res.body.data;
+             return dispatch(getMatchPortfolioSync(data, matchID));
+           }
          }
        });
      };

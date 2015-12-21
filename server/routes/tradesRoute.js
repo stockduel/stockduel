@@ -31,7 +31,6 @@ module.exports = function (knex) {
     })
 
   .post(function (req, res) {
-
     var userID = req.userid;
     var matchID = req.matchid;
     var numShares = req.body.numShares;
@@ -50,6 +49,9 @@ module.exports = function (knex) {
 
     actions[action](userID, matchID, numShares, stockTicker)
       .then(function (data) {
+        //redirect to update portfolio information
+        // res.redirect('/trades/'+data.match_id+'/'+data.user_id);
+        // res.redirect('/stocks/'+data.)
         res.status(200).json({
           data: data
         });

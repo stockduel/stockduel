@@ -10,10 +10,14 @@ import * as Actions from '../actions/actions.js';
 import { Link } from 'react-router';
 import request from 'superagent';
 
+const RaisedButton = require('material-ui/lib/raised-button');
 const FlatButton = require('material-ui/lib/flat-button');
 const AppBar = require('material-ui/lib/app-bar');
 const IconButton = require('material-ui/lib/icon-button');
 const NavigationClose = require('material-ui/lib/svg-icons/navigation/close');
+const Toolbar = require('material-ui/lib/toolbar/toolbar');
+const ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
+const ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
 
 let App = React.createClass({
   logIn() {
@@ -32,13 +36,17 @@ let App = React.createClass({
   
   render() {
     const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userID } = this.props;
+
     return (
       <div>
-       <AppBar
-          title={<span>This. Is. StockDuel.</span>}
-          iconElementRight={<FlatButton linkButton={true} href="/auth/facebook" label="Login" primary={true} />} />
+       <Toolbar
+          style={{backgroundImage: 'url('+'http://hypertext.net/images/weblog/linen-backgrounds/dark_linen-640x960.png'+')', 
+          fontfamily: 'Raleway, sans-serif', color:'white', fontsize:'20px' }}>
+          <ToolbarTitle text="Stock Duel" />
+        </Toolbar>
         <Link to="/home">to home</Link><br/>
         <Link to="/portfolio">to portfolio</Link>
+        <Link to="/search">to search stocks</Link>
       </div>
     )
   }

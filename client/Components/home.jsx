@@ -12,24 +12,23 @@ export const Home = React.createClass({
   // },
   render() {
     return (
-      <div>
-        <h2>StockDuel: Fantasy Stock-Trading for Pirates</h2>
-        <p>Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crows nest 
-        nipperkin grog yardarm hempen halter furl. Swab barque interloper chantey doubloon starboard grog black jack gangway rutters.</p>
-        <p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her 
-        cable holystone blow the man down spanker Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul 
-        squiffy black spot yardarm spyglass sheet transom heave to.</p>
-        <p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup 
-        ballast Blimey lee snow crows nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom 
-        spirits.</p>
-        <p>Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crows nest 
-        nipperkin grog yardarm hempen halter furl. Swab barque interloper chantey doubloon starboard grog black jack gangway rutters.</p>
-        <p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her 
-        cable holystone blow the man down spanker Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul 
-        squiffy black spot yardarm spyglass sheet transom heave to.</p>
-        <p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup 
-        ballast Blimey lee snow crows nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom 
-        spirits.</p>
+      <div className="container">
+        <div className="centreTitle">
+          <h2>StockDuel</h2>
+          <h6>Fantasy Stock Trading</h6>
+        </div>
+        <h5>
+          1. Join or make a match
+        </h5> 
+        <h5>
+          2. Create a portfolio
+        </h5>
+        <h5>
+          3. Beat your oponents portfolio
+        </h5>
+        <div className="centreTitle" >
+          <a href="/auth/facebook"><img className="imgWidth" src='../assets/images/login.png' alt="facebook login button" /></a>
+        </div>
       </div>
     );
   }

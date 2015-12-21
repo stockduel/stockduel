@@ -2,6 +2,8 @@ import {List, Map, toJS} from 'immutable';
 
 
 export default function sellReducer(state, action) {
+  console.log('--------->>>>', action, state);
+  
   var targetMatch;
   var targetMatchIndex;
   state.get('matches').forEach(function(match, index) {
