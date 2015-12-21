@@ -177,19 +177,14 @@ describe('scoreMatches Worker', function () {
 
       tradesController.buy(match.creator_id, match.m_id, trade.shares, trade.symbol)
         .then(function (creatorTrade) {
-          tradesController.buy(match.challengee, match.m_id, trade.shares, trade.symbol)
+          tradesController.buy(match.challengee, match.m_id, trade.shares * 2, trade.symbol)
           .then(function ( challengeeTrade) {
-            return knex('trades')
-                    .where('t_id', '=', creatorTrade.t_id)
-                    .update({available_cash: creatorTrade.available_cash * 2}, '*')
-                    .then(function (lastTrade) {
-                      scoreMatches.determineWinners([match])
-                      .then(function (scoredMatches) {
-                        var scoredMatch = scoredMatches[0];
-                        expect(scoredMatch.winner).to.equal(match.creator_id);
-                        done();
-                      });
-                    });
+            scoreMatches.determineWinners([match])
+            .then(function (scoredMatches) {
+              var scoredMatch = scoredMatches[0];
+              expect(scoredMatch.winner).to.equal(match.creator_id);
+              done();
+            });
           });
         });
     });
@@ -202,21 +197,16 @@ describe('scoreMatches Worker', function () {
         symbol: 'FB'
       };
 
-      tradesController.buy(match.creator_id, match.m_id, trade.shares, trade.symbol)
+      tradesController.buy(match.creator_id, match.m_id, trade.shares * 5, trade.symbol)
         .then(function (creatorTrade) {
           tradesController.buy(match.challengee, match.m_id, trade.shares, trade.symbol)
           .then(function ( challengeeTrade) {
-            return knex('trades')
-                    .where('t_id', '=', challengeeTrade.t_id)
-                    .update({available_cash: creatorTrade.available_cash * 2}, '*')
-                    .then(function (lastTrade) {
-                      scoreMatches.determineWinners([match])
-                      .then(function (scoredMatches) {
-                        var scoredMatch = scoredMatches[0];
-                        expect(scoredMatch.winner).to.equal(match.challengee);
-                        done();
-                      });
-                    });
+            scoreMatches.determineWinners([match])
+            .then(function (scoredMatches) {
+              var scoredMatch = scoredMatches[0];
+              expect(scoredMatch.winner).to.equal(match.challengee);
+              done();
+            });
           });
         });
     });
