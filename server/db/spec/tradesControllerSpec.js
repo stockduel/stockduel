@@ -81,45 +81,51 @@ describe('Trade Controller', function () {
 
   });
 
-  describe('current stocks', function () {
+  describe('reduceTradesToPortfolio', function () {
     it('should return the stocks on hand for a given list of trades', function () {
+      var startingCash = 250000;
+
       var trades = [{
         action: 'buy',
         symbol: 'FB',
         shares: 34,
-        available_cash: 1000
+        price: 100
       }, {
         action: 'sell',
         symbol: 'FB',
         shares: 22,
-        available_cash: 47000
+        price: 50
       }, {
         action: 'buy',
         symbol: 'TSLA',
         shares: 100,
-        available_cash: 55000
+        price: 100
       }, {
         action: 'buy',
         symbol: 'TSLA',
         shares: 34,
-        available_cash: 10000
+        price: 130
       }, {
         action: 'buy',
         symbol: 'MSFT',
         shares: 30,
-        available_cash: 10000
+        price: 100
       }, {
         action: 'sell',
         symbol: 'MSFT',
         shares: 30,
-        available_cash: 10000
+        price: 110
       }];
 
-      var portfolio = tradesController.currentStocks(trades);
+      var portfolio = tradesController.reduceTradesToPortfolio(trades, startingCash);
+      var stocks = portfolio.stocks;
+
       expect(portfolio).to.be.an('object');
-      expect(portfolio['MSFT']).to.equal(undefined);
-      expect(portfolio['FB']).to.equal(12);
-      expect(portfolio['TSLA']).to.equal(134);
+      expect(portfolio.available_cash).to.equal(233580);
+      expect(stocks['MSFT']).to.equal(undefined);
+      expect(stocks['FB'].shares).to.equal(12);
+      expect(stocks['TSLA'].shares).to.equal(134);
+      expect(stocks['TSLA'].price).to.equal(107.61);
     });
   });
 
@@ -206,10 +212,26 @@ describe('Trade Controller', function () {
 
       tradesController.getPortfolio(user.u_id, match.m_id)
         .then(function (portfolio) {
-          // console.log(portfolio);
           expect(portfolio).to.be.an('object');
+          expect(portfolio.stocks[0].marketValue).to.be.a('number');
+          expect(portfolio.stocks[0].gain_loss).to.be.a('number');
           expect(portfolio.stocks.length).to.equal(1);
           expect(portfolio.available_cash).to.be.a('number');
+          done();
+        });
+    });
+
+    it('should be able to get a user portfolio that has no trades', function (done) {
+      var user = users[1];
+      var match = matches[0];
+
+      tradesController.getPortfolio(user.u_id, match.m_id)
+        .then(function (portfolio) {
+          expect(portfolio).to.be.an('object');
+          expect(portfolio.stocks).to.be.an('array');
+          expect(portfolio.stocks.length).to.equal(0);
+          expect(portfolio.available_cash).to.be.a('number');
+          expect(portfolio.available_cash).to.equal(100000);
           done();
         });
     });
