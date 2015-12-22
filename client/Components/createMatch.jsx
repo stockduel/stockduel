@@ -4,12 +4,14 @@ import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
+import { createMatch } from '../actions/actions.js';
+import { bindActionCreators } from 'redux';
 
 // ============== BUGS IN MATERIAL UI V 0.13.4 -- WILL NOT DISPLAY CALENDAR ================ \\
 // const DatePicker = require('material-ui/lib/date-picker/date-picker');
 // const DatePickerDialog = require('material-ui/lib/date-picker/date-picker-dialog');
 
-export const CreateMatch = React.createClass({
+export const CreateMatchDumb = React.createClass({
 
   render() {
     const { userID, createMatch } = this.props;
@@ -18,6 +20,9 @@ export const CreateMatch = React.createClass({
       <div>
        <h2>Create a new match!</h2>
 
+       <h3>Match Title</h3>
+        <input id="matchTitleInput" type="text" maxLength="30" placeholder="Title . . ." />
+        <br/>
        <h3>Match Type</h3> 
        <select id="matchTypeInput">
           <option>Solo</option>
@@ -83,6 +88,7 @@ export const CreateMatch = React.createClass({
        </select>
        <br/>
        <button onClick={() => {
+         let matchTitle = document.getElementById('matchTitleInput').value;
          let matchType = document.getElementById('matchTypeInput').value;
          let startFunds = Number(document.getElementById('startFundsInput').value.slice(1).replace(/,/g, '')); // slice dollar sign, remove commas, coerce to Number
 
@@ -109,6 +115,7 @@ export const CreateMatch = React.createClass({
               } else {
                  let createOptions = {
                    userID: this.props.userID,
+                   title: matchTitle,
                    startDate: dateFormatStart,
                    endDate: dateFormatEnd,
                    startFunds: startFunds,
@@ -124,3 +131,16 @@ export const CreateMatch = React.createClass({
   }
 
 });
+
+function mapStateToProps(state) {
+  
+  return {
+    userID: state.get('userID'),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({createMatch}, dispatch);
+}
+
+export const CreateMatch = connect(mapStateToProps, mapDispatchToProps)(CreateMatchDumb);

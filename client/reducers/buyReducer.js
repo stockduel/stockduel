@@ -60,7 +60,6 @@ export default function buyReducer(state, action) {
     }
     return match;
   });
-
   var newState = state.set('matches', newMatchArray);
   return newState;
 

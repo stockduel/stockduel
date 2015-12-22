@@ -8,6 +8,10 @@ import { AppConnected } from '../Components/app.jsx';
 import { PortfolioConnected } from '../Components/portfolio.jsx';
 import { Home } from '../Components/home.jsx';
 import { StateGenConnected } from '../Components/stateGen.jsx';
+import { MatchesConnected } from '../Components/matches.jsx';
+import {CreateMatch} from '../Components/createMatch.jsx';
+import {JoinMatch} from '../Components/joinMatch.jsx';
+
 // import { buy } from '../actions/actions.js';
 import { toJS } from 'immutable';
 import { Router, Route, Link } from 'react-router';
@@ -44,8 +48,11 @@ render ((
     <Router>
       <Route path="/" component={AppWithStore}>
         <Route path="home" component={Home} />
-        <Route path="portfolio" component={PortfolioConnected} />
         <Route path="_=_" component={StateGenConnected} />
+        <Route path="create" component={CreateMatch} />
+        <Route path="matches" component={MatchesConnected} />
+        <Route path="portfolio" component={PortfolioConnected} />
+        <Route path="join" component={JoinMatch} />
       </Route>
     </Router>
   ),

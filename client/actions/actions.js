@@ -120,7 +120,7 @@ export function updatePrices(oldStockArray) {
         .end(function(err, res){
         if(err) {
           //handle error
-          console.log('There was an error on GET from route /state', err)
+          console.log('There was an error on GET from route /state', err);
           dispatch({type: 'FAILED_TO_LOAD_STATE'});
         } else {
           dispatch(setInitialStateSync(res.body));
@@ -137,6 +137,7 @@ export function updatePrices(oldStockArray) {
        currentMatchID: options.m_id,
        match: {
         m_id: options.m_id,
+        title: options.title,
         challengee: options.challengee, 
         startDate: options.startdate,
         endDate: options.enddate,
