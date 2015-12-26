@@ -56,7 +56,7 @@ render ((
       </Route>
     </Router>
   ),
-  document.body
+  document.getElementById('app')
 );
 
 
