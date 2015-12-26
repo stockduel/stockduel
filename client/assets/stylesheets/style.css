@@ -1,4 +1,49 @@
-h1 {
-  font-family: serif;
-  color: blue;
+body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+.centreTitle {
+  text-align: center;
+}
+
+.navLogo {
+  width: 90px;
+}
+
+.imgWidth {
+  width: 240px;
+}
+
+.rightButton {
+  float: right;
+  margin-bottom: 10px;
+}
+
+.logoTopPad {
+  padding-top: 4px;
+}
+
+.navButton {
+  border: none;
+  padding-top: 5px;
+}
+
+.navButton a {
+  text-decoration: none;
+}
+
+.navButtonFontSize {
+  font-size: 15px;
+  color: white;
+}
+
+.headerPaddingTop {
+  padding-top: 90px;
+}
+
+.loginPadTop {
+  padding-top: 50px;
 }

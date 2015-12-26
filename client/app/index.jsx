@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { store } from '../store/store.js';
 import { Provider } from 'react-redux';
+import { IndexRoute } from 'react-router';
 import { AppConnected } from '../Components/app.jsx';
 import { PortfolioConnected } from '../Components/portfolio.jsx';
 import { Home } from '../Components/home.jsx';
@@ -47,7 +48,7 @@ var AppWithStore = React.createClass({
 render ((
     <Router>
       <Route path="/" component={AppWithStore}>
-        <Route path="home" component={Home} />
+        <IndexRoute component={Home} />
         <Route path="_=_" component={StateGenConnected} />
         <Route path="create" component={CreateMatch} />
         <Route path="matches" component={MatchesConnected} />

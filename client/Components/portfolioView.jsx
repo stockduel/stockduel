@@ -13,16 +13,31 @@ export const PortfolioView = React.createClass({
   //   this.props.updatePrices(this.props.portfolio.get('stocks'));
   // },
   render() {
-    const { buy, sell, createMatch, matchID, userID, portfolioValue, available_cash } = this.props;
+    const { buy, sell, createMatch, matchID, userID, portfolioValue, available_cash, portfolio } = this.props;
     return (
-      <div>
+      <div className='container'>
         <h2>You have ${available_cash.toFixed(2)} available cash.</h2>
         <h2>Your portfolio is worth ${portfolioValue.toFixed(2)}.</h2>
         <StockPurchase buy={buy} matchID={matchID} userID={userID} />
         <ul>
-          {this.props.portfolio.get('stocks').map((stockObj, index) => {
+          {portfolio.get('stocks').map((stockObj, index) => {
             // TODO: condense props into one object and pass it through as attribute
-            return <Stock key={stockObj.get('stockSymbol')} sell={sell} matchID={matchID} userID={userID} stockSymbol={stockObj.get('stockSymbol')} shares={stockObj.get('shares')} price={stockObj.get('price')} inputID={index} />
+            return <Stock 
+              sell={sell} 
+              matchID={matchID} 
+              userID={userID} 
+              inputID={index}
+              key={stockObj.get('symbol')} 
+              name={stockObj.get('name')}
+              symbol={stockObj.get('symbol')} 
+              shares={stockObj.get('shares')} 
+              price={stockObj.get('price')} 
+              ask={stockObj.get('ask')}
+              bid={stockObj.get('bid')}
+              gain_loss={stockObj.get('gain_loss')}
+              marketValue={stockObj.get('marketValue')}
+              percent_change={stockObj.get('percent_change') || 0}
+            />
           })}
         </ul>
       </div>

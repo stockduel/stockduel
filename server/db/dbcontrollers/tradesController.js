@@ -27,6 +27,8 @@ module.exports = function (knex) {
 
   module.buy = function (userID, matchID, numShares, stockTicker) {
 
+    var trade;
+
     return Promise.all([
         stocksCtrl.getStock(stockTicker),
         generatePortfolio(userID, matchID)
@@ -34,6 +36,7 @@ module.exports = function (knex) {
       .then(function (tuple) {
         var stock = tuple[0];
         var portfolio = tuple[1];
+
         var available_cash = portfolio.available_cash;
 
         if (stock === null) {
@@ -56,6 +59,20 @@ module.exports = function (knex) {
           available_cash: available_cash
         });
       })
+      .then(function(resp){
+
+        trade = resp;
+        return module.getPortfolio(userID, matchID);
+
+      })
+      .then(function(port){
+
+        return {
+          trade: trade,
+          portfolio: port
+        };
+
+      })
       .catch(function (err) {
         console.log(err);
         return null;
@@ -63,6 +80,8 @@ module.exports = function (knex) {
   };
 
   module.sell = function (userID, matchID, numShares, stockTicker) {
+
+    var trade;
 
     return Promise.all([
         stocksCtrl.getStock(stockTicker),
@@ -94,6 +113,20 @@ module.exports = function (knex) {
           price: stock.bid,
           available_cash: available_cash
         });
+      })
+      .then(function(resp){
+
+        trade = resp;
+        return module.getPortfolio(userID, matchID);
+
+      })
+      .then(function(port){
+
+        return {
+          trade: trade,
+          portfolio: port
+        };
+
       })
       .catch(function (err) {
         return null;
@@ -130,6 +163,9 @@ module.exports = function (knex) {
         stock.price = 0;
         stock.bid = trade.bid;
         stock.ask = trade.ask;
+        stock.name = trade.name;
+        stock.percent_change = trade.percent_change;
+
       }
 
       if (trade.action === BUY) {
@@ -138,6 +174,7 @@ module.exports = function (knex) {
         stock.shares += trade.shares;
       } else if (trade.action === SELL) {
         availableCash += (trade.price * trade.shares);
+        stock.price = costAverage(stock.price, stock.shares, trade.price, trade.shares);
         stock.shares -= trade.shares;
       } else {
         throw new Error('unsupported action type. expected buy or sell');

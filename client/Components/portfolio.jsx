@@ -11,39 +11,22 @@ import { PortfolioView } from './portfolioView.jsx';
 import * as Actions from '../actions/actions.js';
 
 var Portfolio = React.createClass({
-  // componentWillMount() {
-  //   // setTimeout(()=> this.props.updatePrices(this.props.portfolio.get('stocks')), 5000);
-  //   this.props.updatePrices(this.props.portfolio.get('stocks'));
-  // },
+
   render() {
+
     const { buy, sell, createMatch, matchID, userID, portfolio } = this.props;
-    console.log(portfolio);
-    let available_cash;
-    let portfolioValue;
-    if ( portfolio ) {
-      // portfolio is an immutableJS object -- access its keys with .get method
-      available_cash = +portfolio.get('available_cash');
-      portfolioValue = this.props.portfolio.get('stocks').reduce( (memo, stockObj) => {
-        return memo += (+stockObj.get('price') * +stockObj.get('shares'));
-      }, +available_cash);
-    }
+
+    let available_cash = portfolio ? portfolio.get('available_cash') : 0;
+    let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
+
     let visibleComponent;
     visibleComponent = this.props.currentMatchID ? PortfolioView : CreateMatch;
+
     return React.createElement(
-        visibleComponent,
-        {available_cash, createMatch, buy, sell, matchID, userID, portfolioValue, portfolio}
-      );
-      // <visibleComponent {...this.props} available_cash={available_cash} portfolioValue={portfolioValue}/>
-    //);
-    // if ( !matchId ) {
-    //   return (
-    //     <div>
-    //       <CreateMatch userId={userId} createMatch={createMatch} />
-    //     </div>
-    //     );
-    //check this to make sure it works; may need a 'return'
-    
-    // );
+      visibleComponent,
+      {available_cash, createMatch, buy, sell, matchID, userID, portfolioValue, portfolio}
+    );
+
   }
 
 });
@@ -52,20 +35,25 @@ function mapStateToProps(state) {
     Loop through matches until matchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
-  console.log(state.toJS());
+
   let targetMatch;
+  //if a match has already been selected
   state.get('matches').forEach(function(match, index) {
     
-    if (match && match.get('m_id') === state.get('currentMatchID')) {
-      console.log('FOUND A MATCH!')
+    if (match.get('m_id') === state.get('currentMatchId')) {
       targetMatch = match;
     }
+
   });
+
   return {
+    //if a match has been selected
     portfolio: targetMatch ? targetMatch.get('portfolio'): null,
     matchID: targetMatch ? targetMatch.get('m_id'): null,
+
+    //irrespective of whether a match has been selected
     userID: state.get('userID'),
-    currentMatchID: state.get('currentMatchID')
+    currentMatchID: state.get('currentMatchId')
   };
 }
 
