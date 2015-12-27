@@ -47,3 +47,12 @@ body {
 .loginPadTop {
   padding-top: 50px;
 }
+
+.cardMarginBottom {
+  margin-bottom: 30px;
+}
+
+.paddingPortfolio {
+  padding-top: 20px;
+  padding-left: 20px;
+}

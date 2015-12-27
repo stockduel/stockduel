@@ -16,7 +16,7 @@ export const StockPurchase = React.createClass({
     let numShares;
     
     return (
-      <div>
+      <div className="cardMarginBottom">
 
        <h4>Buy some stocks:</h4> 
 
