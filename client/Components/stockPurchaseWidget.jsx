@@ -16,7 +16,7 @@ export const StockPurchase = React.createClass({
     let numShares;
     
     return (
-      <div className="cardMarginBottom">
+      <div className="cardMarginBottom paddingTop centreTitle">
 
        <TextField hintText="Stock Symbol" onChange={ function () {
         stockTicker = arguments[0].target.value;

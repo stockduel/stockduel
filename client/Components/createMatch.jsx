@@ -46,7 +46,7 @@ export const CreateMatchDumb = React.createClass({
     ];
 
     return (
-      <div className="container">
+      <div className="container paddingTop">
 
         <Card initiallyExpanded={false}>
           <CardHeader
@@ -69,9 +69,9 @@ export const CreateMatchDumb = React.createClass({
           <div className="row container">
             <div className="four columns">
                <h5>Start Date:</h5>
-               <input type="date" name="start" id="startDate" />
+               <input className="datePicker" type="date" name="start" id="startDate" />
                 <h5>Finish Date:</h5>
-               <input type="date" name="finish" id="finishDate" />
+               <input className="datePicker" type="date" name="finish" id="finishDate" />
             </div>
 
             <div className="four columns">
@@ -161,6 +161,8 @@ export const CreateMatchDumb = React.createClass({
           </CardActions>
 
         </Card>
+
+
 
       </div>
     );

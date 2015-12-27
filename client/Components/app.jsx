@@ -41,7 +41,7 @@ let App = React.createClass({
       <button className="navButton"><Link className="navButtonFontSize" to="/create">Create Match</Link></button> 
       <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
     </ToolbarGroup>);
-    console.log('state', userID)
+
     return (
       <div>
       <Toolbar

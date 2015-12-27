@@ -15,9 +15,9 @@ export const PortfolioView = React.createClass({
   render() {
     const { buy, sell, createMatch, matchID, userID, portfolioValue, available_cash, portfolio } = this.props;
     return (
-      <div className='container centreTitle paddingTop'>
-        <h2>You have ${available_cash.toFixed(2)} available cash.</h2>
-        <h2>Your portfolio is worth ${portfolioValue.toFixed(2)}.</h2>
+      <div className="container paddingTop">
+        <h2 className="centreTitle">You have ${available_cash.toFixed(2)} available cash.</h2>
+        <h2 className="centreTitle">Your portfolio is worth ${portfolioValue.toFixed(2)}.</h2>
         <StockPurchase buy={buy} matchID={matchID} userID={userID} />
         <ul>
           {portfolio.get('stocks').map((stockObj, index) => {
