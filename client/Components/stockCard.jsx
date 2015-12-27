@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
+import { StockChart } from './stockChart.jsx';
 
 const RaisedButton = require('material-ui/lib/raised-button');
 const Card = require('material-ui/lib/card/card');
@@ -61,10 +62,16 @@ export const Stock = React.createClass({
 
           <CardText className="row">
 
-            <p> Ask : ${ask}</p>
-            <p> Bid : ${bid}</p>
-            <p> Gain/Loss : {gain_loss}%</p>
-            <p> Change : {percent_change}</p>
+            <div className="three columns paddingTopStocks">
+              <p> Ask : ${ask}</p>
+              <p> Bid : ${bid}</p>
+              <p> Gain/Loss : {gain_loss}%</p>
+              <p> Change : {percent_change}</p>
+            </div>
+
+            <div className="nine columns">
+              <StockChart />
+            </div>
 
            < /CardText>
 
