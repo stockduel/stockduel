@@ -14,6 +14,7 @@ export const Stock = React.createClass({
 
   render() {
     const { sell, symbol, shares, matchID, userID, price, name, ask, bid, gain_loss, percent_change, marketValue } = this.props;
+    let numSharesToSell;
 
     return (
       <div>
