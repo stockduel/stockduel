@@ -112,9 +112,9 @@ describe('Match Controller', function () {
 
   describe('getUsersMatches', function () {
     it('should get the matches for a user', function (done) {
-      var userID = users[0].u_id;
+      var userId = users[0].u_id;
 
-      matchesController.getUsersMatches(userID)
+      matchesController.getUsersMatches(userId)
         .then(function (matches) {
           expect(matches).to.be.a('array');
           done();

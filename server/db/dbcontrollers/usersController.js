@@ -14,8 +14,8 @@ module.exports = function (knex) {
 
   //-----------------------get a specific users details---------------------------------//
 
-  module.getUser = function (userID) {
-    return knex.select().table('users').where('u_id', '=', userID)
+  module.getUser = function (userId) {
+    return knex.select().table('users').where('u_id', '=', userId)
       .then(function (response) {
         if (response.length === 0) {
           throw new Error('no user found');

@@ -7,13 +7,13 @@ module.exports = function (knex) {
   var matchesCtrl = matchesController(knex);
 
   router.get('/', function (req, res) {
-    var userID = req.user.u_id;
-    matchesCtrl.getUsersPortfolios(userID).then(function (matches) {
-        var currentMatchID = matches[0] ? matches[0].m_id : null;
+    var userId = req.user.u_id;
+    matchesCtrl.getUsersPortfolios(userId).then(function (matches) {
+        var currentmatchId = matches[0] ? matches[0].m_id : null;
         // return object with keys that conform to redux state object
         res.json({
-          currentMatchID: currentMatchID,
-          userID: userID,
+          currentmatchId: currentmatchId,
+          userId: userId,
           matches: matches
         });
       })

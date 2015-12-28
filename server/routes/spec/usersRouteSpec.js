@@ -40,33 +40,33 @@ describe('/users', function () {
       });
   });
 
-  describe('/:userid', function () {
+  describe('/:userId', function () {
     describe('GET', function () {
 
-      it('responds with a 200 (OK) for valid userids', function (done) {
-        var validUserId = users[0].u_id;
-        var invalidUserId = 'test1234';
+      it('responds with a 200 (OK) for valid userIds', function (done) {
+        var validuserId = users[0].u_id;
+        var invaliduserId = 'test1234';
 
         request(app)
-          .get('/users/' + validUserId)
+          .get('/users/' + validuserId)
           .expect(200, done);
       });
 
-      it('responds with a 404 (NOT FOUND) for invalid userids', function (done) {
-        var validUserId = users[0].u_id;
-        var invalidUserId = 'test1234';
+      it('responds with a 404 (NOT FOUND) for invalid userIds', function (done) {
+        var validuserId = users[0].u_id;
+        var invaliduserId = 'test1234';
 
         request(app)
-          .get('/users/' + invalidUserId)
+          .get('/users/' + invaliduserId)
           .expect(404, done);
       });
 
       it('responds with the requested user', function (done) {
-        var validUserId = users[0].u_id;
-        var invalidUserId = 'test1234';
+        var validuserId = users[0].u_id;
+        var invaliduserId = 'test1234';
 
         request(app)
-          .get('/users/' + validUserId)
+          .get('/users/' + validuserId)
           .expect(function (res) {
             var user = res.body.data;
             expect(user.name).to.equal(users[0].name);

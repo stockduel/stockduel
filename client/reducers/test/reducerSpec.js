@@ -28,15 +28,15 @@ describe('buyReducer', () => {
         available_cash: '1000000'
       },
     }],
-    userID: '123',
+    userId: '123',
     currentMatchId: '456'
   });
 
   it('handles BUY_STOCK for valid trade for a stock that isn\'t held' , () => {
     const action = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [{
           stockSymbol: 'GOOG',
@@ -75,8 +75,8 @@ describe('buyReducer', () => {
   it('handles BUY_STOCK for valid trade for a stock that is already held' , () => {
     const action = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [{
           price: '100',
@@ -116,8 +116,8 @@ describe('buyReducer', () => {
   it('handles BUY_STOCK for valid trade for a stock that is already held and another stock is held' , () => {
     const action = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
               stocks: [{
                 price: '100',
@@ -131,8 +131,8 @@ describe('buyReducer', () => {
 
     const action2 = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [{
           price: '100',
@@ -151,8 +151,8 @@ describe('buyReducer', () => {
 
     const action3 = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [{
           price: '100',
@@ -205,8 +205,8 @@ describe('buyReducer', () => {
   it('does not update state for BUY_STOCK with invalid trade', () => {
     const action = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
@@ -243,8 +243,8 @@ describe('sellReducer', () => {
     //need to have initial state include a stock so we can execute a valid trade
     const actionBuy = {
       type: 'BUY_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [{
           price: '100',
@@ -258,8 +258,8 @@ describe('sellReducer', () => {
 
     const actionSell = {
       type: 'SELL_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
@@ -292,8 +292,8 @@ describe('sellReducer', () => {
   it('does not update state for SELL_STOCK with invalid trade', () => {
     const action = {
       type: 'SELL_STOCK',
-      userID: '123',
-      matchID: '456',
+      userId: '123',
+      MatchId: '456',
       portfolio: {
         stocks: [],
         totalValue: '1000000',
@@ -344,7 +344,7 @@ describe('Create Match reducer', () => {
           available_cash: 100000,
           totalValue: 100000          
         },
-        matchID: 1
+        MatchId: 1
       }
     };
     const nextState = reducer(initialState, action);

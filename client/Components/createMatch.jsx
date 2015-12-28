@@ -35,7 +35,7 @@ export const CreateMatchDumb = React.createClass({
     let matchType;
     let startFunds;
     let matchTitle;
-    const { userID, createMatch } = this.props;
+    const { userId, createMatch } = this.props;
 
     let menuItems = [
       { payload: '1', text: '' },
@@ -142,7 +142,7 @@ export const CreateMatchDumb = React.createClass({
                        alert('Please pick an option for every field')
                      } else {
                        let createOptions = {
-                         userID: userID,
+                         userId: userId,
                          title: matchTitle,
                          startDate: dateFormatStart,
                          endDate: dateFormatEnd,
@@ -173,7 +173,7 @@ export const CreateMatchDumb = React.createClass({
 function mapStateToProps(state) {
   
   return {
-    userID: state.get('userID'),
+    userId: state.get('userId'),
   };
 }
 

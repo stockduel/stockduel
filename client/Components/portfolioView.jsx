@@ -10,20 +10,20 @@ import * as Actions from '../actions/actions.js';
 export const PortfolioView = React.createClass({
 
   render() {
-    const { buy, sell, createMatch, matchID, userID, portfolioValue, available_cash, portfolio } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio } = this.props;
     return (
       <div className="container paddingTop">
         <h2 className="centreTitle">You have ${available_cash.toFixed(2)} available cash.</h2>
         <h2 className="centreTitle">Your portfolio is worth ${portfolioValue.toFixed(2)}.</h2>
-        <StockPurchase buy={buy} matchID={matchID} userID={userID} />
+        <StockPurchase buy={buy} MatchId={MatchId} userId={userId} />
 
         <ul>
           {portfolio.get('stocks').map((stockObj, index) => {
             // TODO: condense props into one object and pass it through as attribute
             return <Stock 
               sell={sell} 
-              matchID={matchID} 
-              userID={userID} 
+              MatchId={MatchId} 
+              userId={userId} 
               inputID={index}
               key={stockObj.get('symbol')} 
               name={stockObj.get('name')}

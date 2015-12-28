@@ -9,7 +9,7 @@ xdescribe('buy action', () => {
   it('handles BUY_STOCK for valid trade for a stock that isn\'t held' , () => {
     const action = buy({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'GOOG',
       numShares: '10',
       price: '100',
@@ -37,7 +37,7 @@ xdescribe('buy action', () => {
   it('handles BUY_STOCK for valid trade for a stock that is already held' , () => {
     const action = buy({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'GOOG',
       numShares: '10',
       price: '100',
@@ -49,7 +49,7 @@ xdescribe('buy action', () => {
     const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        matchId: '456',
+        MatchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
@@ -66,7 +66,7 @@ xdescribe('buy action', () => {
   it('handles BUY_STOCK for valid trade for a stock that is already held and another stock is held' , () => {
     const action = buy({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'GOOG',
       numShares: '10',
       price: '100',
@@ -75,7 +75,7 @@ xdescribe('buy action', () => {
 
     const action2 = buy({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'FB',
       numShares: '10',
       price: '100',
@@ -88,7 +88,7 @@ xdescribe('buy action', () => {
     const nextState = store.getState();
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        matchId: '456',
+        MatchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
@@ -110,7 +110,7 @@ xdescribe('buy action', () => {
   it('does not update state for BUY_STOCK with invalid trade', () => {
     const action = buy({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'GOOG',
       numShares: '10000000',
       price: '10',
@@ -121,7 +121,7 @@ xdescribe('buy action', () => {
 
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        matchId: '456',
+        MatchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
@@ -147,7 +147,7 @@ describe('sell action', () => {
   it('handles SELL_STOCK for valid trade', () => {
     const actionSell = sell({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'GOOG',
       numShares: '100',
       price: '10',
@@ -159,7 +159,7 @@ describe('sell action', () => {
 
     expect(finalState.get('matches').toJS()).to.deep.equal(
       [{
-        matchId: '456',
+        MatchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',
@@ -181,7 +181,7 @@ describe('sell action', () => {
   it('does not update state for SELL_STOCK with invalid trade', () => {
     const action = sell({
       userId: '123',
-      matchId: '456',
+      MatchId: '456',
       stockTicker: 'GOOG',
       numShares: '100',
       price: '10',
@@ -192,7 +192,7 @@ describe('sell action', () => {
 
     expect(nextState.get('matches').toJS()).to.deep.equal(
       [{
-        matchId: '456',
+        MatchId: '456',
         portfolio: {
           stocks: [{
             stockSymbol: 'GOOG',

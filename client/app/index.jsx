@@ -66,7 +66,7 @@ render ((
 // function dispatchBuy() {
 //   store.dispatch(buy({
 //       userId: '123',
-//       matchId: '456',
+//       MatchId: '456',
 //       stockSymbol: 'GOOG',
 //       shares: '10',
 //       price: '100'
