@@ -52,6 +52,7 @@ export const Stock = React.createClass({
                     userId: userId,
                     action: 'sell',
                   };
+                  this.refs.sellNum.value="";
                   sell(sellOptions);
                 }} />
               </div>
