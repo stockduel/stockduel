@@ -30,7 +30,7 @@ class PortfolioDonut extends React.Component {
   
   render(){
     return (
-    <div ref="chart"></div>
+      <div ref="chart"></div>
     )
   }
 };

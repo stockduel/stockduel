@@ -23,12 +23,13 @@ body {
 }
 
 .logoTopPad {
-  padding-top: 4px;
+  padding-top: 6px;
 }
 
 .navButton {
   border: none;
-  padding-top: 5px;
+  padding-top: 9px;
+  padding-right: 0;
 }
 
 .navButton a {
