@@ -10,10 +10,11 @@ import * as Actions from '../actions/actions.js';
 import { Link } from 'react-router';
 import request from 'superagent';
 
-const FlatButton = require('material-ui/lib/flat-button');
-const AppBar = require('material-ui/lib/app-bar');
-const IconButton = require('material-ui/lib/icon-button');
-const NavigationClose = require('material-ui/lib/svg-icons/navigation/close');
+const Toolbar = require('material-ui/lib/toolbar/toolbar');
+const ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
+const ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
+const ToolbarSeparator = require('material-ui/lib/toolbar/toolbar-separator');
+
 
 let App = React.createClass({
   logIn() {
@@ -31,19 +32,25 @@ let App = React.createClass({
   },
   
   render() {
+
     const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userID } = this.props;
+
+    const userButtons = 
+    (<ToolbarGroup float="right">
+      <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
+      <button className="navButton"><Link className="navButtonFontSize" to="/create">Create Match</Link></button> 
+      <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
+      <button className="navButton"><Link className="navButtonFontSize" to="/#">Logout</Link></button>
+    </ToolbarGroup>);
+
     return (
       <div>
-       <AppBar
-          title={<span>This. Is. StockDuel.</span>}
-          iconElementRight={<FlatButton linkButton={true} href="/auth/facebook" label="Login" primary={true} />} />
-        <Link to="/home">to home</Link>
-        <br/>
-        <Link to="/matches">to matches</Link>
-        <br/>
-        <Link to="/create">create new match</Link>
-        <br/>
-        <Link to="/join">join a match</Link>
+      <Toolbar
+          style={{backgroundImage: 'url('+'http://hypertext.net/images/weblog/linen-backgrounds/dark_linen-640x960.png'+')', height:'60px'}}>
+          <ToolbarGroup float="left" className="logoTopPad"><Link className="navButtonFontSize" to="/"><img className="navLogo" src='../assets/images/whiteLogo.png' alt="stockduel white logo" /></Link></ToolbarGroup>
+          { !!userID ? userButtons : null }
+        </Toolbar>
+
       </div>
     )
   }

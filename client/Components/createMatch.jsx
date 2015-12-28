@@ -6,126 +6,164 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import { createMatch } from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
 
-// ============== BUGS IN MATERIAL UI V 0.13.4 -- WILL NOT DISPLAY CALENDAR ================ \\
-// const DatePicker = require('material-ui/lib/date-picker/date-picker');
-// const DatePickerDialog = require('material-ui/lib/date-picker/date-picker-dialog');
+const DatePicker = require('material-ui/lib/date-picker/date-picker');
+const DatePickerDialog = require('material-ui/lib/date-picker/date-picker-dialog');
+const Checkbox = require('material-ui/lib/checkbox');
+const RadioButton = require('material-ui/lib/radio-button');
+const RadioButtonGroup = require('material-ui/lib/radio-button-group');
+const Toggle = require('material-ui/lib/toggle');
+const DropDownMenu = require('material-ui/lib/drop-down-menu');
+const Dialog = require('material-ui/lib/dialog');
+const RaisedButton = require('material-ui/lib/raised-button');
+const Card = require('material-ui/lib/card/card');
+const CardActions = require('material-ui/lib/card/card-actions');
+const CardExpandable = require('material-ui/lib/card/card-expandable');
+const CardHeader = require('material-ui/lib/card/card-header');
+const CardMedia = require('material-ui/lib/card/card-media');
+const CardText = require('material-ui/lib/card/card-text');
+const CardTitle = require('material-ui/lib/card/card-title');
+const Avatar = require('material-ui/lib/avatar.js');
+const TextField = require('material-ui/lib/text-field');
 
 export const CreateMatchDumb = React.createClass({
 
   render() {
+
+    let matchType;
+    let startFunds;
+    let matchTitle;
     const { userID, createMatch } = this.props;
 
+    let menuItems = [
+      { payload: '1', text: '' },
+      { payload: '50000', text: '$50,000' },
+      { payload: '100000', text: '$100,000' },
+      { payload: '500000', text: '$500,000' },
+      { payload: '1000000', text: '$1,000,000' }
+    ];
+
     return (
-      <div>
-       <h2>Create a new match!</h2>
+      <div className="container paddingTop">
 
-       <h3>Match Title</h3>
-        <input id="matchTitleInput" type="text" maxLength="30" placeholder="Title . . ." />
-        <br/>
-       <h3>Match Type</h3> 
-       <select id="matchTypeInput">
-          <option>Solo</option>
-          <option>Head-to-Head</option>
-       </select>
+        <Card initiallyExpanded={false}>
+          <CardHeader
+            title="Create Match"
+            actAsExpander={true}
+            showExpandableButton={true}>
+          </CardHeader>
 
-       <h3>Starting Funds</h3> 
-       <select id="startFundsInput">
-          <option>$100,000</option>
-          <option>$500,000</option>
-          <option>$1,000,000</option>
-       </select>
+          <CardText expandable={true}>
 
-       <h3>Start Date</h3>
-       <p>Year</p> 
-       <select id="yearInputStart">
-          {['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022'].map(year => {
-            return <option key={year}>{year}</option>
-          })}
-       </select>
-       <br/>
-       <p>Month</p> 
-       <select id="monthInputStart">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map(month => {
-            return <option key={month}>{String(+month)}</option>
-          })}
-       </select>
-       <br/>
-       <p>Day</p> 
-       <select id="dateInputStart">
-          {
-            '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31'
-              .split(",")
-              .map(date => {
-                return <option key={date}>{date}</option>
-              })
-          }
-       </select>
-       <br/>
-       <h3>End Date</h3>
-       <p>Year</p> 
-       <select id="yearInputEnd">
-          {['2016', '2017', '2018', '2019', '2020', '2021', '2022'].map(year => {
-            return <option key={year}>{year}</option>
-          })}
-       </select>
-       <br/>
-       <p>Month</p> <select id="monthInputEnd">
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map(month => {
-            return <option key={month}>{String(+month)}</option>
-          })}
-       </select>
-       <br/>
-       <p>Day</p> 
-       <select id="dateInputEnd">
-          {
-            '1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31'
-              .split(",")
-              .map(date => {
-                return <option key={date}>{date}</option>
-              })
-          }
-       </select>
-       <br/>
-       <button onClick={() => {
-         let matchTitle = document.getElementById('matchTitleInput').value;
-         let matchType = document.getElementById('matchTypeInput').value;
-         let startFunds = Number(document.getElementById('startFundsInput').value.slice(1).replace(/,/g, '')); // slice dollar sign, remove commas, coerce to Number
+          <div className="row container">
+             <div className="spaceUnder">
+               <TextField onChange={function ()  {
+                 matchTitle = arguments[0].target.value;
+               }}
+                 hintText="Match Title" className="matchTitleBox" />
+             </div>
+          </div>
 
-         let yearStart = document.getElementById('yearInputStart').value;
-         let monthStart = +document.getElementById('monthInputStart').value - 1;
-         let dateStart = document.getElementById('dateInputStart').value;
-         let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
-         let dateFormatStart = new Date(dateIntegerStart);
+          <div className="row container">
+            <div className="four columns">
+               <h5>Start Date:</h5>
+               <input className="datePicker" type="date" name="start" id="startDate" />
+                <h5>Finish Date:</h5>
+               <input className="datePicker" type="date" name="finish" id="finishDate" />
+            </div>
 
-         let yearEnd = document.getElementById('yearInputEnd').value;
-         let monthEnd = +document.getElementById('monthInputEnd').value - 1;
-         let dateEnd = document.getElementById('dateInputEnd').value;
-         let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
-         let dateFormatEnd = new Date(dateIntegerEnd);
+            <div className="four columns">
+              <h5>Type of Match:</h5>
+              <RadioButtonGroup name="shipSpeed" defaultSelected="light"
+                onChange={function (change, event) {
+                  matchType = event;
+                }}>
+                 <RadioButton
+                   value="solo"
+                   label="Solo"
+                   style={{marginBottom:16}} />
+                 <RadioButton
+                   value="head"
+                   label="Head-To-Head"
+                   style={{marginBottom:16}}/>
+              </RadioButtonGroup>
+            </div>
 
-          if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
-           return alert('Stock market\'s not open on '+dateFormat.toString().substr(0,3) + 'day.');
-          } else {
-            if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
-              alert('Matches should not start before today, and should not end before they start.');
-            } else {
-              if (!matchType || !startFunds) {
-                alert('Please set both match type and starting funds for this match.')
-              } else {
-                 let createOptions = {
-                   userID: this.props.userID,
-                   title: matchTitle,
-                   startDate: dateFormatStart,
-                   endDate: dateFormatEnd,
-                   startFunds: startFunds,
-                   type: matchType === "solo" ? "solo" : "head"
-                 };
-                createMatch(createOptions); // triggers action creator in actions.js                
-              }
-            }
-          }
-       }}>Create a New Match</button>
+            <div className="three columns">
+              <h5>Start Funds:</h5>
+                <DropDownMenu menuItems={menuItems} 
+                  onChange={function (event, index, menuItem) {
+                    startFunds = menuItem.payload;
+                  }} />
+            </div>
+
+           </div>
+
+          </CardText>
+
+          <CardActions expandable={true}>
+           <div className='rightButton'>
+              
+              <RaisedButton label="Submit"
+               
+               linkButton={true} onClick={function(){ 
+                 //date values
+                 let start = document.getElementById('startDate').value;
+                 let end = document.getElementById('finishDate').value;
+
+                 //time formats
+                 let dStart = start.split('-');
+                 let dEnd = end.split('-');
+
+                 let yearStart = dStart[0];
+                 let monthStart = dStart[1]-1;
+                 let dateStart = dStart[2];
+                 let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
+                 let dateFormatStart = new Date(dateIntegerStart);
+
+                 let yearEnd = dEnd[0];
+                 let monthEnd = dEnd[1]-1;
+                 let dateEnd = dEnd[2];
+                 let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
+                 let dateFormatEnd = new Date(dateIntegerEnd);
+
+                 if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
+
+                   return alert('Stock market\'s not open on '+dateFormatStart.toString().substr(0,3) + 'day.');
+                 
+                 } else {
+
+                   if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
+                     alert('Matches should not start before today, and should not end before they start.');
+                   } else {
+                     if (!matchType || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
+                       alert('Please pick an option for every field')
+                     } else {
+                       let createOptions = {
+                         userID: userID,
+                         title: matchTitle,
+                         startDate: dateFormatStart,
+                         endDate: dateFormatEnd,
+                         startFunds: startFunds,
+                         type: matchType === "solo" ? "solo" : "head"
+                       };
+                      createMatch(createOptions);               
+                     }
+                   }
+              
+                 }
+
+             }} />
+
+           </div>
+          </CardActions>
+
+        </Card>
+
+
+
       </div>
     );
   }

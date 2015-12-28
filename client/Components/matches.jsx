@@ -17,7 +17,6 @@ const MatchesList = React.createClass({
 
   render() {
     const { matches } = this.props; // immutableJS List
-    console.log(matches.toJS());
     return (
       <div>
         <ul>

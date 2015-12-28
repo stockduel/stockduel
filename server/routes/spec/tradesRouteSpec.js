@@ -132,7 +132,7 @@ describe('/trades', function () {
             .expect(function (response) {
               var buy = response.body;
               expect(buy).to.be.a('object');
-              expect(buy.data.price).to.be.a('number');
+              expect(buy.data.trade.price).to.be.a('number');
             })
             .expect(200, done);
         });
@@ -171,7 +171,7 @@ describe('/trades', function () {
             .expect(function (response) {
               var sell = response.body;
               expect(sell).to.be.a('object');
-              expect(sell.data.price).to.be.a('number');
+              expect(sell.data.trade.price).to.be.a('number');
             })
             .expect(200, done);
         });

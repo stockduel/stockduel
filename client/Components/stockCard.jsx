@@ -4,29 +4,79 @@ import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
+import { StockChart } from './stockChart.jsx';
+
+const RaisedButton = require('material-ui/lib/raised-button');
+const Card = require('material-ui/lib/card/card');
+const CardText = require('material-ui/lib/card/card-text');
+const CardTitle = require('material-ui/lib/card/card-title');
 
 export const Stock = React.createClass({
 
   render() {
-    const { sell, stockSymbol, shares, matchID, userID, price } = this.props;
-    console.log('matchID is ' + matchID + ' in Stock');
+    const { sell, symbol, shares, matchID, userID, price, name, ask, bid, gain_loss, percent_change, marketValue } = this.props;
+    let numSharesToSell;
+
     return (
       <div>
-        <p> {stockSymbol} : {shares} at ${price} </p>
-        <input type="number" id={this.props.inputID} min="1" max={shares} step="1" />
-        <button onClick={() => {
-          let numSharesToSell = Number(document.getElementById(this.props.inputID).value);
-          let sellOptions = {
-            numShares: numSharesToSell,
-            stockTicker: stockSymbol,
-            matchID: matchID,
-            userID: userID,
-            action: 'sell',
-            // hardcode price until AJAX call works
-            // price: '112'
-          };
-          sell(sellOptions); // trigger action creator in actions.js
-        }}> Sell </button>
+
+        <Card className="cardMarginBottom">
+
+
+          <div className="paddingPortfolio">
+
+            <div className="row centreTitle">
+              <h4>{name}</h4>
+              <p> Symbol : {symbol} </p>
+            </div>
+
+            <div className="row centreTitle container">
+
+              <div className="four columns">
+                <h5> Shares: {shares}</h5>
+              </div>
+              <div className="four columns">
+                <h5>Total: ${(shares * price).toFixed(2)}</h5>
+              </div>
+
+              <div className="four columns">
+                <input type="number" ref="sellNum" min="1" max={shares} step="1" onChange={(event) => {
+                  numSharesToSell = event.target.value;
+                }} />
+
+                <RaisedButton label="Sell" onClick={() => {
+                  let sellOptions = {
+                    numShares: numSharesToSell,
+                    stockTicker: symbol,
+                    matchID: matchID,
+                    userID: userID,
+                    action: 'sell',
+                  };
+                  sell(sellOptions);
+                }} />
+              </div>
+
+            </div>
+
+          </div>
+
+          <CardText className="row">
+
+            <div className="three columns paddingTopStocks">
+              <p> Ask : ${ask}</p>
+              <p> Bid : ${bid}</p>
+              <p> Gain/Loss : {gain_loss}%</p>
+              <p> Change : {percent_change}</p>
+            </div>
+
+            <div className="nine columns">
+              <StockChart />
+            </div>
+
+           < /CardText>
+
+        </Card>
+
       </div>
     );
   }

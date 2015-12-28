@@ -7,17 +7,13 @@ export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 export const CREATE_MATCH = 'CREATE_MATCH';
 
-export function buySync(options) {
+export function buySync(matchID, userID, portfolio) {
   return {
     type: BUY_STOCK,
-    userID: options.userID,
-    matchID: options.matchID,
-    //buyReducer uses these keys; options value is the name needed by backend
-    stockSymbol: options.stockTicker,
-    price: options.price,
-    //buyReducer uses these keys; options value is the name needed by backend
-    shares: options.numShares
-  }
+    userID: userID,
+    matchID: matchID,
+    portfolio: portfolio
+  };
 }
 
 export function buy(options) {
@@ -30,8 +26,7 @@ export function buy(options) {
         // handle error
         return dispatch({type: 'FAILED_TRADE'});
       } else {
-        options.price = String(res.body.data.price);
-        return dispatch(buySync(options));
+        return dispatch(buySync(options.matchID, options.userID, res.body.data.portfolio));
       }
 
     });
@@ -39,17 +34,13 @@ export function buy(options) {
 }
 
 
-export function sellSync(options) {
+export function sellSync(matchID, userID, portfolio) {
   return {
     type: SELL_STOCK,
-    userID: options.userID,
-    matchID: options.matchID,
-    //buyReducer uses these keys; options value is the name needed by backend
-    stockSymbol: options.stockTicker,
-    price: options.price,
-    //buyReducer uses these keys; options value is the name needed by backend
-    shares: options.numShares
-  }
+    userID: userID,
+    matchID: matchID,
+    portfolio: portfolio
+  };
 }
 export function sell(options) {
   return (dispatch) => {
@@ -62,8 +53,7 @@ export function sell(options) {
         console.log('err:', err, 'res.body', res.body);
         return dispatch({type: 'FAILED_TRADE'});
       } else {
-        options.price = String(res.body.data.price);
-        return dispatch(sellSync(options));
+        return dispatch(sellSync(options.matchID, options.userID, res.body.data.portfolio));
       }
 
     });
@@ -80,7 +70,7 @@ export function updatePricesSync(updatedStockArray) {
 export function updatePrices(oldStockArray) {
   return (dispatch) => {
     // AJAX call to get new prices
-    // success callback pass in data as portoflio.stocks array
+    // success callback pass in data as portfolio.stocks array
     //request.post('stocks/')
     request.post('/stocks/update')
     .send(oldStockArray)
@@ -97,10 +87,12 @@ export function updatePrices(oldStockArray) {
  }
 
  export function setCurrentMatch(matchID) {
-    return {
-     type: SET_CURRENT_MATCH,
-     currentMatchID: matchID
-     };
+    return (dispatch) => {
+      dispatch({
+        type: SET_CURRENT_MATCH,
+        currentMatchID: matchID
+      })
+    }
   }
 
   export function setInitialStateSync(state) {
@@ -156,6 +148,7 @@ export function updatePrices(oldStockArray) {
 
    //this will need to be updated once we support matches with two players
    export function createMatch(createOptions) {
+    console.log('options', createOptions);
      return (dispatch) => {
        request.post('/matches/')
        .send(createOptions)

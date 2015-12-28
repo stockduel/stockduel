@@ -32,7 +32,7 @@ const initialState = fromJS({
     userId: '',
     currentMatchId: '',
     matches: [{
-      matchId: '',
+      m_id: '',
       portfolio: {
         //stock_symbol, shares, price
         stocks: [],

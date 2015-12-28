@@ -105,7 +105,7 @@ describe('getUsersPortfolios', function () {
 
       tradesController.buy(user.u_id, match.m_id, trade.shares, trade.symbol)
         .then(function (trade) {
-          expect(trade.shares).to.equal(100);
+          expect(trade.trade.shares).to.equal(100);
           done();
         });
     });
@@ -122,10 +122,10 @@ describe('getUsersPortfolios', function () {
 
       tradesController.sell(user.u_id, match.m_id, trade.shares, trade.symbol)
         .then(function (trade) {
-          expect(trade.shares).to.equal(90);
-          expect(trade.symbol).to.equal('FB');
-          expect(trade.action).to.equal('sell');
-          expect(trade.price).to.be.a('number');
+          expect(trade.trade.shares).to.equal(90);
+          expect(trade.trade.symbol).to.equal('FB');
+          expect(trade.trade.action).to.equal('sell');
+          expect(trade.trade.price).to.be.a('number');
           done();
         });
     });
@@ -143,7 +143,7 @@ describe('getUsersPortfolios', function () {
 
       tradesController.buy(user.u_id, match.m_id, trade.shares, trade.symbol)
         .then(function (trade) {
-          expect(trade.shares).to.equal(100);
+          expect(trade.trade.shares).to.equal(100);
           done();
         });
     });
