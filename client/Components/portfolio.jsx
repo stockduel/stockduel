@@ -20,7 +20,7 @@ var Portfolio = React.createClass({
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
 
     let visibleComponent;
-    visibleComponent = this.props.currentMatchID ? PortfolioView : CreateMatch;
+    visibleComponent = this.props.currentMatchId ? PortfolioView : CreateMatch;
 
     return React.createElement(
       visibleComponent,
@@ -53,7 +53,7 @@ function mapStateToProps(state) {
 
     //irrespective of whether a match has been selected
     userID: state.get('userID'),
-    currentMatchID: state.get('currentMatchId')
+    currentMatchId: state.get('currentMatchId')
   };
 }
 

@@ -90,7 +90,7 @@ export function updatePrices(oldStockArray) {
     return (dispatch) => {
       dispatch({
         type: SET_CURRENT_MATCH,
-        currentMatchID: matchID
+        currentMatchId: matchID
       })
     }
   }
@@ -126,7 +126,7 @@ export function updatePrices(oldStockArray) {
     enddate: "2016-01-01T14:00:00.000Z"
      return {
        type: CREATE_MATCH,
-       currentMatchID: options.m_id,
+       currentMatchId: options.m_id,
        match: {
         m_id: options.m_id,
         title: options.title,
