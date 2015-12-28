@@ -6,18 +6,18 @@ module.exports = function (knex) {
   tradesController = tradesController(knex);
 
   router
-    .param('matchid', function (req, res, next, matchid) {
-      req.matchid = matchid;
+    .param('matchId', function (req, res, next, matchId) {
+      req.matchId = matchId;
       next();
     })
-    .param('userid', function (req, res, next, userid) {
-      req.userid = userid;
+    .param('userId', function (req, res, next, userId) {
+      req.userId = userId;
       next();
     });
 
-  router.route('/:matchid/:userid')
+  router.route('/:matchId/:userId')
     .get(function (req, res) {
-      tradesController.getPortfolio(req.userid, req.matchid)
+      tradesController.getPortfolio(req.userId, req.matchId)
         .then(function (portfolio) {
           res.status(200).json({
             data: portfolio
@@ -32,8 +32,8 @@ module.exports = function (knex) {
 
   .post(function (req, res) {
 
-    var userID = req.userid;
-    var matchID = req.matchid;
+    var userId = req.userId;
+    var matchId = req.matchId;
     var numShares = req.body.numShares;
     var action = req.body.action;
     var stockTicker = req.body.stockTicker;
@@ -48,7 +48,7 @@ module.exports = function (knex) {
       });
     }
 
-    actions[action](userID, matchID, numShares, stockTicker)
+    actions[action](userId, matchId, numShares, stockTicker)
       .then(function (data) {
         res.status(200).json({
           data: data

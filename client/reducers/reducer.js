@@ -15,7 +15,7 @@ import {fromJS, toJS} from 'immutable';
 //     userId: '123',
 //     currentMatchId: '456',
 //     matches: [{
-//       matchId: '456',
+//       MatchId: '456',
 //       portfolio: {
 //         //stock_symbol, shares, price
 //         stocks: [],

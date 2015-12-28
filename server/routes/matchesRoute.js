@@ -6,12 +6,12 @@ module.exports = function (knex) {
   matchesController = matchesController(knex);
 
   router
-    .param('matchid', function (req, res, next, matchid) {
-      req.matchid = matchid;
+    .param('matchId', function (req, res, next, matchId) {
+      req.matchId = matchId;
       next();
     })
-    .param('userid', function (req, res, next, userid) {
-      req.userid = userid;
+    .param('userId', function (req, res, next, userId) {
+      req.userId = userId;
       next();
     });
 
@@ -32,13 +32,13 @@ module.exports = function (knex) {
   })
 
   .post(function (req, res) {
-    var userID = req.body.userID;
+    var userId = req.body.userId;
     var startFunds = req.body.startFunds;
     var startDate = req.body.startDate;
     var endDate = req.body.endDate;
     var type = req.body.type;
     var title = req.body.title;
-    matchesController.createMatch(userID, startFunds, type, startDate, endDate, title)
+    matchesController.createMatch(userId, startFunds, type, startDate, endDate, title)
       .then(function (match) {
         return res.status(200).json({
           data: match
@@ -52,9 +52,9 @@ module.exports = function (knex) {
 
   });
 
-  router.route('/user/:userid')
+  router.route('/user/:userId')
     .get(function (req, res) {
-      matchesController.getUsersMatches(req.userid)
+      matchesController.getUsersMatches(req.userId)
         .then(function (matches) {
           res.status(200).json({
             data: matches
@@ -67,12 +67,12 @@ module.exports = function (knex) {
         });
     });
 
-  router.route('/:matchid')
+  router.route('/:matchId')
     .put(function (req, res) {
       console.log(req.session);
-      var userID = req.session.passport.user.u_id;
+      var userId = req.session.passport.user.u_id;
 
-      matchesController.joinMatch(req.matchid, userID)
+      matchesController.joinMatch(req.matchId, userId)
         .then(function (match) {
           if (match === null) {
             res.status(400).json({
@@ -87,7 +87,7 @@ module.exports = function (knex) {
     })
 
   .get(function (req, res) {
-    matchesController.getMatch(req.matchid)
+    matchesController.getMatch(req.matchId)
       .then(function (match) {
         res.status(200).json({
           data: match

@@ -7,11 +7,11 @@ export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 export const CREATE_MATCH = 'CREATE_MATCH';
 
-export function buySync(matchID, userID, portfolio) {
+export function buySync(MatchId, userId, portfolio) {
   return {
     type: BUY_STOCK,
-    userID: userID,
-    matchID: matchID,
+    userId: userId,
+    MatchId: MatchId,
     portfolio: portfolio
   };
 }
@@ -19,14 +19,14 @@ export function buySync(matchID, userID, portfolio) {
 export function buy(options) {
   return (dispatch) => {
    //requires: numShares, action (buy), stockTicker
-    return request.post('/trades/' + options.matchID + '/' + options.userID)
+    return request.post('/trades/' + options.MatchId + '/' + options.userId)
     .send(options)
     .end(function(err, res) {
       if (err || !res.body.data) {
         // handle error
         return dispatch({type: 'FAILED_TRADE'});
       } else {
-        return dispatch(buySync(options.matchID, options.userID, res.body.data.portfolio));
+        return dispatch(buySync(options.MatchId, options.userId, res.body.data.portfolio));
       }
 
     });
@@ -34,18 +34,18 @@ export function buy(options) {
 }
 
 
-export function sellSync(matchID, userID, portfolio) {
+export function sellSync(MatchId, userId, portfolio) {
   return {
     type: SELL_STOCK,
-    userID: userID,
-    matchID: matchID,
+    userId: userId,
+    MatchId: MatchId,
     portfolio: portfolio
   };
 }
 export function sell(options) {
   return (dispatch) => {
     //  requires: numShares, action (sell), stockTicker
-    return request.post('/trades/' + options.matchID + '/' + options.userID)
+    return request.post('/trades/' + options.MatchId + '/' + options.userId)
     .send(options)
     .end(function(err, res) {
       if (err || !res.body.data) {
@@ -53,7 +53,7 @@ export function sell(options) {
         console.log('err:', err, 'res.body', res.body);
         return dispatch({type: 'FAILED_TRADE'});
       } else {
-        return dispatch(sellSync(options.matchID, options.userID, res.body.data.portfolio));
+        return dispatch(sellSync(options.MatchId, options.userId, res.body.data.portfolio));
       }
 
     });
@@ -86,11 +86,11 @@ export function updatePrices(oldStockArray) {
     };
  }
 
- export function setCurrentMatch(matchID) {
+ export function setCurrentMatch(MatchId) {
     return (dispatch) => {
       dispatch({
         type: SET_CURRENT_MATCH,
-        currentMatchId: matchID
+        currentMatchId: MatchId
       })
     }
   }

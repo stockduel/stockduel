@@ -9,19 +9,19 @@ module.exports = function (knex) {
   var PENDING = 'pending';
   var SOLO = 'solo';
 
-  /* A match requires a creater (userid) {string}, starting funds {number}
+  /* A match requires a creater (userId) {string}, starting funds {number}
    the type (solo or head to head) {string}, start date {date}, end date
    {date} */
 
-  module.createMatch = function (userID, startFunds, type, startDate, endDate, title) {
+  module.createMatch = function (userId, startFunds, type, startDate, endDate, title) {
 
     var challengee = null;
     if (type === SOLO) {
-      challengee = userID;
+      challengee = userId;
     }
 
     return knex('matches').insert({
-        'creator_id': userID,
+        'creator_id': userId,
         'starting_funds': startFunds,
         'startdate': startDate,
         'enddate': endDate,
@@ -36,15 +36,15 @@ module.exports = function (knex) {
 
   };
 
-  module.joinMatch = function (matchID, userID) {
+  module.joinMatch = function (matchId, userId) {
     return knex('matches').where({
         challengee: null,
-        m_id: matchID,
+        m_id: matchId,
         status: 'pending',
         type: 'head'
       })
       .update({
-        challengee: userID
+        challengee: userId
       }, '*')
       .then(function (match) {
         if (match.length < 1) {
@@ -63,12 +63,12 @@ module.exports = function (knex) {
     });
   };
 
-  // Return all portfolios for a user. userid {string}
-  module.getUsersPortfolios = function (userid) {
-    return module.getUsersMatches(userid)
+  // Return all portfolios for a user. userId {string}
+  module.getUsersPortfolios = function (userId) {
+    return module.getUsersMatches(userId)
       .then(function (matches) {
         return Promise.map(matches, function (match) {
-          return tradesCtrl.getPortfolio(userid, match.m_id)
+          return tradesCtrl.getPortfolio(userId, match.m_id)
             .then(function (portfolio) {
               match.portfolio = portfolio;
               return match; // returns match object with all match info + corresponding portfolio
@@ -77,23 +77,23 @@ module.exports = function (knex) {
       });
   };
 
-  // Return a specific match. matchID {string}
+  // Return a specific match. matchId {string}
 
-  module.getMatch = function (matchID) {
+  module.getMatch = function (matchId) {
     return knex.select()
-      .table('matches').where('m_id', '=', matchID)
+      .table('matches').where('m_id', '=', matchId)
       .then(function (match) {
         return match[0];
       });
   };
 
-  // Get all matches for a user. userid {string}
+  // Get all matches for a user. userId {string}
 
-  module.getUsersMatches = function (userID) {
+  module.getUsersMatches = function (userId) {
     return knex.select()
       .table('matches')
-      .where('creator_id', userID)
-      .orWhere('challengee', userID)
+      .where('creator_id', userId)
+      .orWhere('challengee', userId)
       .then(function (matches) {
         return matches;
       });

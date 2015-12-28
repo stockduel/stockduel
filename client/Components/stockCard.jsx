@@ -14,7 +14,7 @@ const CardTitle = require('material-ui/lib/card/card-title');
 export const Stock = React.createClass({
 
   render() {
-    const { sell, symbol, shares, matchID, userID, price, name, ask, bid, gain_loss, percent_change, marketValue } = this.props;
+    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue } = this.props;
     let numSharesToSell;
 
     return (
@@ -48,8 +48,8 @@ export const Stock = React.createClass({
                   let sellOptions = {
                     numShares: numSharesToSell,
                     stockTicker: symbol,
-                    matchID: matchID,
-                    userID: userID,
+                    MatchId: MatchId,
+                    userId: userId,
                     action: 'sell',
                   };
                   sell(sellOptions);
