@@ -5,8 +5,8 @@ var usersController = require('../db/dbcontrollers/usersController');
 module.exports = function (knex) {
   usersCtrl = usersController(knex);
 
-  router.param('userid', function (req, res, next, userid) {
-    req.userid = userid;
+  router.param('userId', function (req, res, next, userId) {
+    req.userId = userId;
     next();
   });
 
@@ -21,10 +21,10 @@ module.exports = function (knex) {
         });
     });
 
-  router.route('/:userid')
+  router.route('/:userId')
     .get(function (req, res) {
-      var userid = req.userid;
-      usersCtrl.getUser(userid).then(function (response) {
+      var userId = req.userId;
+      usersCtrl.getUser(userId).then(function (response) {
         if (response === null) {
           res.sendStatus(404);
         } else {

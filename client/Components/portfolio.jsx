@@ -14,17 +14,17 @@ var Portfolio = React.createClass({
 
   render() {
 
-    const { buy, sell, createMatch, matchID, userID, portfolio } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolio } = this.props;
 
     let available_cash = portfolio ? portfolio.get('available_cash') : 0;
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
 
     let visibleComponent;
-    visibleComponent = this.props.currentMatchID ? PortfolioView : CreateMatch;
+    visibleComponent = this.props.currentMatchId ? PortfolioView : CreateMatch;
 
     return React.createElement(
       visibleComponent,
-      {available_cash, createMatch, buy, sell, matchID, userID, portfolioValue, portfolio}
+      {available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio}
     );
 
   }
@@ -32,7 +32,7 @@ var Portfolio = React.createClass({
 });
 function mapStateToProps(state) {
   /*  
-    Loop through matches until matchId === currentMatchId
+    Loop through matches until MatchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
 
@@ -49,11 +49,11 @@ function mapStateToProps(state) {
   return {
     //if a match has been selected
     portfolio: targetMatch ? targetMatch.get('portfolio'): null,
-    matchID: targetMatch ? targetMatch.get('m_id'): null,
+    MatchId: targetMatch ? targetMatch.get('m_id'): null,
 
     //irrespective of whether a match has been selected
-    userID: state.get('userID'),
-    currentMatchID: state.get('currentMatchId')
+    userId: state.get('userId'),
+    currentMatchId: state.get('currentMatchId')
   };
 }
 

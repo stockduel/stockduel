@@ -17,21 +17,21 @@ module.exports = function (knex) {
       });
   };
 
-  module.getTrades = function (userID, matchID) {
+  module.getTrades = function (userId, matchId) {
     return knex.select()
       .table('trades')
-      .where('user_id', '=', userID)
-      .andWhere('match_id', '=', matchID)
+      .where('user_id', '=', userId)
+      .andWhere('match_id', '=', matchId)
       .orderBy('created_at', 'desc');
   };
 
-  module.buy = function (userID, matchID, numShares, stockTicker) {
+  module.buy = function (userId, matchId, numShares, stockTicker) {
 
     var trade;
 
     return Promise.all([
         stocksCtrl.getStock(stockTicker),
-        generatePortfolio(userID, matchID)
+        generatePortfolio(userId, matchId)
       ])
       .then(function (tuple) {
         var stock = tuple[0];
@@ -50,8 +50,8 @@ module.exports = function (knex) {
         available_cash -= stock.ask * numShares;
 
         return createTrade({
-          user_id: userID,
-          match_id: matchID,
+          user_id: userId,
+          match_id: matchId,
           symbol: stockTicker,
           shares: numShares,
           action: BUY,
@@ -62,7 +62,7 @@ module.exports = function (knex) {
       .then(function(resp){
 
         trade = resp;
-        return module.getPortfolio(userID, matchID);
+        return module.getPortfolio(userId, matchId);
 
       })
       .then(function(port){
@@ -79,13 +79,13 @@ module.exports = function (knex) {
       });
   };
 
-  module.sell = function (userID, matchID, numShares, stockTicker) {
+  module.sell = function (userId, matchId, numShares, stockTicker) {
 
     var trade;
 
     return Promise.all([
         stocksCtrl.getStock(stockTicker),
-        generatePortfolio(userID, matchID)
+        generatePortfolio(userId, matchId)
       ])
       .then(function (tuple) {
         var stock = tuple[0];
@@ -105,8 +105,8 @@ module.exports = function (knex) {
         available_cash += stock.bid * numShares;
 
         return createTrade({
-          user_id: userID,
-          match_id: matchID,
+          user_id: userId,
+          match_id: matchId,
           symbol: stockTicker,
           shares: numShares,
           action: SELL,
@@ -117,7 +117,7 @@ module.exports = function (knex) {
       .then(function(resp){
 
         trade = resp;
-        return module.getPortfolio(userID, matchID);
+        return module.getPortfolio(userId, matchId);
 
       })
       .then(function(port){
@@ -133,10 +133,10 @@ module.exports = function (knex) {
       });
   };
 
-  var getAllTradesWithStockData = function (userID, matchID) {
+  var getAllTradesWithStockData = function (userId, matchId) {
     return knex('trades').where({
-        user_id: userID,
-        match_id: matchID
+        user_id: userId,
+        match_id: matchId
       })
       .join('stock_prices', 'trades.symbol', '=', 'stock_prices.symbol')
       .join('stocks', 'trades.symbol', '=', 'stocks.symbol')
@@ -215,24 +215,24 @@ module.exports = function (knex) {
 
   };
 
-  module.getPortfolio = function (userID, matchID) {
-    return generatePortfolio(userID, matchID)
+  module.getPortfolio = function (userId, matchId) {
+    return generatePortfolio(userId, matchId)
       .then(generatePortfolioMetrics);
   };
 
-  var getMatch = function (matchID) {
+  var getMatch = function (matchId) {
     return knex.select()
-      .table('matches').where('m_id', '=', matchID)
+      .table('matches').where('m_id', '=', matchId)
       .then(function (match) {
         return match[0];
       });
   };
 
-  var generatePortfolio = function (userID, matchID) {
+  var generatePortfolio = function (userId, matchId) {
 
     return Promise.all([
-        getMatch(matchID),
-        getAllTradesWithStockData(userID, matchID)
+        getMatch(matchId),
+        getAllTradesWithStockData(userId, matchId)
       ])
       .then(function (tuple) {
         var match = tuple[0];

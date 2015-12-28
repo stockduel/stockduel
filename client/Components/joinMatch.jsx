@@ -16,9 +16,9 @@ export const JoinMatch = React.createClass({
         }
       })
   },
-  joinMatch(matchId){
+  joinMatch(MatchId){
     return function() {
-      request.put('/matches/'+matchId)
+      request.put('/matches/'+MatchId)
       .end(function(err, res) {
         if (err) {
           console.error(err);

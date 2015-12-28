@@ -53,16 +53,16 @@ module.exports = function (knex) {
     });
   }
 
-  module.getPortfolio = function (userID, matchID) {
-    return tradesController.getPortfolio(userID, matchID);
+  module.getPortfolio = function (userId, matchId) {
+    return tradesController.getPortfolio(userId, matchId);
   }
 
-  module.recordWinner = function (matchID, userID) {
+  module.recordWinner = function (matchId, userId) {
     return knex('matches')
-      .where('m_id', '=', matchID)
+      .where('m_id', '=', matchId)
       .update({
         status: 'complete',
-        winner: userID
+        winner: userId
       }, '*')
       .then(function (match) {
         return match[0];

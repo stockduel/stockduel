@@ -96,15 +96,15 @@ describe('/trades', function () {
 
   // ============= Tests ============= \\
 
-  describe('/:matchid/:userid', function () {
+  describe('/:matchId/:userId', function () {
 
     describe('POST', function () {
 
       describe('buy', function () {
 
         it('buy responds with a 200 (OK)', function (done) {
-          var matchid = matches[0].m_id;
-          var userid = users[0].u_id;
+          var matchId = matches[0].m_id;
+          var userId = users[0].u_id;
           var trade = {
             stockTicker: 'GOOG',
             numShares: 15,
@@ -112,14 +112,14 @@ describe('/trades', function () {
           };
 
           request(app)
-            .post('/trades/' + matchid + '/' + userid)
+            .post('/trades/' + matchId + '/' + userId)
             .send(trade)
             .expect(200, done);
         });
 
         it('responds with the buy trade', function (done) {
-          var matchid = matches[0].m_id;
-          var userid = users[0].u_id;
+          var matchId = matches[0].m_id;
+          var userId = users[0].u_id;
           var trade = {
             stockTicker: 'GOOG',
             numShares: 5,
@@ -127,7 +127,7 @@ describe('/trades', function () {
           };
 
           request(app)
-            .post('/trades/' + matchid + '/' + userid)
+            .post('/trades/' + matchId + '/' + userId)
             .send(trade)
             .expect(function (response) {
               var buy = response.body;
@@ -142,8 +142,8 @@ describe('/trades', function () {
       describe('sell', function () {
 
         it('sell responds with a 200 (OK)', function (done) {
-          var matchid = matches[0].m_id;
-          var userid = users[0].u_id;
+          var matchId = matches[0].m_id;
+          var userId = users[0].u_id;
           var trade = {
             stockTicker: 'GOOG',
             numShares: 5,
@@ -151,14 +151,14 @@ describe('/trades', function () {
           };
 
           request(app)
-            .post('/trades/' + matchid + '/' + userid)
+            .post('/trades/' + matchId + '/' + userId)
             .send(trade)
             .expect(200, done);
         });
 
         it('responds with the sell trade', function (done) {
-          var matchid = matches[0].m_id;
-          var userid = users[0].u_id;
+          var matchId = matches[0].m_id;
+          var userId = users[0].u_id;
           var trade = {
             stockTicker: 'GOOG',
             numShares: 5,
@@ -166,7 +166,7 @@ describe('/trades', function () {
           };
 
           request(app)
-            .post('/trades/' + matchid + '/' + userid)
+            .post('/trades/' + matchId + '/' + userId)
             .send(trade)
             .expect(function (response) {
               var sell = response.body;
@@ -180,21 +180,21 @@ describe('/trades', function () {
 
     describe('GET', function () {
       it('should get portfolio responds with a 200 (OK)', function (done) {
-        var matchid = matches[0].m_id;
-        var userid = users[0].u_id;
+        var matchId = matches[0].m_id;
+        var userId = users[0].u_id;
 
         request(app)
-          .get('/trades/' + matchid + '/' + userid)
+          .get('/trades/' + matchId + '/' + userId)
           .expect(200, done);
 
       });
 
       it('should respond with the portfolio of the specific user for a specific match', function (done) {
-        var matchid = matches[0].m_id;
-        var userid = users[0].u_id;
+        var matchId = matches[0].m_id;
+        var userId = users[0].u_id;
 
         request(app)
-          .get('/trades/' + matchid + '/' + userid)
+          .get('/trades/' + matchId + '/' + userId)
           .expect(function (response) {
             var portfolio = response.body.data;
             expect(portfolio).to.be.a('object');

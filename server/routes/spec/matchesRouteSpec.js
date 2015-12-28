@@ -115,7 +115,7 @@ describe('/matches', function () {
 
       before(function () {
         match = matches[0];
-        match.userID = users[0].u_id;
+        match.userId = users[0].u_id;
       });
 
       it('responds with a 200 (OK)', function (done) {
@@ -141,7 +141,7 @@ describe('/matches', function () {
     });
   });
 
-  describe('/:matchid', function () {
+  describe('/:matchId', function () {
 
     var testMatch;
 
@@ -158,23 +158,23 @@ describe('/matches', function () {
     describe('GET', function () {
 
       it('responds with a 200 (OK)', function (done) {
-        var matchid = testMatch.m_id;
+        var matchId = testMatch.m_id;
 
         request(app)
-          .get('/matches/' + matchid)
+          .get('/matches/' + matchId)
           .expect(200, done);
       });
 
       it('responds with the match', function (done) {
-        var matchid = testMatch.m_id;
+        var matchId = testMatch.m_id;
 
         request(app)
-          .get('/matches/' + matchid)
+          .get('/matches/' + matchId)
           .expect(function (response) {
             var match = response.body;
             expect(match).to.be.a('object');
             expect(match.data.creator_id).to.be.a('number');
-            expect(match.data.m_id).to.equal(matchid);
+            expect(match.data.m_id).to.equal(matchId);
           })
           .expect(200, done);
       });
@@ -184,19 +184,19 @@ describe('/matches', function () {
     xdescribe('PUT', function () {
 
       it('joins and returns the match', function (done) {
-        var matchid = testMatch.m_id;
-        var userid = users[2].u_id;
+        var matchId = testMatch.m_id;
+        var userId = users[2].u_id;
 
         request(app)
-          .put('/matches/' + matchid)
+          .put('/matches/' + matchId)
           .send({
-            userID: userid
+            userId: userId
           })
           .expect(function (response) {
             var match = response.body;
             expect(match).to.be.a('object');
-            expect(match.data.m_id).to.equal(matchid);
-            expect(match.data.challengee).to.equal(userid);
+            expect(match.data.m_id).to.equal(matchId);
+            expect(match.data.challengee).to.equal(userId);
           })
           .expect(200, done);
       });
@@ -206,24 +206,24 @@ describe('/matches', function () {
   });
 
 
-  describe('/user/:userid', function () {
+  describe('/user/:userId', function () {
 
     describe('GET', function () {
 
       it('responds with a 200 (OK)', function (done) {
-        var userid = users[0].u_id;
+        var userId = users[0].u_id;
 
         request(app)
-          .get('/matches/user/' + userid)
+          .get('/matches/user/' + userId)
           .expect(200, done);
       });
 
       it('responds all matches for a user', function (done) {
 
-        var userid = users[0].u_id;
+        var userId = users[0].u_id;
 
         request(app)
-          .get('/matches/user/' + userid)
+          .get('/matches/user/' + userId)
           .expect(function (response) {
             var userMatches = response.body;
             expect(userMatches.data).to.be.a('array');

@@ -33,7 +33,7 @@ let App = React.createClass({
   
   render() {
 
-    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userID } = this.props;
+    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userId } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">
@@ -48,7 +48,7 @@ let App = React.createClass({
       <Toolbar
           style={{backgroundImage: 'url('+'http://hypertext.net/images/weblog/linen-backgrounds/dark_linen-640x960.png'+')', height:'60px'}}>
           <ToolbarGroup float="left" className="logoTopPad"><Link className="navButtonFontSize" to="/"><img className="navLogo" src='../assets/images/whiteLogo.png' alt="stockduel white logo" /></Link></ToolbarGroup>
-          { !!userID ? userButtons : null }
+          { !!userId ? userButtons : null }
         </Toolbar>
 
       </div>
@@ -59,7 +59,7 @@ let App = React.createClass({
 //map state to props
 function mapStateToProps(state) {
   /*  
-    Loop through matches until matchId === currentMatchId
+    Loop through matches until MatchId === currentMatchId
     This reveals only the current match's portfolio to the Portfolio component
   */
   return state.toJS();

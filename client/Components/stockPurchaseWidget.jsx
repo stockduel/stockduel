@@ -11,7 +11,7 @@ const TextField = require('material-ui/lib/text-field');
 export const StockPurchase = React.createClass({
 
   render() {
-    const { buy, stockSymbol, shares, matchID, userID, price } = this.props;
+    const { buy, stockSymbol, shares, MatchId, userId, price } = this.props;
     let stockTicker;
     let numShares;
     
@@ -32,8 +32,8 @@ export const StockPurchase = React.createClass({
          let buyOptions = {
             numShares: parseInt(numShares, 10),
             stockTicker: stockTicker.toUpperCase(),
-            matchID: matchID,
-            userID: userID,
+            MatchId: MatchId,
+            userId: userId,
             action: 'buy'
           };
           console.log('buyOptions: ', buyOptions);
