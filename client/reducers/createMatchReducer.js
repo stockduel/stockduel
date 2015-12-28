@@ -5,3 +5,4 @@ export default function (state, action) {
   var stateWithNewMatch = state.set('matches', newMatchesArray);
   return stateWithNewMatch.set('currentMatchId', action.currentMatchId);
 }
+

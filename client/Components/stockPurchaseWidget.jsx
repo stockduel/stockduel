@@ -18,11 +18,11 @@ export const StockPurchase = React.createClass({
     return (
       <div className="cardMarginBottom paddingTop centreTitle">
 
-       <TextField hintText="Stock Symbol" onChange={ function () {
+       <TextField hintText="Stock Symbol" ref="symbolInput" onChange={ function () {
         stockTicker = arguments[0].target.value;
        }} />
 
-       <TextField hintText="Number of Stocks" onChange={ function () {
+       <TextField hintText="Number of Stocks" ref="numSharesInput" onChange={ function () {
         numShares = arguments[0].target.value;
        }} />
 
@@ -36,10 +36,13 @@ export const StockPurchase = React.createClass({
             userId: userId,
             action: 'buy'
           };
-          console.log('buyOptions: ', buyOptions);
+          this.refs.symbolInput.refs.input.value = "";
+          this.refs.numSharesInput.refs.input.value = "";
           buy(buyOptions);
         }
       }/>
+
+
 
       </div>
     );

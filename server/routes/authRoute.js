@@ -11,7 +11,7 @@ module.exports = function (knex, passport) {
   }));
 
   router.get('/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/',
+    successRedirect: '/#/matches',
     failureRedirect: '/' //TODO: redirect to a better place if facebook fails
   }));
 
