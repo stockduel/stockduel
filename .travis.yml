@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "node"
+  - "stable"
 
 services:
   -postgresql
@@ -11,4 +11,5 @@ env:
 
 before_script:
   - psql -c 'create database stockduel;' -U postgres
+  - npm install -g npm@'2.13.0'
   - npm run dbup
