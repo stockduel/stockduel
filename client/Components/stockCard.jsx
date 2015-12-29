@@ -14,7 +14,7 @@ const CardTitle = require('material-ui/lib/card/card-title');
 export const Stock = React.createClass({
 
   render() {
-    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue } = this.props;
+    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate } = this.props;
     let numSharesToSell;
 
     return (
@@ -66,12 +66,12 @@ export const Stock = React.createClass({
             <div className="three columns paddingTopStocks">
               <p> Ask : ${ask}</p>
               <p> Bid : ${bid}</p>
-              <p> Gain/Loss : {gain_loss}%</p>
+              <p> Gain/Loss : ${gain_loss.toFixed(2)}</p>
               <p> Change : {percent_change}</p>
             </div>
 
             <div className="nine columns">
-              <StockChart />
+              <StockChart startdate={startdate} symbol={symbol} />
             </div>
 
            < /CardText>

@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions/actions.js';
 
-
-
-
 export const JoinMatch = React.createClass({
   componentWillMount() {
     var self = this;

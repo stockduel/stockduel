@@ -40,6 +40,7 @@
     "redux": "^3.0.5",
     "redux-thunk": "^1.0.0",
     "request": "^2.67.0",
+    "request-promise": "^1.0.2",
     "superagent": "^1.5.0",
     "supertest": "^1.1.0"
   },
