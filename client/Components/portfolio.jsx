@@ -18,12 +18,9 @@ var Portfolio = React.createClass({
 
     let available_cash = portfolio ? portfolio.get('available_cash') : 0;
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
-
-    let visibleComponent;
-    visibleComponent = this.props.currentMatchId ? PortfolioView : CreateMatch;
-
+    
     return React.createElement(
-      visibleComponent,
+      PortfolioView,
       {available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio}
     );
 

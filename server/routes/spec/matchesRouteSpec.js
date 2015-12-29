@@ -34,18 +34,18 @@ describe('/matches', function () {
   var matches = [{
     startFunds: 100000,
     type: 'solo',
-    startDate: new Date(today),
-    endDate: new Date(threeDaysLater)
+    startdate: new Date(today),
+    enddate: new Date(threeDaysLater)
   }, {
     startFunds: 500000,
     type: 'solo',
-    startDate: new Date(today),
-    endDate: new Date(threeDaysLater)
+    startdate: new Date(today),
+    enddate: new Date(threeDaysLater)
   }, {
     startFunds: 250000,
     type: 'head',
-    startDate: new Date(today),
-    endDate: new Date(threeDaysLater)
+    startdate: new Date(today),
+    enddate: new Date(threeDaysLater)
   }];
 
   before(function (done) {
@@ -92,7 +92,7 @@ describe('/matches', function () {
       before(function (done) {
         var user = users[0];
         var match = matches[2];
-        matchesController.createMatch(user.u_id, match.startFunds, match.type, match.startDate, match.endDate)
+        matchesController.createMatch(user.u_id, match.startFunds, match.type, match.startdate, match.enddate)
           .then(function () {
             done();
           });
@@ -148,7 +148,7 @@ describe('/matches', function () {
     before(function (done) {
       var user = users[0];
       var match = matches[2];
-      matchesController.createMatch(user.u_id, match.startFunds, match.type, match.startDate, match.endDate)
+      matchesController.createMatch(user.u_id, match.startFunds, match.type, match.startdate, match.enddate)
         .then(function (createdMatch) {
           testMatch = createdMatch;
           done();

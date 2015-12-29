@@ -34,8 +34,8 @@ module.exports = function (knex) {
   .post(function (req, res) {
     var userId = req.body.userId;
     var startFunds = req.body.startFunds;
-    var startDate = req.body.startDate;
-    var endDate = req.body.endDate;
+    var startDate = req.body.startdate;
+    var endDate = req.body.enddate;
     var type = req.body.type;
     var title = req.body.title;
     matchesController.createMatch(userId, startFunds, type, startDate, endDate, title)

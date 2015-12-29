@@ -21,8 +21,9 @@ module.exports = function (knex) {
   module.searchStock = function (search) {
     var searchLike = search + '%';
     return knex('stocks')
-      .where(knex.raw('symbol like UPPER(?)', [searchLike]))
-      .orWhere(knex.raw('UPPER(name) like UPPER(?)', [searchLike]));
+      .where(knex.raw('stocks.symbol like UPPER(?)', [searchLike]))
+      .orWhere(knex.raw('UPPER(stocks.name) like UPPER(?)', [searchLike]))
+      .join('stock_prices', 'stocks.symbol', '=', 'stock_prices.symbol');
   };
 
   //pass in array of objects contaning symbol,shares,and price 

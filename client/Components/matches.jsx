@@ -15,13 +15,36 @@ const MatchesList = React.createClass({
     }
   },
 
+  formatMatchDisplay(matchObj) {
+    
+      if (matchObj.get('type') === 'head') {
+        if (matchObj.get('status') === 'complete') {
+          let winnerId = matchObj.get('winner');
+          let resultMessage = Number(winnerId) === Number(this.props.userId) ? "You won this match" : "You lost this match";
+          return resultMessage + " on " + matchObj.get('endDate').substr(0, 10);
+        }
+        if (matchObj.get('status') === 'active') {
+          return "Match in progress . . . End date: " + matchObj.get('enddate').substr(0, 10);
+        }
+        if (matchObj.get('status') === 'rejected') {
+          return "No one joined this match, so it was rejected."
+        }
+        if (matchObj.get('status') === 'pending') {
+          return "Pending start date: " + matchObj.get('startdate').substr(0, 10);
+        }
+      } else if (matchObj.get('type') === 'solo') {  // solo match: no winner or loser
+        return "Solo Match. Start date: " + matchObj.get('startdate').substr(0, 10);
+      }
+    
+  },
+
   render() {
-    const { matches } = this.props; // immutableJS List
+    const { matches, userId } = this.props; // immutableJS List
     return (
       <div>
         <ul>
           {matches.map(match => {
-              return <li key={match.get('m_id')} onClick={this.setMatch(match.get('m_id'))}>{match.get('title')}</li>
+              return <li key={match.get('m_id')} onClick={this.setMatch(match.get('m_id'))}>{match.get('title')} -- <em>{this.formatMatchDisplay(match)}</em></li>
           })}
         </ul>
       </div>
@@ -30,8 +53,10 @@ const MatchesList = React.createClass({
 });
 
 function mapStateToProps(state) {
+  console.dir(state.get('matches').toJS());
   return {
-    matches: state.get('matches')
+    matches: state.get('matches'),
+    userId: state.get('userId')
   };
 }
 

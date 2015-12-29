@@ -138,14 +138,14 @@ export const CreateMatchDumb = React.createClass({
                    if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
                      alert('Matches should not start before today, and should not end before they start.');
                    } else {
-                     if (!matchType || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
+                     if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
                        alert('Please pick an option for every field')
                      } else {
                        let createOptions = {
                          userId: userId,
                          title: matchTitle,
-                         startDate: dateFormatStart,
-                         endDate: dateFormatEnd,
+                         startdate: dateFormatStart,
+                         enddate: dateFormatEnd,
                          startFunds: startFunds,
                          type: matchType === "solo" ? "solo" : "head"
                        };
