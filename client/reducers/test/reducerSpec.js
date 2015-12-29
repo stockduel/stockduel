@@ -352,6 +352,37 @@ describe('Create Match reducer', () => {
   });
 });
 
+describe('Join Match reducer', () => {
+  const START_DATE = new Date();
+  const END_DATE = new Date(START_DATE.getFullYear()+1);
+  const initialState = fromJS({
+    matches: []
+  });
+  it('adds a new match to the user', () => {
+    const action = {
+      type: 'JOIN_MATCH',
+      currentMatchId: 1,
+      match: {
+        creator_id: '234',
+        challengee: '123', 
+        startDate: START_DATE,
+        endDate: END_DATE,
+        starting_funds: '1000000',
+        status: 'progress',
+        type: 'head',
+        winner: null,
+        portfolio: {
+          available_cash: 100000,
+          totalValue: 100000          
+        },
+        MatchId: 1
+      }
+    };
+    const nextState = reducer(initialState, action);
+    expect(nextState.get('matches').count()).to.equal(1);
+  });
+});
+
 describe('general reducer', () => {
   const START_DATE = new Date();
   const END_DATE = new Date(START_DATE.getFullYear()+1);
