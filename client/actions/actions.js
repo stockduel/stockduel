@@ -6,6 +6,7 @@ export const UPDATE_PRICES = 'UPDATE_PRICES';
 export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 export const CREATE_MATCH = 'CREATE_MATCH';
+export const JOIN_MATCH = 'JOIN_MATCH';
 
 export function buySync(MatchId, userId, portfolio) {
   return {
@@ -163,3 +164,26 @@ export function updatePrices(oldStockArray) {
      };
     }
 
+   export function joinMatchSync(Match) {
+    return (dispatch) => {
+     dispatch({
+       type: JOIN_MATCH,
+       currentMatchId: Match.m_id,
+       match: Match
+     });
+    }
+   }
+
+   export function joinMatch(joinOptions) {
+    console.log('options', joinOptions);
+     return (dispatch) => {
+       request.put('/matches/' + joinOptions)
+       .end(function(err, res) {
+         if (err) {
+          dispatch({type: 'FAILED_TO_JOIN_MATCH'});
+         } else {
+          dispatch(joinMatchSync(res.body.data));
+         }
+       });      
+     };
+   }
