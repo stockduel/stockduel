@@ -1,34 +1,69 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import c3 from 'c3';
-//need a route to get the stock data from the stock_prices table of the history of the stocks plot buy and sell?
+import request from 'superagent';
 
 export const StockChart = React.createClass ({
 
-  componentDidMount(){
-    this.buildChart(this.props.stocks);
+  //call the server to send a request to yahoo to get the data for each trade day over the last x weeks
+  componentWillMount () {
+    
+    let close = [];
+    let xAxis = [];
+    let self = this;
+
+    request.get('/stocks/history/'+this.props.symbol+'/'+this.props.startdate)
+    .end(function(err, res) {
+      if (err) {
+        console.error(err);
+      } else {
+        var stockInfo = res.body;
+        
+        //make array of close data start with 'close' as first element for c3 
+        close = stockInfo.close;
+        close.unshift('close')
+
+        //make the array of dates have x at start for c3
+        xAxis = stockInfo.dates;
+        xAxis.unshift('x');
+
+        //send the data to the chartBuild method
+        self.buildChart(close, xAxis);
+      }
+    });
+
+
+
   },
 
-  buildChart(stocks) {
+  buildChart(close, xAxis) {
     c3.generate({
       bindto: ReactDOM.findDOMNode(this.refs.chart),
+      //data to pass to the graph
       data: {
-      columns: [
-        ['ask', 30, 50, 40, 44],
-        ['bid', 35, 49, 46, 46]
+        x: 'x',
+        columns: [
+          xAxis,
+          close
         ]
       },
       axis: {
         y: {
+          //define the axis label and position
           label: {
-            text: 'Amount in $',
+            text: 'Close in $',
             position: 'outer-middle'
           }
         },
         x: {
+          //define the fields on the x axis
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          },
+          //define the axis label and position
           label: {
-            text: 'Days Since Bought',
+            text: 'Date',
             position: 'outer-middle'
           }
         }

@@ -10,7 +10,7 @@ import * as Actions from '../actions/actions.js';
 export const PortfolioView = React.createClass({
 
   render() {
-    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate } = this.props;
     return (
       <div className="container paddingTop">
         <h4><a href="#/search">Add to this portfolio</a></h4>
@@ -35,6 +35,7 @@ export const PortfolioView = React.createClass({
               gain_loss={stockObj.get('gain_loss')}
               marketValue={stockObj.get('marketValue')}
               percent_change={stockObj.get('percent_change') || 0}
+              startdate={startdate}
             />
           })}
         </ul>
