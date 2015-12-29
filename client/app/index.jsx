@@ -10,8 +10,9 @@ import { PortfolioConnected } from '../Components/portfolio.jsx';
 import { Home } from '../Components/home.jsx';
 import { StateGenConnected } from '../Components/stateGen.jsx';
 import { MatchesConnected } from '../Components/matches.jsx';
-import {CreateMatch} from '../Components/createMatch.jsx';
-import {JoinMatchConnected} from '../Components/joinMatch.jsx';
+import { CreateMatch } from '../Components/createMatch.jsx';
+import { JoinMatchConnected } from '../Components/joinMatch.jsx';
+import { SearchStocks } from '../Components/searchStocks.jsx';
 
 // import { buy } from '../actions/actions.js';
 import { toJS } from 'immutable';
@@ -51,6 +52,7 @@ render ((
         <Route path="matches" component={MatchesConnected} />
         <Route path="portfolio" component={PortfolioConnected} />
         <Route path="join" component={JoinMatchConnected} />
+        <Route path="search" component={SearchStocks} />
       </Route>
     </Router>
   ),
