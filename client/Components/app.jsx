@@ -40,6 +40,7 @@ let App = React.createClass({
       <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
       <button className="navButton"><Link className="navButtonFontSize" to="/create">Create Match</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
+      <button className="navButton"><Link className="navButtonFontSize" to="/search">Search</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/#">Logout</Link></button>
     </ToolbarGroup>);
 
@@ -58,10 +59,6 @@ let App = React.createClass({
 
 //map state to props
 function mapStateToProps(state) {
-  /*  
-    Loop through matches until MatchId === currentMatchId
-    This reveals only the current match's portfolio to the Portfolio component
-  */
   return state.toJS();
 }
 
