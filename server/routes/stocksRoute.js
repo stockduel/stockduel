@@ -7,10 +7,15 @@ var utils = require('./utils');
 module.exports = function (knex) {
   stocksController = stocksController(knex);
 
-  router.param('symbol', function (req, res, next, symbol) {
-    req.symbol = symbol;
-    next();
-  });
+  router
+    .param('symbol', function (req, res, next, symbol) {
+      req.symbol = symbol;
+      next();
+    })
+    .param('date', function (req, res, next, date) {
+      req.date = date;
+      next();
+    });
 
   router.route('/')
     .get(function (req, res) {
@@ -57,8 +62,8 @@ module.exports = function (knex) {
   router.route('/history/:symbol/:date')
     .get(function (req, res) {
 
-      var stockSymbol = req.params.symbol;
-      var startDate = new Date(req.params.date);
+      var stockSymbol = req.symbol;
+      var startDate = new Date(req.date);
 
       var dateNow;
       var dateWeekBefore;
@@ -107,6 +112,8 @@ module.exports = function (knex) {
             }
           }
         });
+
+        //make an array of dates
         for (var i = 0; i < dates.length; i++) {
           close.push(data[dates[i]]);
         }
@@ -123,6 +130,7 @@ module.exports = function (knex) {
         console.log('err in get stock info', err);
         res.sendStatus(400);
       });
+
     });
 
   return router;
