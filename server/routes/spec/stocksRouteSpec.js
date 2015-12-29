@@ -2,10 +2,10 @@ var chai = require('chai');
 var expect = chai.expect;
 var request = require('supertest');
 var Promise = require('bluebird');
-var knex = require('knex');
 
+var knex = require('../../db/index');
 var app = require('../../index');
-var config = require('../../db/knexfile');
+
 
 // ============= Test Data ============= \\
 describe('stocksRoute', function () {
@@ -138,8 +138,6 @@ describe('stocksRoute', function () {
 
   // ============= Setup ============= \\
   before(function (done) {
-    //init db
-    knex = knex(config['development']);
     //insert test cases
     Promise.all([
       knex('stocks').insert(stocks),
