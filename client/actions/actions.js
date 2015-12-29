@@ -116,7 +116,7 @@ export function updatePrices(oldStockArray) {
           dispatch({type: 'FAILED_TO_LOAD_STATE'});
         } else {
           dispatch(setInitialStateSync(res.body));
-          window.location.hash="#/";
+          // window.location.hash="#/";
         }
       });
     };

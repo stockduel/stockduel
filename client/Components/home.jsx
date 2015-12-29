@@ -6,9 +6,11 @@ import { connect } from 'react-redux';
 import * as Actions from '../actions/actions.js';
 // import request from 'superagent';
 
+
 export const Home = React.createClass({
 
   render() {
+
     return (
       <div className="container">
         <div className="centreTitle">
@@ -27,8 +29,10 @@ export const Home = React.createClass({
         <div className="centreTitle loginPadTop" >
           <a href="/auth/facebook"><img className="imgWidth" src='../assets/images/login.png' alt="facebook login button" /></a>
         </div>
+
       </div>
     );
   }
 
 });
+

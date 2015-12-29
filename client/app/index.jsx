@@ -17,9 +17,6 @@ import {JoinMatch} from '../Components/joinMatch.jsx';
 import { toJS } from 'immutable';
 import { Router, Route, Link } from 'react-router';
 
-// hot swap css
-import stylesheet from '../assets/stylesheets/style.css';
-
 // dummy component for testing
 // var Dummy = React.createClass({
 //   render() {
