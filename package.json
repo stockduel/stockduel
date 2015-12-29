@@ -7,8 +7,8 @@
     "test": "npm run compile && mocha --compilers js:babel-core/register client/reducers/test && mocha server/**/spec/*js && mocha workers/**/spec/*js",
     "servertest": "mocha server/**/spec/*js",
     "start": "webpack && node index.js",
-    "dbup": "knex migrate:latest --knexfile db/knexfile.js; knex seed:run --knexfile db/knexfile.js",
-    "dbdown": "knex migrate:rollback --knexfile db/knexfile.js"
+    "dbup": "knex migrate:latest --knexfile db/index.js; knex seed:run --knexfile db/index.js",
+    "dbdown": "knex migrate:rollback --knexfile db/index.js"
   },
   "repository": {
     "type": "git",
