@@ -15,5 +15,10 @@ module.exports = function (knex, passport) {
     failureRedirect: '/' //TODO: redirect to a better place if facebook fails
   }));
 
+  router.post('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+  });
+
   return router;
 };
