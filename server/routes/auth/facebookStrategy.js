@@ -4,7 +4,7 @@ var usersController = require('../../db/dbcontrollers/usersController');
 
 var clientID = process.env.CLIENT_ID || require ('./_fb_keys').CLIENT_ID;
 var clientSecret = process.env.CLIENT_SECRET || require ('./_fb_keys').CLIENT_SECRET;
-var callbackURL = process.env.ENVIRONMENT ? 'http://www.stockduelgame.com/auth/facebook/callback' : 'http://localhost:8080/auth/facebook/callback';
+var callbackURL = process.env.ENVIRONMENT ? 'http://stockduelgame.com/auth/facebook/callback' : 'http://localhost:8080/auth/facebook/callback';
 
 module.exports = function (knex) {
   var usersCtrl = usersController(knex);
