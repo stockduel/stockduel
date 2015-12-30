@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import request from 'superagent';
 
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
@@ -17,6 +18,7 @@ const CardTitle = require('material-ui/lib/card/card-title');
 const RaisedButton = require('material-ui/lib/raised-button');
 
 export const MatchCard = React.createClass({
+
   componentWillMount() {
     request.get('/users/' + this.props.match.get('challengee'))
       .end((err, res) => {
@@ -37,14 +39,27 @@ export const MatchCard = React.createClass({
         }
       })
   },
+
   render() {
     const {match, setMatch} = this.props;
+
+    let forHeadToHead = (<div>
+                          <p>Challenger: {this.challengee}</p>
+                          <p>Portfolio: {this.challengeePortfolio && "$" + Number(this.challengeePortfolio.totalValue).toFixed(2)}</p>
+                        </div>);
+
+    // let startDate = match.get('startdate');
+    // let start = moment(startDate).format("MMM Do YYYY");
+    // let endDate = match.get('enddate');
+    // let end = moment(endDate).format("MMM Do YYYY");
+
     return (
       <div className="container paddingTop">
 
         <Card initiallyExpanded={false}>
           <CardHeader
             title={match.get('title')}
+            subtitle={match.get('status')}
             actAsExpander={true}
             showExpandableButton={true}>
           </CardHeader>
@@ -52,25 +67,21 @@ export const MatchCard = React.createClass({
           <CardText expandable={true}>
 
           <div className="row container">
-            <p>Status: {match.get('status')}</p>
+            <p>Type: {match.get('type')}</p>
             <p>Start: {match.get('startdate')}</p>
             <p>End: {match.get('enddate')}</p>
           </div>
 
-          <div className="row container player1">
-            <div className="six columns">
-              <p>You</p>
-              <p>Portfolio: {'$' + Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)}</p>
-            </div>
-            <div className="six columns">
-              <p>Challenger: {this.challengee}</p>
-              <p>Portfolio: {this.challengeePortfolio && "$" + Number(this.challengeePortfolio.totalValue).toFixed(2)}</p>
+          <div className="player1 container">
+            <div>
+              <p>Your Portfolio: {'$' + Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)}</p>
             </div>
           </div>
 
-          <div className="row container player2">
-            
+          <div className="player2 container">
+            { match.get('type') === 'head' ? forHeadToHead : null }
           </div>
+
           </CardText>
 
           <CardActions expandable={true}>

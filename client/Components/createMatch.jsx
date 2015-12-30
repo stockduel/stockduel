@@ -169,16 +169,3 @@ export const CreateMatchDumb = React.createClass({
   }
 
 });
-
-function mapStateToProps(state) {
-  
-  return {
-    userId: state.get('userId'),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({createMatch}, dispatch);
-}
-
-export const CreateMatch = connect(mapStateToProps, mapDispatchToProps)(CreateMatchDumb);

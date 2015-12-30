@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import * as Actions from '../actions/actions.js';
 import { MatchCard } from './matchCard.jsx';
+import { CreateMatchDumb } from './createMatch.jsx';
 
 const MatchesList = React.createClass({
 
@@ -41,9 +42,10 @@ const MatchesList = React.createClass({
   },
 
   render() {
-    const { matches, userId } = this.props;
+    const { matches, userId, createMatch } = this.props;
     return (
       <div>
+        <CreateMatchDumb userId={userId} createMatch={createMatch} />
         <ul>
           {matches.map(match => { 
             return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} />

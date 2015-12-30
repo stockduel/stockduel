@@ -5,6 +5,7 @@ import request from 'superagent';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions/actions.js';
+import { CreateMatchDumb } from './createMatch.jsx';
 
 export const JoinMatch = React.createClass({
   componentWillMount() {
@@ -34,9 +35,10 @@ export const JoinMatch = React.createClass({
 
 
   render() {
-    const { joinMatch } = this.props;
+    const { joinMatch, userId, createMatch } = this.props;
     return (
       <div>
+        <CreateMatchDumb userId={userId} createMatch={createMatch} />
         <ul>
           {this.matches && this.matches.map((matchObj) => {
             return matchObj ? <li key={matchObj.m_id} onClick={() => {
@@ -49,9 +51,15 @@ export const JoinMatch = React.createClass({
   }
 });
 
+function mapStateToProps(state) {
+  
+  return {
+    userId: state.get('userId'),
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch);
 }
 
-export const JoinMatchConnected = connect(null, mapDispatchToProps)(JoinMatch);
+export const JoinMatchConnected = connect(mapStateToProps, mapDispatchToProps)(JoinMatch);
