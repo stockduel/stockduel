@@ -38,7 +38,7 @@ export const JoinMatch = React.createClass({
     return (
       <div>
         <ul>
-          {!this.matches ? null : this.matches.map((matchObj) => {
+          {this.matches && this.matches.map((matchObj) => {
             return matchObj ? <li key={matchObj.m_id} onClick={() => {
               joinMatch(matchObj.m_id);
               window.location.hash="#/portfolio";
