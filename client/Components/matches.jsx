@@ -46,7 +46,7 @@ const MatchesList = React.createClass({
       <div>
         <ul>
           {matches.map(match => { 
-            return <li key={match.get('m_id')} ><MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} /></li>
+            return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} />
           })}
         </ul>
       </div>
