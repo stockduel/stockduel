@@ -81,11 +81,12 @@ module.exports = function (knex) {
 
 //Return all joinable matches
 //----------------------------------
-  module.getAllJoinableMatches = function () {
+  module.getAllJoinableMatches = function (userId) {
     return knex('matches').where({
       'status': PENDING,
       'challengee': null
-    });
+    })
+    .andWhereNot('creator_id', userId);
   };
 
 // Return all portfolios for a user. userId {string}

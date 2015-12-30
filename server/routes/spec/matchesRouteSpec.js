@@ -98,7 +98,7 @@ describe('/matches', function () {
           });
       });
 
-      it('returns all joinable matches', function (done) {
+      xit('returns all joinable matches', function (done) {
         request(app)
           .get('/matches/')
           .expect(function (response) {
