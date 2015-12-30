@@ -7,6 +7,7 @@ export const SET_CURRENT_MATCH = 'SET_CURRENT_MATCH';
 export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 export const CREATE_MATCH = 'CREATE_MATCH';
 export const JOIN_MATCH = 'JOIN_MATCH';
+export const LOGOUT = 'LOGOUT';
 
 export function buySync(MatchId, userId, portfolio) {
   return {
@@ -188,7 +189,6 @@ export function updatePrices(oldStockArray) {
    }
 
    export function joinMatch(joinOptions) {
-    console.log('options', joinOptions);
      return (dispatch) => {
        request.put('/matches/' + joinOptions)
        .end(function(err, res) {
@@ -200,3 +200,22 @@ export function updatePrices(oldStockArray) {
        });      
      };
    }
+
+   export function logoutSync() {
+    return {
+       type: LOGOUT
+    }
+   }
+
+   export function logout(options) {
+     return (dispatch) => {
+       request.post( 'auth/logout' )
+       .end(function(err, res) {
+         if (err) {
+          dispatch({type: 'FAILED_TO_LOGOUT'});
+         } else {
+          dispatch(logoutSync());
+         }
+       });      
+     };
+   }   

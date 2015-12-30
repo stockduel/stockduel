@@ -1,4 +1,4 @@
-import { BUY_STOCK, SELL_STOCK, UPDATE_PRICES, SET_CURRENT_MATCH, SET_INITIAL_STATE, CREATE_MATCH, JOIN_MATCH } from '../actions/actions.js';
+import { BUY_STOCK, SELL_STOCK, UPDATE_PRICES, SET_CURRENT_MATCH, SET_INITIAL_STATE, CREATE_MATCH, JOIN_MATCH, LOGOUT } from '../actions/actions.js';
 import buyReducer from './buyReducer';
 import sellReducer from './sellReducer';
 import updatePricesReducer from './updatePricesReducer';
@@ -6,6 +6,7 @@ import setMatchReducer from './setMatchReducer';
 import setInitialStateReducer from './setInitialStateReducer';
 import createMatchReducer from './createMatchReducer';
 import joinMatchReducer from './joinMatchReducer';
+import logoutReducer from './logoutReducer';
 import {fromJS, toJS} from 'immutable';
 
 // TODO: generate initial state via AJAX call instead of hardcoding
@@ -60,7 +61,9 @@ export default function reducer(state = initialState, action) {
     case CREATE_MATCH:
       return createMatchReducer(state, action)
     case JOIN_MATCH:
-      return joinMatchReducer(state, action) 
+      return joinMatchReducer(state, action)
+    case LOGOUT:
+      return logoutReducer(state, action)
     default:
       return state
   }
