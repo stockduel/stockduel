@@ -133,7 +133,7 @@ describe('scoreMatches Worker', function () {
         .then(function (matches) {
           scoreMatches.selectCompletingMatches(end_date)
           .then(function (otherMatches) {
-            expect(matches.length).to.equal(1);
+            expect(matches.length).to.equal(3);
             expect(otherMatches.length).to.equal(2);
             done(); 
           });
