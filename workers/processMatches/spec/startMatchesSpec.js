@@ -14,6 +14,8 @@ describe('startMatches Worker', function () {
   var date_before_start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1, 14);
   var end_date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7, 21.5);
   var other_end_date = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 9, 21.5);
+  console.log('date is ', date);
+  console.log('end_date is ', end_date);
   var users = [{
     username: 'EXPERIMENT',
     password: 'ExperimentPassword',
@@ -113,7 +115,7 @@ describe('startMatches Worker', function () {
         .then(function (matches) {
           startMatches.selectPendingMatches(date)
           .then(function (otherMatches) {
-            expect(matches.length).to.equal(1);
+            expect(matches.length).to.equal(3);
             expect(otherMatches.length).to.equal(2);
             done(); 
           });

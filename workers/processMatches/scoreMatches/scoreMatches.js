@@ -10,9 +10,10 @@ module.exports = function (knex) {
 //Decides who was the winner of the match
 //-------------------------------------------------  
   module.scoreMatches = function (providedDate) {
+    console.log('kicking off match scoring job');
     //formulate the date to look for
     var today = new Date();
-    var date = providedDate || new Date(today.getFullYear(), today.getMonth(), today.getDate(), 14);
+    var date = providedDate || new Date(today.getFullYear(), today.getMonth(), today.getDate(), 21);
     //get all matches that are active and ending on the provided date
     selectCompletingMatches( date )
       .then( function (matches) {
@@ -25,10 +26,13 @@ module.exports = function (knex) {
 
 //Find all matches where end date is today
   module.selectCompletingMatches = function (date) {
+    console.log('grabbing matches to evaluate');
     return knex('matches')
-      .where({
-        status: 'active',
-        enddate: date
+      .where('status', 'active')
+      .then( function(matches) {
+        return matches.filter(function(match) {
+          return Date.parse(match.enddate) <= Date.parse(date);
+        });
       });
   };
 
@@ -73,6 +77,7 @@ module.exports = function (knex) {
         winner: userId
       }, '*')
       .then(function (match) {
+        console.log('winner recorded');
         return match[0];
       });
   };
