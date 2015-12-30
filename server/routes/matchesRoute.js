@@ -15,11 +15,10 @@ module.exports = function (knex) {
       next();
     });
 
-// Return all the Matches Awaiting a Second Player
-//-----------------------------------------------------
   router.route('/')
+
   .get(function (req, res) {
-    matchesController.getAllJoinableMatches()
+    matchesController.getAllJoinableMatches(req.userId)
       .then(function (matches) {
         res.status(200).json({
           data: matches
@@ -32,8 +31,6 @@ module.exports = function (knex) {
       });
   })
 
-//Create a Match
-//----------------
   .post(function (req, res) {
     var userId = req.body.userId;
     var startFunds = req.body.startFunds;
@@ -41,6 +38,7 @@ module.exports = function (knex) {
     var endDate = req.body.enddate;
     var type = req.body.type;
     var title = req.body.title;
+
     matchesController.createMatch(userId, startFunds, type, startDate, endDate, title)
       .then(function (match) {
         return res.status(200).json({
@@ -55,8 +53,6 @@ module.exports = function (knex) {
 
   });
 
-//Get all of a Users Matches
-//------------------------------
   router.route('/user/:userId')
     .get(function (req, res) {
       matchesController.getUsersMatches(req.userId)
@@ -72,8 +68,6 @@ module.exports = function (knex) {
         });
     });
 
-//Join a match
-//-----------------
   router.route('/:matchId')
     .put(function (req, res) {
       console.log(req.session);
@@ -93,8 +87,6 @@ module.exports = function (knex) {
         });
     })
 
-//Get Details of a Certain Match
-//------------------------------------
   .get(function (req, res) {
     matchesController.getMatch(req.matchId)
       .then(function (match) {

@@ -9,8 +9,25 @@ module.exports = function (knex) {
   var PENDING = 'pending';
   var SOLO = 'solo';
 
-//Create a New Match
-//----------------------
+  // ensure start dates are stored consistently in db
+  function standardizeStart(date){
+    var START_HOUR = 14;
+    var START_MIN = 30;
+    var newDate = new Date(date);
+    var start = new Date( Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), START_HOUR, START_MIN) );
+    console.log(start);
+    return start.toISOString();
+  }
+
+  // ensure end dates are stored consistently in db 
+  function standardizeEnd(date){
+    var END_HOUR = 21;
+    var newDate = new Date(date);
+    var end = new Date( Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate(), END_HOUR) );
+    console.log(end);
+    return end.toISOString();
+  }
+
   /* A match requires a creater (userId) {string}, starting funds {number}
    the type (solo or head to head) {string}, start date {date}, end date
    {date} */
@@ -22,6 +39,9 @@ module.exports = function (knex) {
     if (type === SOLO) {
       challengee = userId;
     }
+
+    startDate = standardizeStart(startDate);
+    endDate = standardizeEnd(endDate);
 
     return knex('matches').insert({
       'creator_id': userId,
@@ -61,11 +81,12 @@ module.exports = function (knex) {
 
 //Return all joinable matches
 //----------------------------------
-  module.getAllJoinableMatches = function () {
+  module.getAllJoinableMatches = function (userId) {
     return knex('matches').where({
       'status': PENDING,
       'challengee': null
-    });
+    })
+    .andWhereNot('creator_id', userId);
   };
 
 // Return all portfolios for a user. userId {string}

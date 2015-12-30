@@ -124,10 +124,23 @@ describe('Match Controller', function () {
 
   describe('getAllJoinableMatches', function () {
     it('should get all joinable matches', function (done) {
-      matchesController.getAllJoinableMatches()
+      var userId = users[1].u_id;
+
+      matchesController.getAllJoinableMatches(userId)
         .then(function (matches) {
           expect(matches).to.be.a('array');
           expect(matches.length).to.equal(2);
+          done();
+        });
+    });
+
+    it('should not get it\'s own matches', function (done) {
+      var userId = users[0].u_id;
+
+      matchesController.getAllJoinableMatches(userId)
+        .then(function (matches) {
+          expect(matches).to.be.a('array');
+          expect(matches.length).to.equal(0);
           done();
         });
     });
