@@ -9,6 +9,8 @@ module.exports = function (knex) {
   var PENDING = 'pending';
   var SOLO = 'solo';
 
+//Create a New Match
+//----------------------
   /* A match requires a creater (userId) {string}, starting funds {number}
    the type (solo or head to head) {string}, start date {date}, end date
    {date} */
@@ -16,26 +18,29 @@ module.exports = function (knex) {
   module.createMatch = function (userId, startFunds, type, startDate, endDate, title) {
 
     var challengee = null;
+
     if (type === SOLO) {
       challengee = userId;
     }
 
     return knex('matches').insert({
-        'creator_id': userId,
-        'starting_funds': startFunds,
-        'startdate': startDate,
-        'enddate': endDate,
-        'status': PENDING,
-        'challengee': challengee,
-        'title': title,
-        'type': type
-      }, '*')
-      .then(function (match) {
-        return match[0];
-      });
+      'creator_id': userId,
+      'starting_funds': startFunds,
+      'startdate': startDate,
+      'enddate': endDate,
+      'status': PENDING,
+      'challengee': challengee,
+      'title': title,
+      'type': type
+    }, '*')
+    .then(function (match) {
+      return match[0];
+    });
 
   };
 
+//Join a Match: insert a user into the previously null challengee matches table field. matchId {string}, userId {string}
+//-------------------------------------------------------------------------------------
   module.joinMatch = function (matchId, userId) {
     return knex('matches').where({
         challengee: null,
@@ -54,8 +59,8 @@ module.exports = function (knex) {
       });
   };
 
-  // Return all joinable matches
-
+//Return all joinable matches
+//----------------------------------
   module.getAllJoinableMatches = function () {
     return knex('matches').where({
       'status': PENDING,
@@ -63,7 +68,8 @@ module.exports = function (knex) {
     });
   };
 
-  // Return all portfolios for a user. userId {string}
+// Return all portfolios for a user. userId {string}
+//--------------------------------------------------------
   module.getUsersPortfolios = function (userId) {
     return module.getUsersMatches(userId)
       .then(function (matches) {
@@ -77,8 +83,8 @@ module.exports = function (knex) {
       });
   };
 
-  // Return a specific match. matchId {string}
-
+// Return a specific match. matchId {string}
+//----------------------------------------------
   module.getMatch = function (matchId) {
     return knex.select()
       .table('matches').where('m_id', '=', matchId)
@@ -87,8 +93,8 @@ module.exports = function (knex) {
       });
   };
 
-  // Get all matches for a user. userId {string}
-
+// Get all matches for a user. userId {string}
+//----------------------------------------------
   module.getUsersMatches = function (userId) {
     return knex.select()
       .table('matches')

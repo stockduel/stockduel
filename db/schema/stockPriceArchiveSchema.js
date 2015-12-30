@@ -1,3 +1,5 @@
+//stock_prices_archive table Schema
+//--------------------------------
 module.exports = function (knex) {
     return knex.schema.createTableIfNotExists('stock_prices_archive', function (table) {
         table.increments('archive_id').primary();

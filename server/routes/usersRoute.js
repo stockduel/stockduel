@@ -10,6 +10,8 @@ module.exports = function (knex) {
     next();
   });
 
+//Search Users
+//-----------------------------------
   router.route('/')
     .get(function (req, res) {
       var search = req.query.search;
@@ -20,7 +22,9 @@ module.exports = function (knex) {
           });
         });
     });
-
+  
+//Get Specific User
+//-----------------------------------
   router.route('/:userId')
     .get(function (req, res) {
       var userId = req.userId;

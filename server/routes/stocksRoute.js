@@ -17,6 +17,8 @@ module.exports = function (knex) {
       next();
     });
 
+//Stock Search Route
+//-----------------------------------
   router.route('/')
     .get(function (req, res) {
       var search = req.query.search;
@@ -28,6 +30,8 @@ module.exports = function (knex) {
         });
     });
 
+//Update Prices Route
+//-----------------------------------
   router.route('/update')
     .post(function (req, res) {
       var list = req.body;
@@ -44,6 +48,8 @@ module.exports = function (knex) {
         });
     });
 
+//Get Stock Route
+//-----------------------------------
   router.route('/:symbol')
     .get(function (req, res) {
       var symbol = req.symbol;
@@ -58,7 +64,11 @@ module.exports = function (knex) {
       });
     });
 
-  //route to get the specific stock data from yahoo- daily close values between a week before match start date and current date
+//Get Specific Stock Data from Yahoo API route
+//--------------------------------------------
+//route returns a csv which includes dates and close prices for a specific stock
+//the last letter on the url denotes that we ask for the weekly close prices(not day or year)
+
   router.route('/history/:symbol/:date')
     .get(function (req, res) {
 
@@ -66,23 +76,25 @@ module.exports = function (knex) {
       var startDate = new Date(req.date);
 
       var dateNow;
-      var dateWeekBefore;
+      var dateYearBefore;
       dateNow = Date.now();
 
-      //change dateWeekBefore to look at the start date of the match for the moment use this
-      dateWeekBefore = Date.now(startDate) - 31536000000;
+      //change dateYearBefore to look at the start date of the match and substract a year of milliseconds from it
+      dateYearBefore = Date.now(startDate) - 31536000000;
 
       //make variables for the current date
       var yearNow = new Date(dateNow).getFullYear();
       var monthNow = new Date(dateNow).getMonth();
       var dayNow = new Date(dateNow).getDate();
+
       //variables for the start date
-      var yearStart = new Date(dateWeekBefore).getFullYear();
-      var monthStart = new Date(dateWeekBefore).getMonth();
-      var dayStart = new Date(dateWeekBefore).getDate();
+      var yearStart = new Date(dateYearBefore).getFullYear();
+      var monthStart = new Date(dateYearBefore).getMonth();
+      var dayStart = new Date(dateYearBefore).getDate();
 
       var url = 'http://ichart.yahoo.com/table.csv?s='+stockSymbol+'&a='+monthStart+'&b='+dayStart+'&c='+yearStart+'&d='+monthNow+'&e='+dayNow+'&f='+yearNow+'&g=w';
       
+      //send request out to the yahoo api with correct variables
       rp(url)
       .then(function (body) {
 
@@ -104,7 +116,7 @@ module.exports = function (knex) {
           }
         });
 
-        //make array of dates
+        //make array of dates in order of current to olderst
         jsonForm.forEach(function (row) {
           for (var key in row) {
             if (dates.indexOf(row.Date) === -1 && row.Date.length !== 0) {
@@ -113,7 +125,7 @@ module.exports = function (knex) {
           }
         });
 
-        //make an array of dates
+        //make an array of close prices in date order (current to oldest)
         for (var i = 0; i < dates.length; i++) {
           close.push(data[dates[i]]);
         }
@@ -122,13 +134,16 @@ module.exports = function (knex) {
         returnObj.dates = dates.reverse();
         returnObj.close = close.reverse();
 
-
         res.status(200)
         .send(returnObj);
+
       })
       .catch(function (err) {
-        console.log('err in get stock info', err);
-        res.sendStatus(400);
+
+        res.status(400).json({
+          message: err
+        });
+
       });
 
     });

@@ -1,3 +1,4 @@
+//server routing index
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -41,4 +42,5 @@ module.exports = function (knex) {
   router.use('/state', state);
 
   return router;
+
 };

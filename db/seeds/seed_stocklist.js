@@ -1,3 +1,4 @@
+//Take the stock_prices seed data and insert it into the stock_prices table
 var fs = require('fs');
 var Promise = require('bluebird');
 

@@ -2,20 +2,16 @@ var express = require('express');
 var knex = require('./db/index.js');
 var router = require('./routes/index');
 
-//TODO: do we need these? -tate
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-//
 
 var port = process.env.PORT || 8080;
 var pathToClient = __dirname + '/../client';
 
 var app = express();
 
-//TODO: do we need these? -tate
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-//
 
 app.use(router(knex));
 app.use('/', express.static(pathToClient));
