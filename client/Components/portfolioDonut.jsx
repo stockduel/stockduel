@@ -13,7 +13,7 @@ export const PortfolioDonut = React.createClass ({
       return portfolio;
     }, {}) 
     portfolio['cash'] = this.props.available_cash;
-    setTimeout(this.buildChart(portfolio), 1000);
+    this.buildChart(portfolio);
   },
 
   componentDidUpdate() {
@@ -22,7 +22,7 @@ export const PortfolioDonut = React.createClass ({
       return portfolio;
     }, {}) 
     portfolio['cash'] = this.props.available_cash;
-    setTimeout(this.buildChart(portfolio), 1000);
+    this.buildChart(portfolio);
   },
 
   buildChart(portfolio) {
