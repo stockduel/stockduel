@@ -70,7 +70,7 @@ module.exports = function (knex) {
       dateNow = Date.now();
 
       //change dateWeekBefore to look at the start date of the match for the moment use this
-      dateWeekBefore = Date.now(startDate) - 604800000;
+      dateWeekBefore = Date.now(startDate) - 31536000000;
 
       //make variables for the current date
       var yearNow = new Date(dateNow).getFullYear();
@@ -81,7 +81,7 @@ module.exports = function (knex) {
       var monthStart = new Date(dateWeekBefore).getMonth();
       var dayStart = new Date(dateWeekBefore).getDate();
 
-      var url = 'http://ichart.yahoo.com/table.csv?s='+stockSymbol+'&a='+monthStart+'&b='+dayStart+'&c='+yearStart+'&d='+monthNow+'&e='+dayNow+'&f='+yearNow+'&g=d';
+      var url = 'http://ichart.yahoo.com/table.csv?s='+stockSymbol+'&a='+monthStart+'&b='+dayStart+'&c='+yearStart+'&d='+monthNow+'&e='+dayNow+'&f='+yearNow+'&g=w';
       
       rp(url)
       .then(function (body) {

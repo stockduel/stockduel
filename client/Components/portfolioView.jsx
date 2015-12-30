@@ -6,16 +6,29 @@ import { Stock } from './stockCard.jsx';
 import { CreateMatch } from './createMatch.jsx';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
+import { PortfolioDonut } from './portfolioDonut.jsx';
 
 export const PortfolioView = React.createClass({
 
+  getPortfolio() {
+    var portfolio = this.props.portfolio.get('stocks').toJS().reduce(function(portfolio, stock){
+      portfolio[stock.name] = stock.price;
+      return portfolio;
+    }, {}) 
+    portfolio['cash'] = this.props.available_cash;
+    return portfolio;
+  },
+
   render() {
     const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate } = this.props;
+
     return (
       <div className="container paddingTop">
-        <h4><a href="#/search">Add to this portfolio</a></h4>
         <h2 className="centreTitle">You have ${available_cash.toFixed(2)} available cash.</h2>
         <h2 className="centreTitle">Your portfolio is worth ${portfolioValue.toFixed(2)}.</h2>
+        <PortfolioDonut stocks={ this.getPortfolio() } />
+        <h4><a href="#/search">Add to this portfolio</a></h4>
+
 
         <ul>
           {portfolio.get('stocks').map((stockObj, index) => {
