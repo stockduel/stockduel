@@ -8,7 +8,6 @@ import c3 from 'c3';
 export const PortfolioDonut = React.createClass ({
 
   componentDidMount(){
-    console.log('there---->',this.props.stocks);
     this.buildChart(this.props.stocks);
   },
 
