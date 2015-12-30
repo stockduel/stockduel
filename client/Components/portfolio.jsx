@@ -18,7 +18,7 @@ var Portfolio = React.createClass({
 
     let available_cash = portfolio ? portfolio.get('available_cash') : 0;
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
-    
+
     return React.createElement(
       PortfolioView,
       { available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio, startdate }

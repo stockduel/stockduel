@@ -7,15 +7,29 @@ import c3 from 'c3';
 
 export const PortfolioDonut = React.createClass ({
 
-  componentDidMount(){
-    this.buildChart(this.props.stocks);
+  componentDidMount() {
+    var portfolio = this.props.portfolio.get('stocks').toJS().reduce(function(portfolio, stock){
+      portfolio[stock.name] = (stock.price)*(stock.shares);
+      return portfolio;
+    }, {}) 
+    portfolio['cash'] = this.props.available_cash;
+    this.buildChart(portfolio);
   },
 
-  buildChart(stocks) {
+  componentDidUpdate() {
+    var portfolio = this.props.portfolio.get('stocks').toJS().reduce(function(portfolio, stock){
+      portfolio[stock.name] = (stock.price)*(stock.shares);
+      return portfolio;
+    }, {}) 
+    portfolio['cash'] = this.props.available_cash;
+    this.buildChart(portfolio);
+  },
+
+  buildChart(portfolio) {
     c3.generate({
-      bindto: ReactDOM.findDOMNode(this.refs.chart),
+      bindto: ReactDOM.findDOMNode(this.refs.donut),
       data: {
-        json : stocks,
+        json : portfolio,
         type : 'donut'        
       },
       donut: {
@@ -25,8 +39,9 @@ export const PortfolioDonut = React.createClass ({
   },
   
   render(){
+    console.log('rendering')
     return (
-      <div ref="chart"></div>
+      <div ref="donut"></div>
     )
   }
 
