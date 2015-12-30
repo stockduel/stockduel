@@ -1,4 +1,7 @@
+
+//modele to check if the current user is already authenticated
 module.exports = function (req, res, next) {
+  
   if (req.isAuthenticated()) {
     console.log(req.user.id, "Logged in!");
     return next();
@@ -6,4 +9,5 @@ module.exports = function (req, res, next) {
     console.log("Not logged in");
     res.redirect('/auth/facebook/login');
   }
+
 };

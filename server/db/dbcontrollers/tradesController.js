@@ -10,6 +10,8 @@ module.exports = function (knex) {
   var BUY = 'buy';
   var SELL = 'sell';
 
+//Create Trade: insert a trade into the trades table
+//------------------------------------------------------
   var createTrade = function (trade) {
     return knex.insert(trade, '*').into('trades')
       .then(function (response) {
@@ -17,6 +19,8 @@ module.exports = function (knex) {
       });
   };
 
+//Get a specific trade. userId {string} matchId {string}
+//-------------------------------------------------------
   module.getTrades = function (userId, matchId) {
     return knex.select()
       .table('trades')
@@ -25,14 +29,19 @@ module.exports = function (knex) {
       .orderBy('created_at', 'desc');
   };
 
+//Buy Controller. userId {string} matchId {string} numShares {int} stockTicker {stockTicker}
+//--------------------------------------------------------------------------------------------
   module.buy = function (userId, matchId, numShares, stockTicker) {
 
     var trade;
 
     return Promise.all([
+        //get the details of the stock you want to buy and gets the users portfolio
         stocksCtrl.getStock(stockTicker),
         generatePortfolio(userId, matchId)
       ])
+      //takes results and checks user authorised to buy specified stock/stock symbol is valid
+      //if all is allowed then new buy is inserted into the trades table with the available_funds updated
       .then(function (tuple) {
         var stock = tuple[0];
         var portfolio = tuple[1];
@@ -60,18 +69,16 @@ module.exports = function (knex) {
         });
       })
       .then(function(resp){
-
+        //the trade that just occured is stored and the newly updated portfolio is got again from the database
         trade = resp;
         return module.getPortfolio(userId, matchId);
-
       })
       .then(function(port){
-
+        //return both the trade that occured and the new portfolio
         return {
           trade: trade,
           portfolio: port
         };
-
       })
       .catch(function (err) {
         console.log(err);
@@ -79,14 +86,19 @@ module.exports = function (knex) {
       });
   };
 
+//Buy Controller. userId {string} matchId {string} numShares {int} stockTicker {stockTicker}
+//--------------------------------------------------------------------------------------------
   module.sell = function (userId, matchId, numShares, stockTicker) {
 
     var trade;
 
     return Promise.all([
+        //get information for a specific stock and the users portfolio for the match
         stocksCtrl.getStock(stockTicker),
         generatePortfolio(userId, matchId)
       ])
+      //take the return data and check that the trade is valid/stock exists
+      //if all fine the avaiable cash updated and data is inserted
       .then(function (tuple) {
         var stock = tuple[0];
         var portfolio = tuple[1];
@@ -115,24 +127,24 @@ module.exports = function (knex) {
         });
       })
       .then(function(resp){
-
+        //the trade is returned after it has been inserted
+        //and the newly updated portfolio is generated
         trade = resp;
         return module.getPortfolio(userId, matchId);
-
       })
       .then(function(port){
-
+        //trade and portfolio sent back to the user
         return {
           trade: trade,
           portfolio: port
         };
-
       })
       .catch(function (err) {
         return null;
       });
   };
 
+//Get specific match and all trades with the corresponding stock data
   var getAllTradesWithStockData = function (userId, matchId) {
     return knex('trades').where({
         user_id: userId,
@@ -143,11 +155,13 @@ module.exports = function (knex) {
       .orderBy('created_at', 'ASC');
   };
 
+//Cost Average for calculating the stock price in reduceTradesToPortfolio 
   var costAverage = function (currentPrice, currentShares, newPrice, newShares) {
     var cost = (currentPrice * currentShares + newPrice * newShares) / (currentShares + newShares);
     return Number(cost.toFixed(2));
   };
 
+//Rolls up the users trades for a specific match into a portfolio
   module.reduceTradesToPortfolio = function (trades, startingFunds) {
     var availableCash = startingFunds;
 
@@ -165,7 +179,6 @@ module.exports = function (knex) {
         stock.ask = trade.ask;
         stock.name = trade.name;
         stock.percent_change = trade.percent_change;
-
       }
 
       if (trade.action === BUY) {
@@ -195,6 +208,7 @@ module.exports = function (knex) {
 
   };
 
+//Gets/calculates the various number related fields of the stock
   var generatePortfolioMetrics = function (portfolio) {
     var portfolioValue = 0;
     var availableCash = portfolio.available_cash;
@@ -215,11 +229,13 @@ module.exports = function (knex) {
 
   };
 
+//Function that calls generatePortfolio and then the generatePortfolioMetrics function: called by buy and sell to compile a users portfolio
   module.getPortfolio = function (userId, matchId) {
     return generatePortfolio(userId, matchId)
       .then(generatePortfolioMetrics);
   };
 
+//Get a Specific Match from the Matches Table
   var getMatch = function (matchId) {
     return knex.select()
       .table('matches').where('m_id', '=', matchId)
@@ -228,12 +244,15 @@ module.exports = function (knex) {
       });
   };
 
+//Generate the Users Portfolio
   var generatePortfolio = function (userId, matchId) {
 
     return Promise.all([
+        //get specific match and all trades with the corresponding stock data
         getMatch(matchId),
         getAllTradesWithStockData(userId, matchId)
       ])
+      //pass the results from above to the reduceTradesToPortfolio which returns a users portfolio for the match in
       .then(function (tuple) {
         var match = tuple[0];
         var trades = tuple[1];

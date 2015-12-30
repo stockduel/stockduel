@@ -1,3 +1,5 @@
+//Knex Migrations file to build and tear down the database tables in one command
+//--------------------------------------------------------------------------------
 var stocks = require('../schema/stockSchema');
 var stockprices = require('../schema/stockPriceSchema');
 var stockpricesArchive = require('../schema/stockPriceArchiveSchema');

@@ -1,3 +1,5 @@
+//trades table schema
+//---------------------------------
 module.exports = function (knex) {
   return knex.schema.createTableIfNotExists('trades', function (table) {
     table.increments('t_id').primary();

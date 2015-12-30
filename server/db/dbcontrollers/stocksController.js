@@ -1,6 +1,8 @@
 module.exports = function (knex) {
   var module = {};
 
+//Get the stock of a certain symbol
+//-------------------------------------
   module.getStock = function (symbol) {
     return knex('stocks')
       .join('stock_prices', 'stocks.symbol', '=', 'stock_prices.symbol')
@@ -18,6 +20,8 @@ module.exports = function (knex) {
 
   };
 
+//Query the database for anything like the input search (for search page on the front end)
+//------------------------------------------------------------------------------------------
   module.searchStock = function (search) {
     var searchLike = search + '%';
     return knex('stocks')
@@ -26,8 +30,10 @@ module.exports = function (knex) {
       .join('stock_prices', 'stocks.symbol', '=', 'stock_prices.symbol');
   };
 
-  //pass in array of objects contaning symbol,shares,and price 
-  //query stock_prices and update price if needed and return
+//Update Prices Controller. Deprecated.
+//------------------------------
+//pass in array of objects contaning symbol,shares,and price 
+//query stock_prices and update price if needed and return
   module.updatePrices = function (stockArr) {
     return knex.select('symbol','ask')
       .from('stock_prices')
