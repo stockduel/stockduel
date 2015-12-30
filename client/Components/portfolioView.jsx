@@ -8,11 +8,13 @@ import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
 import { PortfolioDonut } from './portfolioDonut.jsx';
 
+const RaisedButton = require('material-ui/lib/raised-button');
+
 export const PortfolioView = React.createClass({
 
   getPortfolio() {
     var portfolio = this.props.portfolio.get('stocks').toJS().reduce(function(portfolio, stock){
-      portfolio[stock.name] = stock.price;
+      portfolio[stock.name] = (stock.price)*(stock.shares);
       return portfolio;
     }, {}) 
     portfolio['cash'] = this.props.available_cash;
@@ -24,10 +26,11 @@ export const PortfolioView = React.createClass({
 
     return (
       <div className="container paddingTop">
-        <h2 className="centreTitle">You have ${available_cash.toFixed(2)} available cash.</h2>
+        
+        <RaisedButton><a href="#/search" className="addToMatchButton" >Add to this portfolio</a></RaisedButton>
+        <h2 className="centreTitle paddingTop">You have ${available_cash.toFixed(2)} available cash.</h2>
         <h2 className="centreTitle">Your portfolio is worth ${portfolioValue.toFixed(2)}.</h2>
         <PortfolioDonut stocks={ this.getPortfolio() } />
-        <h4><a href="#/search">Add to this portfolio</a></h4>
 
 
         <ul>

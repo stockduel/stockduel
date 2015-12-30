@@ -12,7 +12,7 @@ module.exports = function (knex) {
         var currentmatchId = matches[0] ? matches[0].m_id : null;
         // return object with keys that conform to redux state object
         res.json({
-          currentmatchId: currentmatchId,
+          currentMatchId: currentmatchId,
           userId: userId,
           matches: matches
         });
