@@ -30,6 +30,7 @@ export const StockChart = React.createClass ({
         //send the data to the chartBuild method
         self.buildChart(close, xAxis);
       }
+      
     });
 
 
