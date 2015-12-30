@@ -7,10 +7,10 @@ import * as Actions from '../actions/actions.js';
 // import request from 'superagent';
 
 
-export const Home = React.createClass({
+const HomeDumb = React.createClass({
 
   render() {
-
+    const {userId} = this.props;
     return (
       <div className="container">
         <div className="centreTitle">
@@ -27,7 +27,9 @@ export const Home = React.createClass({
           3. Beat your oponents portfolio
         </h5>
         <div className="centreTitle loginPadTop" >
-          <a href="/auth/facebook"><img className="imgWidth" src='../assets/images/login.png' alt="facebook login button" /></a>
+        {!userId &&
+            <a href="/auth/facebook"><img className="imgWidth" src='../assets/images/login.png' alt="facebook login button" /></a>         
+        }
         </div>
 
       </div>
@@ -35,4 +37,13 @@ export const Home = React.createClass({
   }
 
 });
+
+function mapStateToProps(state) {
+  return {
+    userId: state.get('userId')
+  }
+}
+
+//connect and export App
+export const Home = connect(mapStateToProps)(HomeDumb);
 
