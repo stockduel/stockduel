@@ -5,8 +5,10 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import * as Actions from '../actions/actions.js';
+import { MatchCard } from './matchCard.jsx';
 
 const MatchesList = React.createClass({
+
   setMatch(m_id) {
     var self = this;
     return function() {
@@ -39,12 +41,12 @@ const MatchesList = React.createClass({
   },
 
   render() {
-    const { matches, userId } = this.props; // immutableJS List
+    const { matches, userId } = this.props;
     return (
       <div>
         <ul>
-          {matches.map(match => {
-              return <li key={match.get('m_id')} onClick={this.setMatch(match.get('m_id'))}>{match.get('title')} -- <em>{this.formatMatchDisplay(match)}</em></li>
+          {matches.map(match => { 
+            return <li key={match.get('m_id')} ><MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} /></li>
           })}
         </ul>
       </div>
@@ -53,7 +55,6 @@ const MatchesList = React.createClass({
 });
 
 function mapStateToProps(state) {
-  console.dir(state.get('matches').toJS());
   return {
     matches: state.get('matches'),
     userId: state.get('userId')
