@@ -13,7 +13,6 @@ export const PortfolioDonut = React.createClass ({
       return portfolio;
     }, {}) 
     portfolio['cash'] = this.props.available_cash;
-    console.log('---->porto',portfolio)
     setTimeout(this.buildChart(portfolio), 1000);
   },
 
@@ -23,12 +22,10 @@ export const PortfolioDonut = React.createClass ({
       return portfolio;
     }, {}) 
     portfolio['cash'] = this.props.available_cash;
-    console.log('---->porto',portfolio)
     setTimeout(this.buildChart(portfolio), 1000);
   },
 
   buildChart(portfolio) {
-    console.log('in render donut', portfolio)
     c3.generate({
       bindto: ReactDOM.findDOMNode(this.refs.donut),
       data: {

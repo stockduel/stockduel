@@ -15,7 +15,6 @@ export const PortfolioView = React.createClass({
   render() {
 
     const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate } = this.props;
-    console.log('stock', portfolio, this.props)
 
     return (
       <div className="container paddingTop">
