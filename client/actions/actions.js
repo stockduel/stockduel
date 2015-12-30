@@ -165,13 +165,26 @@ export function updatePrices(oldStockArray) {
     }
 
    export function joinMatchSync(Match) {
-    return (dispatch) => {
-     dispatch({
+    return {
        type: JOIN_MATCH,
        currentMatchId: Match.m_id,
-       match: Match
-     });
-    }
+       match: {
+        m_id: Match.m_id,
+        title: Match.title,
+        challengee: Match.challengee, 
+        startdate: Match.startdate,
+        enddate: Match.enddate,
+        starting_funds: Match.starting_funds,
+        status: Match.status,
+        type: Match.type,
+        winner: Match.winner,
+        portfolio: {
+          available_cash: Match.starting_funds,
+          totalValue: Match.starting_funds,
+          stocks: []
+        }
+       }
+     }
    }
 
    export function joinMatch(joinOptions) {
