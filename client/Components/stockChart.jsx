@@ -51,7 +51,7 @@ export const StockChart = React.createClass ({
         y: {
           //define the axis label and position
           label: {
-            text: 'Close in $',
+            text: 'Closing Price in $',
             position: 'outer-middle'
           }
         },
@@ -59,7 +59,7 @@ export const StockChart = React.createClass ({
           //define the fields on the x axis
           type: 'timeseries',
           tick: {
-            format: '%Y-%m-%d'
+            format: '%Y-%m'
           },
           //define the axis label and position
           label: {
