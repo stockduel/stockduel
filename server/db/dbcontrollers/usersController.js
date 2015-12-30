@@ -2,8 +2,8 @@ module.exports = function (knex) {
 
   var module = {};
 
-  //-------------------------select all user details-------------------------------//
-
+//Select all User Details
+//---------------------------
   module.getUsers = function () {
     return knex.select().table('users')
       .catch(function (err) {
@@ -11,8 +11,8 @@ module.exports = function (knex) {
       });
   };
 
-
-  //-----------------------get a specific users details---------------------------------//
+//Get a Specific Users Details
+//------------------------------
 
   module.getUser = function (userId) {
     return knex.select().table('users').where('u_id', '=', userId)
@@ -27,6 +27,8 @@ module.exports = function (knex) {
       });
   };
 
+//Search Users for anything to match input
+//-----------------------------------------
   module.searchUsers = function (search) {
     var searchLike = search + '%';
     return knex('users')
@@ -34,8 +36,8 @@ module.exports = function (knex) {
       .orWhere(knex.raw('UPPER(name) like UPPER(?)', [searchLike]));
   };
 
-  //-----------------------creates/check a users details----------------------------------//
-
+//Creates/Check a Users Details used from facebook auth route
+//---------------------------------------------------------------
   module.findOrCreateUser = function (username, password, name, email) {
 
     return knex.select()
@@ -46,7 +48,6 @@ module.exports = function (knex) {
         if (user.length > 0) {
           return user;
         }
-        //insert the user into the table
         return knex.insert({
           'username': username,
           'password': password,
@@ -58,8 +59,6 @@ module.exports = function (knex) {
         return user[0];
       });
   };
-
-  //-----------------------------------------------------------//
 
   return module;
 

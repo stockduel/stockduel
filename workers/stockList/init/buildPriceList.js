@@ -12,19 +12,21 @@ var queryRight = '")&format=json&diagnostics=true&env=store://datatables.org/all
 var INPUT = __dirname + '/output/stocklist.json';
 var OUTPUT = __dirname + '/output/stocklistPrices.json';
 
+//for the two below see ./buildStockList for info on these
 var readFile = Promise.promisify(fs.readFile);
 var writeFile = Promise.promisify(fs.writeFile);
 
+//Take a json input and formatted version to OUTPUT file
 readFile(INPUT)
   .then(function (json) {
     return JSON.parse(json);
   })
   .then(function (stocks) {
-    console.log(new Date(), 'retrieving');
+    //this queries Yahoo api
     return getStockData(stocks);
   })
   .then(function (prices) {
-    console.log(new Date(), 'parse start');
+    //prices returned from Yahoo api and formatted by parseStockData and written to OUTPUT file
     var stockData = parseStockData(prices);
     stockData = JSON.stringify(stockData, null, 4);
     return writeFile(OUTPUT, stockData);
@@ -33,6 +35,7 @@ readFile(INPUT)
     console.log('ERROR: ', err);
   });
 
+//Query the Yahoo api (this function will be called from getStockData with lists of up to 100 at a time)
 function queryAPI(stocks) {
   var api = 'https://query.yahooapis.com/v1/public/yql';
 
@@ -58,6 +61,7 @@ function queryAPI(stocks) {
   });
 }
 
+//Get the first(up to 100) stocks
 function getStockData(stocks) {
   var LIMIT = 100;
   var stockData = [];
@@ -68,6 +72,7 @@ function getStockData(stocks) {
   return Promise.all(stockData);
 }
 
+//Formats the response form Yahoo
 function parseStockData(prices) {
   return [].concat.apply([], prices)
     .map(function (stock) {

@@ -15,6 +15,8 @@ module.exports = function (knex) {
       next();
     });
 
+//Get Portfolio
+//-----------------------------------
   router.route('/:matchId/:userId')
     .get(function (req, res) {
       tradesController.getPortfolio(req.userId, req.matchId)
@@ -30,6 +32,8 @@ module.exports = function (knex) {
         });
     })
 
+//Buy and Sell Route
+//-----------------------------------
   .post(function (req, res) {
 
     var userId = req.userId;
@@ -61,8 +65,6 @@ module.exports = function (knex) {
       });
 
   });
-
-  //-----------------------------------------------------------//
 
   return router;
 };

@@ -6,6 +6,8 @@ var matchesController = require('../db/dbcontrollers/matchesController.js');
 module.exports = function (knex) {
   var matchesCtrl = matchesController(knex);
 
+//Get all of the users portfolios
+//-----------------------------------
   router.get('/', function (req, res) {
     var userId = req.user.u_id;
     matchesCtrl.getUsersPortfolios(userId).then(function (matches) {
