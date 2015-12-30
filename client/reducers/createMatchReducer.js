@@ -10,6 +10,6 @@ export default function (state, action) {
   //roll that new array of matches into a new state object
   var stateWithNewMatch = state.set('matches', newMatchesArray);
   //return the new state with updated match array and set the currentMatchId
-  return stateWithNewMatch.set('currentMatchId', action.currentMatchId);
+  return stateWithNewMatch;
 }
 
