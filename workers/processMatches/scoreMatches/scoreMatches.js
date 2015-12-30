@@ -1,11 +1,12 @@
 var Promise = require('bluebird');
 var request = require('request');
-var knex = require('./../db/index');
-var tradesController = require('./../../../server/db/dbcontrollers/tradesController')(knex);
+var tradesController = require('./../../../server/db/dbcontrollers/tradesController');
 
 module.exports = function (knex) {
   
   var module = {};
+
+  tradesController = tradesController(knex);
 
 //Decides who was the winner of the match
 //-------------------------------------------------  
@@ -15,7 +16,7 @@ module.exports = function (knex) {
     var today = new Date();
     var date = providedDate || new Date(today.getFullYear(), today.getMonth(), today.getDate(), 21);
     //get all matches that are active and ending on the provided date
-    selectCompletingMatches( date )
+    return module.selectCompletingMatches( date )
       .then( function (matches) {
         return determineWinners(matches);
       })
@@ -85,3 +86,12 @@ module.exports = function (knex) {
   return module;
 
 };
+
+if(require.main === module) {
+  var knex = require('./../db/index');
+  module.exports(knex).scoreMatches()
+  .then(function(){
+    knex.destroy();
+  });  
+}
+

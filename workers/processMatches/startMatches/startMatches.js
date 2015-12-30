@@ -1,6 +1,5 @@
 var Promise = require('bluebird');
 var request = require('request');
-var knex = require('./../db/index');
 
 
 module.exports = function (knex) {
@@ -15,7 +14,7 @@ module.exports = function (knex) {
       //get all matches that should start today
     var date = providedDate || new Date(today.getFullYear(), today.getMonth(), today.getDate(), 14, 30);
     //get all matches that should start today
-      module.selectPendingMatches(date)
+      return module.selectPendingMatches(date)
       .then( function(matches){
         return module.updateMatchState(matches);
       })
@@ -82,3 +81,11 @@ module.exports = function (knex) {
 
   return module;
 };
+
+if(require.main === module) {
+  var knex = require('./../db/index');
+  module.exports(knex).startMatches()
+  .then(function(){
+    knex.destroy();
+  });
+} 
