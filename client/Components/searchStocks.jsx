@@ -7,6 +7,8 @@ import { StockPurchase } from './stockPurchaseWidget.jsx';
 import { buy } from '../actions/actions.js';
 import request from 'superagent';
 
+const TextField = require('material-ui/lib/text-field');
+
 export const SearchStocksDumb = React.createClass({
 
   componentWillMount() {
@@ -29,19 +31,16 @@ export const SearchStocksDumb = React.createClass({
 
   debouncedSearch() {
     var context = this;
-    var input = document.getElementById('searchStocksInput');
+    var input = this.refs.searchStocksInput.refs.input;
     function delayed () {
-      var input = document.getElementById('searchStocksInput');
-      if (input) {
-        context.searchStocks(input.value); // invoke searchStocks from original context        
-      }
+      context.searchStocks(input.value); // invoke searchStocks from original context        
       context.timeout = null; // reset timeout
     }; 
 
     if (this.timeout){
       clearTimeout(this.timeout);
     }
-    else if (input){
+    else {
       var queryString = input.value;
       this.searchStocks(queryString);
     }
@@ -49,30 +48,34 @@ export const SearchStocksDumb = React.createClass({
   },
 
   updateStockValue(symbol) {
-    return () => {
-      this.purchaseSymbol=symbol;
+      this.refs.searchStocksInput.refs.input.value = this.stockTicker = symbol;
       window.location.hash = "#/search"; // artificial refresh to re-render StockPurchase
       window.scrollTo(0, 0); // scroll to top of page to see input field
-    }
   },
+
   render() {
+    this.stockTicker = this.stockTicker || '';
     const {MatchId, userId, buy, MatchTitle, isActive} = this.props;
     return (
-      <div>
+      <div className="cardMarginBottom paddingTop">
+        <h3>{MatchTitle + (isActive ? '' : ' is not currently active')}</h3>
         {typeof MatchId === 'undefined' && <h4><strong>Just browsing . . .</strong></h4>}
-        {MatchId && <StockPurchase valueProp={this.purchaseSymbol || ''} buy={buy} MatchId={MatchId} userId={userId} MatchTitle={MatchTitle} isActive={isActive} />}
-        Search all the stocks!
         <div>
-          <input type="text" placeholder="Search . . ." id="searchStocksInput" onKeyDown={this.debouncedSearch} />
+          <TextField hintText="Stock Symbol" ref="searchStocksInput" onKeyDown={this.debouncedSearch} onChange={(e) => {
+            this.updateStockValue(e.target.value);
+          }}/>
         </div>
         <div className="results">
           <ul>
             {this.searchResults !== null ? this.searchResults.map(result => {
-                return <li key={result.symbol} onClick={this.updateStockValue(result.symbol)}><strong>{result.symbol}</strong>: {result.name} -- <em>${result.ask}</em></li>
+                return <li key={result.symbol} onClick={() => {
+                  this.updateStockValue(result.symbol);
+                }}><strong>{result.symbol}</strong>: {result.name} -- <em>${result.ask}</em></li>
               })
             : ''}
           </ul>
         </div>
+        {MatchId && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} />}
       </div>
     )
   }
