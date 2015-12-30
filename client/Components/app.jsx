@@ -33,7 +33,7 @@ let App = React.createClass({
   
   render() {
 
-    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userId } = this.props;
+    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userId, logout } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">
@@ -41,7 +41,7 @@ let App = React.createClass({
       <button className="navButton"><Link className="navButtonFontSize" to="/create">Create Match</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/search">Search</Link></button>
-      <button className="navButton"><Link className="navButtonFontSize" to="/#">Logout</Link></button>
+      <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>
     </ToolbarGroup>);
 
     return (
