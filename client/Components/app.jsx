@@ -33,7 +33,7 @@ let App = React.createClass({
   
   render() {
 
-    const { buy, sell, updatePrices, setCurrentMatch, setInitialState, userId, logout } = this.props;
+    const { buy, sell, setCurrentMatch, setInitialState, userId, logout } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">

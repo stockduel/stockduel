@@ -62,32 +62,6 @@ export function sell(options) {
     };
 }
 
-export function updatePricesSync(updatedStockArray) {
-  return {
-    type: UPDATE_PRICES,
-    updatedStockArray: updatedStockArray
-  }
-}
-
-export function updatePrices(oldStockArray) {
-  return (dispatch) => {
-    // AJAX call to get new prices
-    // success callback pass in data as portfolio.stocks array
-    //request.post('stocks/')
-    request.post('/stocks/update')
-    .send(oldStockArray)
-    .end(function(err, res){
-      if(err) {
-        //handle error
-        dispatch({type: 'FAILED_TO_LOAD_PRICES'});
-      } else {
-        dispatch(updatePricesSync(res.body.stockArray));
-      }
-    });
-    // dispatch(updatePricesSync(oldStockArray));
-    };
- }
-
  export function setCurrentMatch(MatchId) {
     return (dispatch) => {
       dispatch({
