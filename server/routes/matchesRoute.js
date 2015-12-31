@@ -18,7 +18,7 @@ module.exports = function (knex) {
   router.route('/')
 
   .get(function (req, res) {
-    matchesController.getAllJoinableMatches(req.userId)
+    matchesController.getAllJoinableMatches(req.user.u_id)
       .then(function (matches) {
         res.status(200).json({
           data: matches
