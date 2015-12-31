@@ -18,7 +18,7 @@ module.exports = function (knex) {
     //get all matches that are active and ending on the provided date
     return module.selectCompletingMatches( date )
       .then( function (matches) {
-        return determineWinners(matches);
+        return module.determineWinners(matches);
       })
       .catch( function ( err ) {
         console.error(err);
