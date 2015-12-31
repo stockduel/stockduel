@@ -10,7 +10,6 @@ import { PortfolioConnected } from '../Components/portfolio.jsx';
 import { Home } from '../Components/home.jsx';
 import { StateGenConnected } from '../Components/stateGen.jsx';
 import { MatchesConnected } from '../Components/matches.jsx';
-import { CreateMatch } from '../Components/createMatch.jsx';
 import { JoinMatchConnected } from '../Components/joinMatch.jsx';
 import { SearchStocks } from '../Components/searchStocks.jsx';
 
@@ -36,7 +35,6 @@ render ((
       <Route path="/" component={AppWithStore}>
         <IndexRoute component={Home} />
         <Route path="_=_" component={StateGenConnected} />
-        <Route path="create" component={CreateMatch} />
         <Route path="matches" component={MatchesConnected} />
         <Route path="portfolio" component={PortfolioConnected} />
         <Route path="join" component={JoinMatchConnected} />

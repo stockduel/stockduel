@@ -20,21 +20,22 @@ const RaisedButton = require('material-ui/lib/raised-button');
 export const MatchCard = React.createClass({
 
   componentWillMount() {
-    request.get('/users/' + this.props.match.get('challengee'))
+    let opponentId = (this.props.match.get('challengee')) === (this.props.userId) ?  (this.props.match.get('creator_id')) : (this.props.match.get('challengee'));
+    request.get('/users/' + opponentId)
       .end((err, res) => {
         if (err) {
           console.error(err)
         } else {
-          this.challengee = res.body.data.username;
+          this.opponent = res.body.data.username;
           window.location.hash="#/matches";
         }
       });
-    request.get('/trades/' + this.props.match.get('m_id') + '/' + this.props.match.get('challengee'))
+    request.get('/trades/' + this.props.match.get('m_id') + '/' + opponentId)
       .end((err, res) => {
         if (err) {
           console.error(err)
         } else {
-          this.challengeePortfolio = res.body.data;
+          this.opponentPortfolio = res.body.data;
           window.location.hash="#/matches";
         }
       })
@@ -44,10 +45,10 @@ export const MatchCard = React.createClass({
     const {match, setMatch} = this.props;
 
     let forHeadToHead = (<div>
-                          <p>Challenger: {this.challengee}</p>
-                          <p>Portfolio: {this.challengeePortfolio && "$" + Number(this.challengeePortfolio.totalValue).toFixed(2)}</p>
+                          <p>Opponent: {this.opponent}</p>
+                          <p>Portfolio: {this.opponentPortfolio && "$" + Number(this.opponentPortfolio.totalValue).toFixed(2)}</p>
                         </div>);
-
+    //to be used when have moment installed
     // let startDate = match.get('startdate');
     // let start = moment(startDate).format("MMM Do YYYY");
     // let endDate = match.get('enddate');

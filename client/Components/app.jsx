@@ -38,7 +38,6 @@ let App = React.createClass({
     const userButtons = 
     (<ToolbarGroup float="right">
       <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
-      <button className="navButton"><Link className="navButtonFontSize" to="/create">Create Match</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/search">Search</Link></button>
       <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>

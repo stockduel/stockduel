@@ -69,7 +69,7 @@ const MatchesList = React.createClass({
         <Tabs primary={true}
           onChange={this.handleChange}>
 
-          <Tab style={{background:'#009ACD'}} label="Current" value="a" >
+          <Tab style={{background:'#009ACD', fontSize:'15px'}} label="Current" value="a" >
             <div className="container">
               <h2 className="centreTitle" style={styles.headline} >Current Matches</h2>
               <CreateMatchDumb userId={userId} createMatch={createMatch} />
@@ -77,7 +77,7 @@ const MatchesList = React.createClass({
               <ul>
                 {matches.map(match => { 
                   if (match.get('status') === "active") {
-                     return (<MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} />);
+                     return (<MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>);
                    }
                 })}
               </ul>
@@ -85,7 +85,7 @@ const MatchesList = React.createClass({
             </div>
           </Tab>
 
-          <Tab style={{background:'#009ACD'}} label="Pending" value="b">
+          <Tab style={{background:'#009ACD', fontSize:'15px'}} label="Pending" value="b">
             <div className="container">
               <h2 className="centreTitle" style={styles.headline}>Pending Matches</h2>
               <CreateMatchDumb userId={userId} createMatch={createMatch} />
@@ -93,7 +93,7 @@ const MatchesList = React.createClass({
               <ul>
                 {matches.map(match => {
                   if (match.get('status') === "pending") {
-                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} />
+                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
                   }
                 })}
               </ul>
@@ -101,7 +101,7 @@ const MatchesList = React.createClass({
             </div>
           </Tab>
 
-          <Tab style={{background:'#009ACD'}} label="Past" value="c">
+          <Tab style={{background:'#009ACD', fontSize:'15px'}} label="Past" value="c">
             <div className="container">
               <h2 className="centreTitle" style={styles.headline}>Past Matches</h2>
               <CreateMatchDumb userId={userId} createMatch={createMatch} />
@@ -109,7 +109,7 @@ const MatchesList = React.createClass({
               <ul>
                 {matches.map(match => {
                   if (match.get('status') === "complete") {
-                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} />
+                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
                   }
                 })}
               </ul>
