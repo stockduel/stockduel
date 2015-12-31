@@ -3,8 +3,7 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import request from 'superagent';
-
-
+const moment = require('moment');
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
@@ -48,14 +47,14 @@ export const MatchCard = React.createClass({
                           <p>Opponent: {this.opponent}</p>
                           <p>Portfolio: {this.opponentPortfolio && "$" + Number(this.opponentPortfolio.totalValue).toFixed(2)}</p>
                         </div>);
-    //to be used when have moment installed
-    // let startDate = match.get('startdate');
-    // let start = moment(startDate).format("MMM Do YYYY");
-    // let endDate = match.get('enddate');
-    // let end = moment(endDate).format("MMM Do YYYY");
+
+    let startDate = match.get('startdate');
+    let start = moment(startDate).fromNow();
+    let endDate = match.get('enddate');
+    let end = moment(endDate).fromNow();
 
     return (
-      <div className="container paddingTop">
+      <div className="paddingTop container">
 
         <Card initiallyExpanded={false}>
           <CardHeader
@@ -66,20 +65,20 @@ export const MatchCard = React.createClass({
           </CardHeader>
 
           <CardText expandable={true}>
-
-          <div className="row container">
+          <br></br>
+          <div className="row">
             <p>Type: {match.get('type')}</p>
-            <p>Start: {match.get('startdate')}</p>
-            <p>End: {match.get('enddate')}</p>
+            <p>Start: {start}</p>
+            <p>End: {end}</p>
           </div>
 
-          <div className="player1 container">
+          <div className="player1">
             <div>
               <p>Your Portfolio: {'$' + Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)}</p>
             </div>
           </div>
 
-          <div className="player2 container">
+          <div className="player2">
             { match.get('type') === 'head' ? forHeadToHead : null }
           </div>
 

@@ -6,26 +6,16 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import { createMatch } from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
+import DropDownMenu from 'material-ui/lib/DropDownMenu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
-const DatePicker = require('material-ui/lib/date-picker/date-picker');
-const DatePickerDialog = require('material-ui/lib/date-picker/date-picker-dialog');
-const Checkbox = require('material-ui/lib/checkbox');
 const RadioButton = require('material-ui/lib/radio-button');
 const RadioButtonGroup = require('material-ui/lib/radio-button-group');
 const Toggle = require('material-ui/lib/toggle');
-const DropDownMenu = require('material-ui/lib/drop-down-menu');
-const Dialog = require('material-ui/lib/dialog');
-const RaisedButton = require('material-ui/lib/raised-button');
-const Card = require('material-ui/lib/card/card');
-const CardActions = require('material-ui/lib/card/card-actions');
-const CardExpandable = require('material-ui/lib/card/card-expandable');
-const CardHeader = require('material-ui/lib/card/card-header');
-const CardMedia = require('material-ui/lib/card/card-media');
-const CardText = require('material-ui/lib/card/card-text');
-const CardTitle = require('material-ui/lib/card/card-title');
-const Avatar = require('material-ui/lib/avatar.js');
+const FlatButton = require('material-ui/lib/flat-button');
 const TextField = require('material-ui/lib/text-field');
 
 export const CreateMatchDumb = React.createClass({
@@ -35,39 +25,21 @@ export const CreateMatchDumb = React.createClass({
     const { userId, createMatch } = this.props;
     let startFunds;
 
-    let menuItems = [
-      { payload: '1', text: '' },
-      { payload: '50000', text: '$50,000' },
-      { payload: '100000', text: '$100,000' },
-      { payload: '500000', text: '$500,000' },
-      { payload: '1000000', text: '$1,000,000' }
-    ];
-
     return (
       <div className="container paddingTop">
-
-        <Card initiallyExpanded={false}>
-          <CardHeader
-            title="Create Match"
-            actAsExpander={true}
-            showExpandableButton={true}>
-          </CardHeader>
-
-          <CardText expandable={true}>
-
-          <div className="row container">
+          <div className="row">
              <div className="spaceUnder">
                <TextField ref="matchTitleInput"
                  hintText="Match Title" className="matchTitleBox" />
              </div>
           </div>
 
-          <div className="row container">
+          <div className="row">
             <div className="four columns">
                <h5>Start Date:</h5>
-               <input className="datePicker" type="date" name="start" id="startDate" />
+               <input className="datePicker" type="date" name="start" ref="startDate" />
                 <h5>Finish Date:</h5>
-               <input className="datePicker" type="date" name="finish" id="finishDate" />
+               <input className="datePicker" type="date" name="finish" ref="finishDate" />
             </div>
 
             <div className="four columns">
@@ -84,84 +56,79 @@ export const CreateMatchDumb = React.createClass({
               </RadioButtonGroup>
             </div>
 
-            <div className="three columns">
+            <div className="four columns">
               <h5>Start Funds:</h5>
-                <DropDownMenu menuItems={menuItems} 
-                  onChange={function (event, index, menuItem) {
-                    startFunds = menuItem.payload;
-                  }} />
+                <DropDownMenu value={1} onChange={function (event, index, menuItem) {
+                    console.log('things', menuItem)
+                    startFunds = menuItem;
+                  }}>
+                  <MenuItem value={1} primaryText="Choose Here"/>
+                  <MenuItem value={5000} primaryText="$10,000"/>
+                  <MenuItem value={10000} primaryText="$50,000"/>
+                  <MenuItem value={100000} primaryText="$100,000"/>
+                  <MenuItem value={1000000} primaryText="$1,000,000"/>
+                </DropDownMenu>
+
             </div>
 
            </div>
+           <div className="rightButton">
+             <FlatButton label="Submit"
+              secondary={true}
+              linkButton={true} onClick={ () => { 
+                 let matchType;
+                 let start = this.refs.startDate.value;
+                 let end = this.refs.finishDate.value;
+                 let matchTitle = this.refs.matchTitleInput.refs.input.value;
+                 if (this.refs.headOrSolo.refs.head.isChecked()) {
+                   matchType = 'head';
+                 } else if (this.refs.headOrSolo.refs.solo.isChecked()) {
+                   matchType = 'solo';
+                 }
 
-          </CardText>
-
-          <CardActions expandable={true}>
-           <div className='rightButton'>
-              
-              <RaisedButton label="Submit"
-
-               linkButton={true} onClick={ () => {  
-                  //date values
-                  let matchType;
-                  let start = document.getElementById('startDate').value;
-                  let end = document.getElementById('finishDate').value;
-                  let matchTitle = this.refs.matchTitleInput.refs.input.value;
- 
-                  if (this.refs.headOrSolo.refs.head.isChecked()) {
-                    matchType = 'head';
-                  } else if (this.refs.headOrSolo.refs.solo.isChecked()) {
-                    matchType = 'solo';
-                  }
-
-                  let dStart = start.split('-');
-                  let dEnd = end.split('-');
- 
-                  let yearStart = dStart[0];
-                  let monthStart = dStart[1]-1;
-                  let dateStart = dStart[2];
-                  let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
-                  let dateFormatStart = new Date(dateIntegerStart);
- 
-                  let yearEnd = dEnd[0];
-                  let monthEnd = dEnd[1]-1;
-                  let dateEnd = dEnd[2];
-                  let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
-                  let dateFormatEnd = new Date(dateIntegerEnd);
- 
-                  if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
- 
-                    return alert('Stock market\'s not open on '+dateFormatStart.toString().substr(0,3) + 'day.');
-                  
-                  } else {
- 
-                    if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
-                      alert('Matches should not start before today, and should not end before they start.');
-                    } else {
-                      if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
-                        alert('Please pick an option for every field')
-                      } else {
-                        let createOptions = {
-                          userId: userId,
-                          title: matchTitle,
-                          startdate: dateFormatStart,
-                          enddate: dateFormatEnd,
-                          startFunds: startFunds,
-                          type: matchType === "solo" ? "solo" : "head"
-                        };
-                       createMatch(createOptions); 
-                      }
-                    }
-               
-                  }
-
-             }} />
-
-           </div>
-          </CardActions>
-
-        </Card>
-
+                 let dStart = start.split('-');
+                 let dEnd = end.split('-');
+             
+                 let yearStart = dStart[0];
+                 let monthStart = dStart[1]-1;
+                 let dateStart = dStart[2];
+                 let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
+                 let dateFormatStart = new Date(dateIntegerStart);
+             
+                 let yearEnd = dEnd[0];
+                 let monthEnd = dEnd[1]-1;
+                 let dateEnd = dEnd[2];
+                 let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
+                 let dateFormatEnd = new Date(dateIntegerEnd);
+             
+                 if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
+             
+                   return alert('Stock market\'s not open on '+dateFormatStart.toString().substr(0,3) + 'day.');
+                 
+                 } else {
+             
+                   if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
+                     alert('Matches should not start before today, and should not end before they start.');
+                   } else {
+                     if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
+                       alert('Please pick an option for every field')
+                      console.log(matchType,matchTitle ,startFunds,dateIntegerStart ,dateIntegerEnd)
+                     } else {
+                       let createOptions = {
+                         userId: userId,
+                         title: matchTitle,
+                         startdate: dateFormatStart,
+                         enddate: dateFormatEnd,
+                         startFunds: startFunds,
+                         type: matchType === "solo" ? "solo" : "head"
+                       };
+                      createMatch(createOptions); 
+                     }
+                   }
+                 }
+                 
+              }} />
+            </div>
 
 
       </div>
