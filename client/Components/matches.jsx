@@ -6,6 +6,11 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import * as Actions from '../actions/actions.js';
 import { MatchCard } from './matchCard.jsx';
+import { CreateMatchDumb } from './createMatch.jsx';
+
+import Tabs from 'material-ui/lib/tabs/tabs';
+import Tab from 'material-ui/lib/tabs/tab';
+
 
 const MatchesList = React.createClass({
 
@@ -15,6 +20,12 @@ const MatchesList = React.createClass({
       self.props.setCurrentMatch(m_id);
       window.location.hash='#/portfolio';
     }
+  },
+
+  handleChange(value) {
+     this.setState({
+       value: value,
+     });
   },
 
   formatMatchDisplay(matchObj) {
@@ -41,14 +52,73 @@ const MatchesList = React.createClass({
   },
 
   render() {
-    const { matches, userId } = this.props;
+    const { matches, userId, createMatch } = this.props;
+
+    const styles = {
+      headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+      },
+    };
+
     return (
       <div>
-        <ul>
-          {matches.map(match => { 
-            return <li key={match.get('m_id')} ><MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} /></li>
-          })}
-        </ul>
+
+        <Tabs primary={true}
+          onChange={this.handleChange}>
+
+          <Tab style={{background:'#009ACD', fontSize:'15px'}} label="Current" value="a" >
+            <div className="container">
+              <h2 className="centreTitle" style={styles.headline} >Current Matches</h2>
+              <CreateMatchDumb userId={userId} createMatch={createMatch} />
+
+              <ul>
+                {matches.map(match => { 
+                  if (match.get('status') === "active") {
+                     return (<MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>);
+                   }
+                })}
+              </ul>
+
+            </div>
+          </Tab>
+
+          <Tab style={{background:'#009ACD', fontSize:'15px'}} label="Pending" value="b">
+            <div className="container">
+              <h2 className="centreTitle" style={styles.headline}>Pending Matches</h2>
+              <CreateMatchDumb userId={userId} createMatch={createMatch} />
+
+              <ul>
+                {matches.map(match => {
+                  if (match.get('status') === "pending") {
+                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
+                  }
+                })}
+              </ul>
+
+            </div>
+          </Tab>
+
+          <Tab style={{background:'#009ACD', fontSize:'15px'}} label="Past" value="c">
+            <div className="container">
+              <h2 className="centreTitle" style={styles.headline}>Past Matches</h2>
+              <CreateMatchDumb userId={userId} createMatch={createMatch} />
+
+              <ul>
+                {matches.map(match => {
+                  if (match.get('status') === "complete") {
+                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
+                  }
+                })}
+              </ul>
+              
+            </div>
+          </Tab>
+
+        </Tabs>
+
       </div>
     );
   }

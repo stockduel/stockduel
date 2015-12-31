@@ -42,11 +42,7 @@ body {
 }
 
 .headerPaddingTop {
-  padding-top: 90px;
-}
-
-.loginPadTop {
-  padding-top: 50px;
+  padding-top: 60px;
 }
 
 .cardMarginBottom {
@@ -70,9 +66,19 @@ body {
   padding-bottom: 19px;
 }
 
+.marginUnder {
+  margin-bottom: 50px;
+}
+
 .datePicker {
   height: 25px;
   font-size: 14px;
+}
+
+.homeLogo {
+  width: 300px;
+  margin-top: -20px;
+  padding-left: 50px;
 }
 
 

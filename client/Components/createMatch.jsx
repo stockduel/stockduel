@@ -32,10 +32,8 @@ export const CreateMatchDumb = React.createClass({
 
   render() {
 
-    let matchType;
-    let startFunds;
-    let matchTitle;
     const { userId, createMatch } = this.props;
+    let startFunds;
 
     let menuItems = [
       { payload: '1', text: '' },
@@ -59,9 +57,7 @@ export const CreateMatchDumb = React.createClass({
 
           <div className="row container">
              <div className="spaceUnder">
-               <TextField onChange={function ()  {
-                 matchTitle = arguments[0].target.value;
-               }}
+               <TextField ref="matchTitleInput"
                  hintText="Match Title" className="matchTitleBox" />
              </div>
           </div>
@@ -76,10 +72,7 @@ export const CreateMatchDumb = React.createClass({
 
             <div className="four columns">
               <h5>Type of Match:</h5>
-              <RadioButtonGroup name="shipSpeed" defaultSelected="light"
-                onChange={function (change, event) {
-                  matchType = event;
-                }}>
+              <RadioButtonGroup ref="headOrSolo" name="shipSpeed" defaultSelected="light">
                  <RadioButton
                    value="solo"
                    label="Solo"
@@ -107,53 +100,60 @@ export const CreateMatchDumb = React.createClass({
            <div className='rightButton'>
               
               <RaisedButton label="Submit"
+
+               linkButton={true} onClick={ () => {  
+                  //date values
+                  let matchType;
+                  let start = document.getElementById('startDate').value;
+                  let end = document.getElementById('finishDate').value;
+                  let matchTitle = this.refs.matchTitleInput.refs.input.value;
+ 
+                  if (this.refs.headOrSolo.refs.head.isChecked()) {
+                    matchType = 'head';
+                  } else if (this.refs.headOrSolo.refs.solo.isChecked()) {
+                    matchType = 'solo';
+                  }
+
+                  let dStart = start.split('-');
+                  let dEnd = end.split('-');
+ 
+                  let yearStart = dStart[0];
+                  let monthStart = dStart[1]-1;
+                  let dateStart = dStart[2];
+                  let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
+                  let dateFormatStart = new Date(dateIntegerStart);
+ 
+                  let yearEnd = dEnd[0];
+                  let monthEnd = dEnd[1]-1;
+                  let dateEnd = dEnd[2];
+                  let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
+                  let dateFormatEnd = new Date(dateIntegerEnd);
+ 
+                  if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
+ 
+                    return alert('Stock market\'s not open on '+dateFormatStart.toString().substr(0,3) + 'day.');
+                  
+                  } else {
+ 
+                    if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
+                      alert('Matches should not start before today, and should not end before they start.');
+                    } else {
+                      if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
+                        alert('Please pick an option for every field')
+                      } else {
+                        let createOptions = {
+                          userId: userId,
+                          title: matchTitle,
+                          startdate: dateFormatStart,
+                          enddate: dateFormatEnd,
+                          startFunds: startFunds,
+                          type: matchType === "solo" ? "solo" : "head"
+                        };
+                       createMatch(createOptions); 
+                      }
+                    }
                
-               linkButton={true} onClick={function(){ 
-                 //date values
-                 let start = document.getElementById('startDate').value;
-                 let end = document.getElementById('finishDate').value;
-
-                 //time formats
-                 let dStart = start.split('-');
-                 let dEnd = end.split('-');
-
-                 let yearStart = dStart[0];
-                 let monthStart = dStart[1]-1;
-                 let dateStart = dStart[2];
-                 let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
-                 let dateFormatStart = new Date(dateIntegerStart);
-
-                 let yearEnd = dEnd[0];
-                 let monthEnd = dEnd[1]-1;
-                 let dateEnd = dEnd[2];
-                 let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
-                 let dateFormatEnd = new Date(dateIntegerEnd);
-
-                 if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
-
-                   return alert('Stock market\'s not open on '+dateFormatStart.toString().substr(0,3) + 'day.');
-                 
-                 } else {
-
-                   if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
-                     alert('Matches should not start before today, and should not end before they start.');
-                   } else {
-                     if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
-                       alert('Please pick an option for every field')
-                     } else {
-                       let createOptions = {
-                         userId: userId,
-                         title: matchTitle,
-                         startdate: dateFormatStart,
-                         enddate: dateFormatEnd,
-                         startFunds: startFunds,
-                         type: matchType === "solo" ? "solo" : "head"
-                       };
-                      createMatch(createOptions); 
-                     }
-                   }
-              
-                 }
+                  }
 
              }} />
 
@@ -169,16 +169,3 @@ export const CreateMatchDumb = React.createClass({
   }
 
 });
-
-function mapStateToProps(state) {
-  
-  return {
-    userId: state.get('userId'),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({createMatch}, dispatch);
-}
-
-export const CreateMatch = connect(mapStateToProps, mapDispatchToProps)(CreateMatchDumb);
