@@ -137,6 +137,7 @@ export function sell(options) {
            dispatch({type: 'FAILED_TO_CREATE_MATCH'});
          } else {
            dispatch(createMatchSync(res.body.data));
+           window.location.hash="#/portfolio";
          }
        });
      };
@@ -173,6 +174,7 @@ export function sell(options) {
           dispatch({type: 'FAILED_TO_JOIN_MATCH'});
          } else {
           dispatch(joinMatchSync(res.body.data));
+          window.location.hash="#/portfolio";
          }
        });      
      };
