@@ -9,6 +9,10 @@ import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
 import { Link } from 'react-router';
 import request from 'superagent';
+import { CreateMatchDumb } from './createMatch.jsx';
+
+import Dialog from 'material-ui/lib/dialog';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 const Toolbar = require('material-ui/lib/toolbar/toolbar');
 const ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
@@ -17,6 +21,21 @@ const ToolbarSeparator = require('material-ui/lib/toolbar/toolbar-separator');
 
 
 let App = React.createClass({
+  
+  getInitialState() {
+      return {
+        open: false  
+      };
+  },
+
+  handleOpen () {
+    this.setState({open: true});
+  },
+
+  handleClose () {
+    this.setState({open: false});
+  },
+
   logIn() {
     request.get('/auth/facebook')
       .end(function(err, res) {
@@ -33,13 +52,20 @@ let App = React.createClass({
   
   render() {
 
-    const { buy, sell, setCurrentMatch, setInitialState, userId, logout } = this.props;
+    const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatch } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">
       <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
       <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
       <button className="navButton"><Link className="navButtonFontSize" to="/search">Search</Link></button>
+      <RaisedButton label="Create a Match" onTouchTap={this.handleOpen} />
+      <Dialog
+        modal={false}
+        open={this.state.open}
+        onRequestClose={this.handleClose}>
+        <CreateMatchDumb userId={userId} createMatch={createMatch} />
+      </Dialog>
       <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>
     </ToolbarGroup>);
 

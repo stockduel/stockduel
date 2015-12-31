@@ -14,14 +14,15 @@ export const PortfolioView = React.createClass({
 
   render() {
 
-    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate, MatchTitle } = this.props;
 
     return (
       <div className="container paddingTop">
         
+        <h1>{MatchTitle}</h1>
         <RaisedButton linkButton={true} href="#/search" label="Add to this portfolio" />
-        <h2 className="centreTitle paddingTop">You have ${Number(available_cash).toFixed(2)} available cash.</h2>
-        <h2 className="centreTitle">Your portfolio is worth ${Number(portfolioValue).toFixed(2)}.</h2>
+        <h2 className="centreTitle paddingTop">You have ${Number(available_cash).toFixed(2)} available cash</h2>
+        <h2 className="centreTitle">Your portfolio is worth ${Number(portfolioValue).toFixed(2)}</h2>
 
         <PortfolioDonut portfolio={portfolio} available_cash={available_cash} />
 

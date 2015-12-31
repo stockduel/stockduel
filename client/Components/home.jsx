@@ -26,7 +26,7 @@ const HomeDumb = React.createClass({
               2. Create a portfolio
             </h5>
             <h5>
-              3. Beat your opponent's portfolio
+              {"3. Beat your opponent's portfolio"}
             </h5>
           </div>
           <div className="row six columns">
@@ -51,4 +51,3 @@ function mapStateToProps(state) {
 
 //connect and export App
 export const Home = connect(mapStateToProps)(HomeDumb);
-
