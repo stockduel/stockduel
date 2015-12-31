@@ -40,11 +40,7 @@ export const SearchStocksDumb = React.createClass({
 
     if (this.timeout){
       clearTimeout(this.timeout);
-    }
-    else {
-      var queryString = input.value;
-      this.searchStocks(queryString);
-    }
+    }      
     this.timeout = setTimeout(delayed, 100);
   },
 
