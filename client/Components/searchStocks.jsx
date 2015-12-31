@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
 import { buy } from '../actions/actions.js';
 import request from 'superagent';
+import {toJS} from 'immutable';
 
 const TextField = require('material-ui/lib/text-field');
 
@@ -58,8 +59,8 @@ export const SearchStocksDumb = React.createClass({
     const {MatchId, userId, buy, MatchTitle, isActive} = this.props;
     return (
       <div className="cardMarginBottom paddingTop">
-        <h3>{MatchTitle + (isActive ? '' : ' is not currently active')}</h3>
-        {typeof MatchId === 'undefined' && <h4><strong>Just browsing . . .</strong></h4>}
+        <h3>{MatchTitle && MatchTitle + (isActive ? '' : ' is not currently active')}</h3>
+        {!MatchId && <h4><strong>Just browsing . . .</strong></h4>}
         <div>
           <TextField hintText="Stock Symbol" ref="searchStocksInput" onKeyDown={this.debouncedSearch} onChange={(e) => {
             this.updateStockValue(e.target.value);
@@ -67,15 +68,22 @@ export const SearchStocksDumb = React.createClass({
         </div>
         <div className="results">
           <ul>
-            {this.searchResults !== null ? this.searchResults.map(result => {
-                return <li key={result.symbol} onClick={() => {
-                  this.updateStockValue(result.symbol);
-                }}><strong>{result.symbol}</strong>: {result.name} -- <em>${result.ask}</em></li>
+            {this.searchResults === null ?
+              null : 
+              this.searchResults.map(result => {
+                if(result.ask) { // certain stocks in database have to ask price -- filter those out
+                  return (
+                    <li key={result.symbol} onClick={() => this.updateStockValue(result.symbol)}>
+                      <strong>{result.symbol}</strong>: {result.name} -- <em>${result.ask}</em>
+                    </li>
+
+                  )
+                }
               })
-            : ''}
+          }
           </ul>
         </div>
-        {MatchId && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} />}
+        {isActive && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} />}
       </div>
     )
   }

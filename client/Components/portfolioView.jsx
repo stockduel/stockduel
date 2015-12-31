@@ -19,7 +19,7 @@ export const PortfolioView = React.createClass({
     return (
       <div className="container paddingTop">
         
-        <RaisedButton><a href="#/search" className="addToMatchButton" >Add to this portfolio</a></RaisedButton>
+        <RaisedButton linkButton={true} href="#/search" label="Add to this portfolio" />
         <h2 className="centreTitle paddingTop">You have ${Number(available_cash).toFixed(2)} available cash.</h2>
         <h2 className="centreTitle">Your portfolio is worth ${Number(portfolioValue).toFixed(2)}.</h2>
 

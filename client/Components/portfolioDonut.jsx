@@ -39,7 +39,6 @@ export const PortfolioDonut = React.createClass ({
   },
   
   render(){
-    console.log('rendering')
     return (
       <div ref="donut"></div>
     )
