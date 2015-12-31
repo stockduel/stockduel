@@ -24,7 +24,9 @@ export const SearchStocksDumb = React.createClass({
         if (err) {
           console.error("There was a problem searching for stocks:", err);
         } else {
-          self.searchResults = res.body.data.slice(0, 10); // take first 10 results for clean UX
+          self.searchResults = res.body.data.sort((a, b) => {
+            return b.ask - a.ask;
+          }).slice(0, 10); // take first 10 results for clean UX
           window.location.hash="#/search";  // re-render page to display searchResults
         }
       })
