@@ -150,7 +150,6 @@ export const CreateMatchDumb = React.createClass({
                           type: matchType === "solo" ? "solo" : "head"
                         };
                        createMatch(createOptions); 
-                       window.location.hash="#/matches";              
                       }
                     }
                
