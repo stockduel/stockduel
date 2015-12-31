@@ -10,17 +10,14 @@ describe('Match Controller', function () {
 
   var users = [{
     username: 'annaUser',
-    password: 'annaPassword',
     name: 'anna',
     email: 'anna@annar'
   }, {
     username: 'kateUser',
-    password: 'katePassword',
     name: 'kate',
     email: 'kate@kater'
   }, {
     username: 'tateUser',
-    password: 'tatePassword',
     name: 'tate',
     email: 'tate@tater'
   }];

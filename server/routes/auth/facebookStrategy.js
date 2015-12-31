@@ -25,11 +25,10 @@ module.exports = function (knex) {
         username: profile.name.givenName,
         name: [profile.name.givenName, profile.name.familyName].join(' '),
         email: profile.emails[0].value,
-        password: accessToken
       };
 
       //check in the users table, if user not there then insert the details from facebook
-      return usersCtrl.findOrCreateUser(user.username, user.password, user.name, user.email)
+      return usersCtrl.findOrCreateUser(user.username, user.name, user.email)
         .then(function (profile) {
           var user = {
             u_id: profile.u_id,

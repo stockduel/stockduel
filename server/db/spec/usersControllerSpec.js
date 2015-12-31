@@ -8,12 +8,10 @@ var usersController = require('../dbcontrollers/usersController')(knex);
 describe('Users Controller', function () {
   var users = [{
     username: 'TESTannaUser',
-    password: 'TESTannaPassword',
     name: 'TESTanna',
     email: 'TESTanna@anna'
   }, {
     username: 'TESTkateUser',
-    password: 'TESTkatePassword',
     name: 'TESTkate',
     email: 'TESTkate@kate'
   }];
@@ -36,7 +34,7 @@ describe('Users Controller', function () {
     it('should insert a user into the users table', function (done) {
 
       var user = users[0];
-      usersController.findOrCreateUser(user.username, user.password, user.name, user.email)
+      usersController.findOrCreateUser(user.username, user.name, user.email)
         .then(function (user) {
           expect(user.name).to.equal('TESTanna');
           done();
@@ -47,7 +45,7 @@ describe('Users Controller', function () {
     it('should not insert the same user into the database multiple times', function (done) {
 
       var user = users[0];
-      usersController.findOrCreateUser(user.username, user.password, user.name, user.email)
+      usersController.findOrCreateUser(user.username, user.name, user.email)
         .then(function () {
           return knex('users').where('email', user.email);
         })
@@ -63,7 +61,7 @@ describe('Users Controller', function () {
 
     it('should be able to return a specific user', function (done) {
       var user = users[1];
-      usersController.findOrCreateUser(user.username, user.password, user.name, user.email)
+      usersController.findOrCreateUser(user.username, user.name, user.email)
         .then(function (insertedUser) {
           return insertedUser.u_id;
         })

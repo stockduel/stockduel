@@ -9,12 +9,10 @@ var matchesController = require('../dbcontrollers/matchesController')(knex);
 describe('Trade Controller', function () {
   var users = [{
     username: 'annaUser',
-    password: 'annaPassword',
     name: 'anna',
     email: 'anna@annars'
   }, {
     username: 'kateUser',
-    password: 'katePassword',
     name: 'kate',
     email: 'kate@katers'
   }];
