@@ -38,7 +38,7 @@ module.exports = function (knex) {
 
 //Creates/Check a Users Details used from facebook auth route
 //---------------------------------------------------------------
-  module.findOrCreateUser = function (username, password, name, email) {
+  module.findOrCreateUser = function (username, name, email) {
 
     return knex.select()
       .table('users')
@@ -50,7 +50,6 @@ module.exports = function (knex) {
         }
         return knex.insert({
           'username': username,
-          'password': password,
           'name': name,
           'email': email
         }, '*').into('users');
