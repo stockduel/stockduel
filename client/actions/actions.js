@@ -64,6 +64,7 @@ export function sell(options) {
 
  export function setCurrentMatch(MatchId) {
     return (dispatch) => {
+      window.localStorage.setItem('currentMatchId', MatchId);
       dispatch({
         type: SET_CURRENT_MATCH,
         currentMatchId: MatchId
@@ -72,6 +73,9 @@ export function sell(options) {
   }
 
   export function setInitialStateSync(state) {
+    if (localStorage.getItem('currentMatchId')) {
+      state.currentMatchId = Number(localStorage.getItem('currentMatchId'));
+    }
     return {
       type: SET_INITIAL_STATE,
       state
@@ -124,7 +128,6 @@ export function sell(options) {
 
    //this will need to be updated once we support matches with two players
    export function createMatch(createOptions) {
-    console.log('options', createOptions);
      return (dispatch) => {
        request.post('/matches/')
        .send(createOptions)
