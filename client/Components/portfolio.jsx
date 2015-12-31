@@ -14,14 +14,14 @@ var Portfolio = React.createClass({
 
   render() {
 
-    const { buy, sell, createMatch, MatchId, userId, portfolio, startdate } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolio, startdate, MatchTitle } = this.props;
 
     let available_cash = portfolio ? portfolio.get('available_cash') : 0;
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
 
     return React.createElement(
       PortfolioView,
-      { available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio, startdate }
+      { available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio, startdate, MatchTitle }
     );
 
   }
@@ -47,6 +47,7 @@ function mapStateToProps(state) {
     //if a match has been selected
     portfolio: targetMatch ? targetMatch.get('portfolio'): null,
     MatchId: targetMatch ? targetMatch.get('m_id'): null,
+    MatchTitle: targetMatch ? targetMatch.get('title'): null,
     startdate: targetMatch ? targetMatch.get('startdate'): null,
 
     //irrespective of whether a match has been selected
