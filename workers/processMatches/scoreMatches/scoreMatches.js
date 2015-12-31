@@ -41,7 +41,7 @@ module.exports = function (knex) {
   module.determineWinners = function (matches) {
     return Promise.map(matches, function (match) {
       if( match.creator_id === match.challengee ) {
-           return recordWinner(match.m_id, match.creator_id);
+           return module.recordWinner(match.m_id, match.creator_id);
       } else {
         //get creator's portfolio
         return module.getPortfolio(match.creator_id, match.m_id)
