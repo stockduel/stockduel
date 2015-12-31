@@ -14,7 +14,7 @@ export const PortfolioView = React.createClass({
 
   render() {
 
-    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate, MatchTitle } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate, MatchTitle, errorValue } = this.props;
 
     return (
       <div className="container paddingTop">
@@ -45,6 +45,7 @@ export const PortfolioView = React.createClass({
               marketValue={stockObj.get('marketValue')}
               percent_change={stockObj.get('percent_change') || 0}
               startdate={startdate}
+              errorValue={errorValue}
             />
           })}
         </ul>

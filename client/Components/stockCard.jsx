@@ -14,7 +14,7 @@ const CardTitle = require('material-ui/lib/card/card-title');
 export const Stock = React.createClass({
 
   render() {
-    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate } = this.props;
+    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate, errorValue } = this.props;
     let numSharesToSell;
 
     return (
@@ -55,6 +55,9 @@ export const Stock = React.createClass({
                   this.refs.sellNum.value="";
                   sell(sellOptions);
                 }} />
+                {errorValue && <div>
+                  <p>Invalid sale. Please make sure you are not selling more shares than you own.</p>
+                </div>}
               </div>
 
             </div>

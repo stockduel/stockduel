@@ -12,16 +12,20 @@ import * as Actions from '../actions/actions.js';
 
 var Portfolio = React.createClass({
 
+  componentWillMount() {
+      this.props.clearError(); // clear error from previous invalid sales, or errors from other pages  
+  },
+
   render() {
 
-    const { buy, sell, createMatch, MatchId, userId, portfolio, startdate, MatchTitle } = this.props;
+    const { buy, sell, createMatch, MatchId, userId, portfolio, startdate, MatchTitle, errorValue } = this.props;
 
     let available_cash = portfolio ? portfolio.get('available_cash') : 0;
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
 
     return React.createElement(
       PortfolioView,
-      { available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio, startdate, MatchTitle }
+      { available_cash, createMatch, buy, sell, MatchId, userId, portfolioValue, portfolio, startdate, MatchTitle, errorValue }
     );
 
   }
@@ -52,7 +56,8 @@ function mapStateToProps(state) {
 
     //irrespective of whether a match has been selected
     userId: state.get('userId'),
-    currentMatchId: state.get('currentMatchId')
+    currentMatchId: state.get('currentMatchId'),
+    errorValue: state.get('error')
   };
 }
 

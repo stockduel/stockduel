@@ -14,6 +14,7 @@ module.exports = function (knex) {
         // return object with keys that conform to redux state object
         res.json({
           currentMatchId: '',
+          error: null,
           userId: userId,
           matches: matches
         });

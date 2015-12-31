@@ -59,12 +59,11 @@ export const CreateMatchDumb = React.createClass({
             <div className="four columns">
               <h5>Start Funds:</h5>
                 <DropDownMenu value={1} onChange={function (event, index, menuItem) {
-                    console.log('things', menuItem)
                     startFunds = menuItem;
                   }}>
                   <MenuItem value={1} primaryText="Choose Here"/>
-                  <MenuItem value={5000} primaryText="$10,000"/>
-                  <MenuItem value={10000} primaryText="$50,000"/>
+                  <MenuItem value={10000} primaryText="$10,000"/>
+                  <MenuItem value={50000} primaryText="$50,000"/>
                   <MenuItem value={100000} primaryText="$100,000"/>
                   <MenuItem value={1000000} primaryText="$1,000,000"/>
                 </DropDownMenu>
@@ -112,7 +111,6 @@ export const CreateMatchDumb = React.createClass({
                    } else {
                      if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
                        alert('Please pick an option for every field')
-                      console.log(matchType,matchTitle ,startFunds,dateIntegerStart ,dateIntegerEnd)
                      } else {
                        let createOptions = {
                          userId: userId,

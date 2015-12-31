@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
-import { buy } from '../actions/actions.js';
+import { buy, clearError } from '../actions/actions.js';
 import request from 'superagent';
 import {toJS} from 'immutable';
 
@@ -14,6 +14,7 @@ export const SearchStocksDumb = React.createClass({
 
   componentWillMount() {
     this.searchResults = this.timeout = null; // timeout for debouncing, to be reset after every invocation of this.debouncedSearch
+    this.props.clearError(); // remove potential errors from possible previous invalid purchases
   },
 
   searchStocks(queryString){
@@ -54,7 +55,7 @@ export const SearchStocksDumb = React.createClass({
 
   render() {
     this.stockTicker = this.stockTicker || '';
-    const {MatchId, userId, buy, MatchTitle, isActive} = this.props;
+    const {MatchId, userId, buy, MatchTitle, isActive, errorValue} = this.props;
     return (
       <div className="cardMarginBottom paddingTop">
         <h3>{MatchTitle && MatchTitle + (isActive ? '' : ' is not currently active')}</h3>
@@ -81,7 +82,7 @@ export const SearchStocksDumb = React.createClass({
           }
           </ul>
         </div>
-        {isActive && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} />}
+        {isActive && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} errorValue={errorValue} />}
       </div>
     )
   }
@@ -100,12 +101,13 @@ function mapStateToProps(state) {
     userId: state.get('userId'),
     MatchId: state.get('currentMatchId'),
     MatchTitle: targetMatch ? targetMatch.get('title') : '',
-    isActive: targetMatch && targetMatch.get('status') === 'active'
+    isActive: targetMatch && targetMatch.get('status') === 'active',
+    errorValue: state.get('error')
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({buy}, dispatch);
+  return bindActionCreators({buy, clearError}, dispatch);
 }
 
 export const SearchStocks = connect(mapStateToProps, mapDispatchToProps)(SearchStocksDumb);

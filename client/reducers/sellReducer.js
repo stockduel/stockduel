@@ -33,7 +33,7 @@ export default function sellReducer(state, action) {
   var newState = state.set('matches', newMatchArray);
   newState = newState.set('currentMatchId', action.MatchId);
 
-  return newState;
+  return newState.set('error', null);
 
 }
 

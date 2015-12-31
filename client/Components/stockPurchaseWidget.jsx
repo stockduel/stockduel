@@ -11,7 +11,7 @@ const TextField = require('material-ui/lib/text-field');
 export const StockPurchase = React.createClass({
 
   render() {
-    const { buy, MatchId, userId, stockTicker } = this.props;
+    const { buy, MatchId, userId, stockTicker, errorValue} = this.props;
     let numShares;
     return (
       <div className="purchaseContainer">
@@ -31,10 +31,11 @@ export const StockPurchase = React.createClass({
             };
             this.refs.numSharesInput.refs.input.value = "";
             buy(buyOptions);
-            window.location.hash="#/portfolio";
           }
         }/>
-
+        {errorValue && <div>
+          <p>Invalid purchase. Make sure the stock symbol is correct, and you have the necessary funds available.</p>
+        </div>}
       </div>
     );
   }
