@@ -19,6 +19,8 @@ body {
 
 .rightButton {
   float: right;
+  margin-top: -20px;
+  margin-bottom: 14px;
 }
 
 .logoTopPad {
@@ -54,11 +56,11 @@ body {
 }
 
 .paddingTop {
-  padding-top: 30px;
+  padding-top: 20px;
 }
 
 .paddingTopStocks {
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .spaceUnder {
@@ -78,6 +80,23 @@ body {
   width: 300px;
   margin-top: -20px;
   padding-left: 50px;
+}
+
+i {
+  color: white;
+}
+
+.inverseTextColor {
+  color: white;
+}
+
+.listMatchCards:first-child {
+  margin-top: 60px;
+}
+
+.headerPadCreateMatch {
+  margin-bottom: 40px;
+  margin-top: 70px;
 }
 
 

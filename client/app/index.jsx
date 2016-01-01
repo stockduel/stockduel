@@ -12,6 +12,7 @@ import { StateGenConnected } from '../Components/stateGen.jsx';
 import { MatchesConnected } from '../Components/matches.jsx';
 import { JoinMatchConnected } from '../Components/joinMatch.jsx';
 import { SearchStocks } from '../Components/searchStocks.jsx';
+import { CreateMatchConnected } from './../Components/createMatch.jsx';
 
 // import { buy } from '../actions/actions.js';
 import { toJS } from 'immutable';
@@ -36,6 +37,7 @@ render ((
         <IndexRoute component={Home} />
         <Route path="_=_" component={StateGenConnected} />
         <Route path="matches" component={MatchesConnected} />
+        <Route path="create" component={CreateMatchConnected} />
         <Route path="portfolio" component={PortfolioConnected} />
         <Route path="join" component={JoinMatchConnected} />
         <Route path="search" component={SearchStocks} />

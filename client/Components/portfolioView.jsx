@@ -7,6 +7,7 @@ import { CreateMatch } from './createMatch.jsx';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
 import { PortfolioDonut } from './portfolioDonut.jsx';
+const numeral = require('numeral');
 
 const RaisedButton = require('material-ui/lib/raised-button');
 
@@ -21,8 +22,8 @@ export const PortfolioView = React.createClass({
         
         <h1>{MatchTitle}</h1>
         <RaisedButton linkButton={true} href="#/search" label="Add to this portfolio" />
-        <h2 className="centreTitle paddingTop">You have ${Number(available_cash).toFixed(2)} available cash</h2>
-        <h2 className="centreTitle">Your portfolio is worth ${Number(portfolioValue).toFixed(2)}</h2>
+        <h2 className="centreTitle paddingTop">You have ${numeral(Number(available_cash).toFixed(2)).format('0,0')} available cash</h2>
+        <h2 className="centreTitle">Your portfolio is worth ${numeral(Number(portfolioValue).toFixed(2)).format('0,0')}</h2>
 
         <PortfolioDonut portfolio={portfolio} available_cash={available_cash} />
 

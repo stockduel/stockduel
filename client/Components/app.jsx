@@ -9,11 +9,11 @@ import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
 import { Link } from 'react-router';
 import request from 'superagent';
-import { CreateMatchDumb } from './createMatch.jsx';
 
-import Dialog from 'material-ui/lib/dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
-
+import Divider from 'material-ui/lib/divider';
+import IconMenu from 'material-ui/lib/menus/icon-menu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 const Toolbar = require('material-ui/lib/toolbar/toolbar');
 const ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
 const ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
@@ -28,14 +28,6 @@ let App = React.createClass({
       };
   },
 
-  handleOpen () {
-    this.setState({open: true});
-  },
-
-  handleClose () {
-    this.setState({open: false});
-  },
-
   logIn() {
     request.get('/auth/facebook')
       .end(function(err, res) {
@@ -47,26 +39,29 @@ let App = React.createClass({
   },
 
   componentWillMount() {
-      this.props.setInitialState(); // get the userId  
+    this.props.setInitialState(); // get the userId  
   },
   
   render() {
 
-    const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatch } = this.props;
+    const { buy, sell, setCurrentMatch, setInitialState, userId, logout } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">
-      <button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
-      <button className="navButton"><Link className="navButtonFontSize" to="/join">Matches To Join</Link></button>
-      <button className="navButton"><Link className="navButtonFontSize" to="/search">Search</Link></button>
-      <RaisedButton label="Create a Match" onTouchTap={this.handleOpen} />
-      <Dialog
-        modal={false}
-        open={this.state.open}
-        onRequestClose={this.handleClose}>
-        <CreateMatchDumb userId={userId} createMatch={createMatch} />
-      </Dialog>
-      <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>
+      {/*below to be implemented*/}
+      <button className="navButton" style={{marginRight:"30px"}}><h6 className="inverseTextColor">Hello: {this.username}</h6></button>
+      {/*<button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
+       <button className="navButton"><Link className="navButtonFontSize" to="/join">Join a Match</Link></button>
+       <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>*/}
+
+      <IconMenu iconButtonElement={<i className="fa fa-university fa-lg"></i>} >
+        <MenuItem primaryText="Create Match" onClick={ ()=>{ window.location.hash="#/create" } } />
+        <MenuItem primaryText="Your Matches" onClick={ ()=>{ window.location.hash="#/matches" } } />
+        <MenuItem primaryText="Matches to Join" onClick={ ()=>{ window.location.hash="#/join" } } />
+        <Divider />
+        <MenuItem primaryText="Sign out" onClick={ ()=>{ logout(); window.location.hash="#/"; } } />
+      </IconMenu>
+
     </ToolbarGroup>);
 
     return (
