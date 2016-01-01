@@ -204,7 +204,7 @@ describe('buyReducer', () => {
 
   it('does not update state for BUY_STOCK with invalid trade', () => {
     const action = {
-      type: 'BUY_STOCK',
+      type: 'BAD_ACTION',
       userId: '123',
       MatchId: '456',
       portfolio: {
@@ -214,7 +214,7 @@ describe('buyReducer', () => {
       }
     };
     const nextState = reducer(initialState, action);
-    expect(nextState.toJS()).to.deep.equal(initialState.toJS());
+    expect(nextState.get('error')).to.equal(true);
   });
 });
 

@@ -2,7 +2,7 @@
 //--------------
 
 //imports all action types from actions.js
-import { BUY_STOCK, SELL_STOCK, UPDATE_PRICES, SET_CURRENT_MATCH, SET_INITIAL_STATE, CREATE_MATCH, JOIN_MATCH, LOGOUT } from '../actions/actions.js';
+import { BUY_STOCK, SELL_STOCK, UPDATE_PRICES, SET_CURRENT_MATCH, SET_INITIAL_STATE, CREATE_MATCH, JOIN_MATCH, LOGOUT, BAD_ACTION, CLEAR_ERROR } from '../actions/actions.js';
 //import all individual reducers from their respective files
 import buyReducer from './buyReducer';
 import sellReducer from './sellReducer';
@@ -10,7 +10,9 @@ import setMatchReducer from './setMatchReducer';
 import setInitialStateReducer from './setInitialStateReducer';
 import createMatchReducer from './createMatchReducer';
 import joinMatchReducer from './joinMatchReducer';
+import errorReducer from './errorReducer';
 import logoutReducer from './logoutReducer';
+import clearErrorReducer from './clearErrorReducer';
 //import functions to deal with immutable state
 import {fromJS, toJS} from 'immutable';
 
@@ -18,6 +20,7 @@ import {fromJS, toJS} from 'immutable';
 const initialState = fromJS({
     userId: '',
     currentMatchId: '',
+    error: null,
     matches: [{
       m_id: '',
       portfolio: {
@@ -53,7 +56,11 @@ export default function reducer(state = initialState, action) {
     //clears out state when the user logs out of the app
     case LOGOUT:
       return logoutReducer(state, action)
+    case BAD_ACTION:
+      return errorReducer(state, action)
     //if action type isn't defined, dispatched action is ignored and state is returned
+    case CLEAR_ERROR:
+      return clearErrorReducer(state, action)
     default:
       return state
   }

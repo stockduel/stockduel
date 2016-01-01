@@ -8,6 +8,8 @@ export const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 export const CREATE_MATCH = 'CREATE_MATCH';
 export const JOIN_MATCH = 'JOIN_MATCH';
 export const LOGOUT = 'LOGOUT';
+export const CLEAR_ERROR = 'CLEAR_ERROR';
+export const BAD_ACTION = 'BAD_ACTION';
 
 export function buySync(MatchId, userId, portfolio) {
   return {
@@ -26,9 +28,10 @@ export function buy(options) {
     .end(function(err, res) {
       if (err || !res.body.data) {
         // handle error
-        return dispatch({type: 'FAILED_TRADE'});
+        return dispatch({type: BAD_ACTION});
       } else {
-        return dispatch(buySync(options.MatchId, options.userId, res.body.data.portfolio));
+        dispatch(buySync(options.MatchId, options.userId, res.body.data.portfolio));
+        window.location.hash="#/portfolio";
       }
 
     });
@@ -51,9 +54,7 @@ export function sell(options) {
     .send(options)
     .end(function(err, res) {
       if (err || !res.body.data) {
-        // handle error
-        console.log('err:', err, 'res.body', res.body);
-        return dispatch({type: 'FAILED_TRADE'});
+        return dispatch({type: BAD_ACTION});
       } else {
         return dispatch(sellSync(options.MatchId, options.userId, res.body.data.portfolio));
       }
@@ -93,7 +94,7 @@ export function sell(options) {
         if(err) {
           //handle error
           console.log('There was an error on GET from route /state', err);
-          dispatch({type: 'FAILED_TO_LOAD_STATE'});
+          dispatch({type: BAD_ACTION});
         } else {
           dispatch(setInitialStateSync(res.body));
           // window.location.hash="#/";
@@ -134,7 +135,7 @@ export function sell(options) {
        .end(function(err, res){
          if(err) {
            //handle error
-           dispatch({type: 'FAILED_TO_CREATE_MATCH'});
+           dispatch({type: BAD_ACTION});
          } else {
            dispatch(createMatchSync(res.body.data));
            window.location.hash="#/portfolio";
@@ -171,9 +172,13 @@ export function sell(options) {
        request.put('/matches/' + joinOptions)
        .end(function(err, res) {
          if (err) {
-          dispatch({type: 'FAILED_TO_JOIN_MATCH'});
+          dispatch({type: BAD_ACTION});
+          window.localStorage.setItem('joinMatchError', true);
+          window.location.hash="#/join"; // cause componentWillUpdate on joinMatches component
          } else {
           dispatch(joinMatchSync(res.body.data));
+          // clear joinMatchError on successful join
+          window.localStorage.setItem('joinMatchError', null)
           window.location.hash="#/portfolio";
          }
        });      
@@ -191,10 +196,16 @@ export function sell(options) {
        request.post( 'auth/logout' )
        .end(function(err, res) {
          if (err) {
-          dispatch({type: 'FAILED_TO_LOGOUT'});
+          dispatch({type: BAD_ACTION});
          } else {
           dispatch(logoutSync());
          }
        });      
      };
-   }   
+   }
+
+   export function clearError() {
+    return {
+      type: CLEAR_ERROR
+    }
+   }

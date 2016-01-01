@@ -20,6 +20,10 @@ import CardText from 'material-ui/lib/card/card-text';
 
 const MatchesList = React.createClass({
 
+  componentWillMount() {
+    this.props.clearError();
+  },
+
   getInitialState() {
       return {
         open: false  
