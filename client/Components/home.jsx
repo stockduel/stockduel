@@ -12,9 +12,9 @@ const HomeDumb = React.createClass({
   render() {
     const {userId} = this.props;
     return (
-      <div className="container">
+      <div className="container headerPaddingTop">
         <div className="centreTitle marginUnder">
-          <h2 className="headerPaddingTop">StockDuel</h2>
+          <h2>StockDuel</h2>
           <h6>Fantasy Stock Trading</h6>
         </div>
         <div className="container">
