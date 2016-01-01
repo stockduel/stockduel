@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import { createMatch } from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
+
 import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
-import * as Actions from '../actions/actions.js';
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -29,6 +29,14 @@ export const CreateMatch = React.createClass({
 
     const { userId, createMatch } = this.props;
     let startFunds;
+    let menuItems = [
+      { payload: '10000', text: '$10,000' },
+      { payload: '50000', text: '$50,000' },
+      { payload: '100000', text: '$100,000' },
+      { payload: '500000', text: '$500,000' },
+      { payload: '1000000', text: '$1,000,000' }
+
+    ];
 
     return (
       <div className="container paddingTop">
@@ -66,19 +74,13 @@ export const CreateMatch = React.createClass({
                 </RadioButtonGroup>
               </div>
 
-              <div className="four columns">
-                <h5>Start Funds:</h5>
-                  <DropDownMenu value={1} onChange={function (event, index, menuItem) {
-                      startFunds = menuItem;
-                    }}>
-                    <MenuItem value={1} primaryText="Choose Here"/>
-                    <MenuItem value={10000} primaryText="$10,000"/>
-                    <MenuItem value={50000} primaryText="$50,000"/>
-                    <MenuItem value={100000} primaryText="$100,000"/>
-                    <MenuItem value={1000000} primaryText="$1,000,000"/>
-                  </DropDownMenu>
-
-              </div>
+             <div className="four columns">
+               <h5>Start Funds:</h5>
+                 <DropDownMenu menuItems={menuItems} 
+                   onChange={function (event, index, menuItem) {
+                     startFunds = menuItem.payload;
+                   }} />
+             </div>
 
              </div>
              <div className="rightButton">
@@ -119,7 +121,7 @@ export const CreateMatch = React.createClass({
                      if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
                        alert('Matches should not start before today, and should not end before they start.');
                      } else {
-                       if (!matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
+                       if (!matchType || !matchTitle || !dateIntegerStart || !dateIntegerEnd) {
                         console.log(matchType, matchTitle,startFunds,dateIntegerStart,dateIntegerEnd)
                          alert('Please pick an option for every field')
                        } else {
@@ -128,7 +130,7 @@ export const CreateMatch = React.createClass({
                            title: matchTitle,
                            startdate: dateFormatStart,
                            enddate: dateFormatEnd,
-                           startFunds: startFunds,
+                           startFunds: startFunds || '10000',
                            type: matchType === "solo" ? "solo" : "head"
                          };
                         createMatch(createOptions); 
@@ -156,7 +158,7 @@ function mapStateToProps(state) {
 
 //map dispatch to props
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Actions, dispatch);
+  return bindActionCreators({createMatch}, dispatch);
 }
 
 //connect and export App

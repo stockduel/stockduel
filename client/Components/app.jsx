@@ -48,7 +48,7 @@ let App = React.createClass({
 
     const userButtons = 
     (<ToolbarGroup float="right">
-
+      //below to be implemented
       <button className="navButton" style={{marginRight:"30px"}}><h6 className="inverseTextColor">Hello: {this.username}</h6></button>
       {/*<button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
        <button className="navButton"><Link className="navButtonFontSize" to="/join">Join a Match</Link></button>
