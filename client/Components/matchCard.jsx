@@ -43,6 +43,10 @@ export const MatchCard = React.createClass({
       })
   },
 
+  capFirstLetter (matchTitle) {
+    return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
+  },
+
   getMatchInfo(){
     let matchInfo = {};
     matchInfo['You'] = Number(this.props.match.getIn(['portfolio', 'totalValue'])).toFixed(2);
@@ -68,7 +72,7 @@ export const MatchCard = React.createClass({
 
         <Card initiallyExpanded={false}>
           <CardHeader
-            title={match.get('title')}
+            title={this.capFirstLetter(match.get('title'))}
             subtitle={match.get('status')}
             actAsExpander={true}
             showExpandableButton={true}>

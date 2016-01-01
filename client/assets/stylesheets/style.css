@@ -5,12 +5,31 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
-.centreTitle {
-  text-align: center;
-}
-
 .navLogo {
   width: 90px;
+}
+
+.logoTopPad {
+  padding-top: 6px;
+}
+
+.homeLogo {
+  width: 300px;
+  margin-top: -20px;
+  padding-left: 50px;
+}
+
+.headerPaddingTop {
+  padding-top: 60px;
+}
+
+.headerPadCreateMatch {
+  margin-bottom: 40px;
+  margin-top: 70px;
+}
+
+.centreTitle {
+  text-align: center;
 }
 
 .imgWidth {
@@ -25,11 +44,7 @@ body {
 
 .rightButtonExtraUp {
   float: right;
-  margin-top: -40px;
-}
-
-.logoTopPad {
-  padding-top: 6px;
+  margin-top: -80px;
 }
 
 .navButton {
@@ -45,10 +60,6 @@ body {
 .navButtonFontSize {
   font-size: 15px;
   color: white;
-}
-
-.headerPaddingTop {
-  padding-top: 60px;
 }
 
 .cardMarginBottom {
@@ -81,12 +92,6 @@ body {
   font-size: 14px;
 }
 
-.homeLogo {
-  width: 300px;
-  margin-top: -20px;
-  padding-left: 50px;
-}
-
 i {
   color: white;
 }
@@ -103,15 +108,9 @@ i {
   margin-top: 30px;
 }
 
-.headerPadCreateMatch {
-  margin-bottom: 40px;
-  margin-top: 70px;
-}
-
 .joinMatchSubText {
   font-size: 18px;
 }
-
 
 
 

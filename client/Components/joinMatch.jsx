@@ -33,6 +33,11 @@ export const JoinMatch = React.createClass({
         }
       })
   },
+
+  capFirstLetter (matchTitle) {
+    return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
+  },
+
   // same functionality on update and willMount
   componentWillUpdate() {
     if (window.localStorage.getItem('joinMatchError') !== "null") { // local storage converts null to "null"
@@ -54,37 +59,39 @@ export const JoinMatch = React.createClass({
     const { joinMatch, userId, createMatch, errorValue } = this.props;
 
     return (
-      <div className="container paddingTop">
+      <div className="container headerPadCreateMatch">
 
         <h2 className="centreTitle">Matches to Join</h2>
         {errorValue && <div>
           <p>Sorry! Someone already joined that match. Please find a new match to join.</p>
         </div>}
-        <ul>
-          {this.matches && this.matches.map((matchObj) => {
-            return matchObj ? <Card className="paddingTop"><div key={matchObj.m_id} >
-              <CardText>
-              <div className="row container">
-                <div className="six columns">
-                  <h5>Match:{ }<span className="joinMatchSubText">{matchObj.title}</span></h5>
-                  <h5>Match Funds:{ }<span className="joinMatchSubText">{'$'+numeral(matchObj.starting_funds).format('0,0')}</span></h5>
-                </div>
-                <div className="six columns">
-                  <h5>Starts{ }<span className="joinMatchSubText">{moment(matchObj.startdate).fromNow()}</span></h5>
-                  <h5>Ends{ }<span className="joinMatchSubText">{moment(matchObj.enddate).fromNow()}</span></h5>
-                </div>
-              </div>
-              </CardText>
-              <CardActions className="rightButtonExtraUp">
-                <FlatButton 
-                label="Join Match"
-                onClick={() => {
-                joinMatch(matchObj.m_id);
-              }} />
-              </CardActions>
-              </div></Card> : null;
-          })}
-        </ul>
+        
+        <table className="u-full-width paddingTop">
+          <thead>
+            <tr>
+              <th>Match</th>
+              <th>Funds</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th style={{color:"white"}}>Button</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.matches && this.matches.map((matchObj) => {
+              return matchObj ? <tr><div key={matchObj.m_id}>
+                <td>{this.capFirstLetter(matchObj.title)}</td>
+                <td>{numeral(matchObj.starting_funds).format('0,0')}</td>
+                <td>{moment(matchObj.startdate).fromNow()}</td>
+                <td>{moment(matchObj.enddate).fromNow()}</td>
+                <td><FlatButton hoverColor="#009ACD" label="Join" onClick={() => {
+                  joinMatch(matchObj.m_id);
+                }} />
+                </td>
+              </div></tr> : null;
+            })}
+          </tbody>
+        </table>
+
       </div>
     )
   }
