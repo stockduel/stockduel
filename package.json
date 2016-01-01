@@ -30,6 +30,7 @@
     "mocha": "^2.3.4",
     "moment": "^2.10.6",
     "morgan": "^1.6.1",
+    "numeral": "^1.5.3",
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
     "path": "^0.12.7",
