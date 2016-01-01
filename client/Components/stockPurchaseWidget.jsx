@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 
-const RaisedButton = require('material-ui/lib/raised-button');
+const FlatButton = require('material-ui/lib/flat-button');
 const TextField = require('material-ui/lib/text-field');
 
 export const StockPurchase = React.createClass({
@@ -19,8 +19,9 @@ export const StockPurchase = React.createClass({
           numShares = arguments[0].target.value;
          }} />
 
-         <RaisedButton 
+         <FlatButton 
           label="Buy"
+          hoverColor="#009ACD"
           onClick={() => {
            let buyOptions = {
               numShares: parseInt(numShares, 10),
@@ -33,7 +34,7 @@ export const StockPurchase = React.createClass({
             buy(buyOptions);
           }
         }/>
-        {errorValue && <div>
+        {errorValue && <div className="error">
           <p>Invalid purchase. Make sure the stock symbol is correct, and you have the necessary funds available.</p>
         </div>}
       </div>

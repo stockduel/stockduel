@@ -55,7 +55,7 @@ export const Stock = React.createClass({
                   this.refs.sellNum.value="";
                   sell(sellOptions);
                 }} />
-                {errorValue && <div>
+                {errorValue && <div className="error">
                   <p>Invalid sale. Please make sure you are not selling more shares than you own.</p>
                 </div>}
               </div>

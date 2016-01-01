@@ -23,7 +23,7 @@ export const SearchStocksDumb = React.createClass({
     request.get(url + queryString)
       .end((err, res) => {
         if (err) {
-          console.error("There was a problem searching for stocks:", err);
+          console.error(<div className="error"><p>"There was a problem searching for stocks:", err</p></div>);
         } else {
           self.searchResults = res.body.data.sort((a, b) => {
             return b.ask - a.ask;
@@ -69,7 +69,7 @@ export const SearchStocksDumb = React.createClass({
             this.updateStockValue(e.target.value);
           }}/>
         </div>
-        <div className="">
+        <div>
           <ul>
             {this.searchResults === null ?
               null : 

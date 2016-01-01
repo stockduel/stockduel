@@ -18,10 +18,10 @@ const FlatButton = require('material-ui/lib/flat-button');
 
 export const JoinMatch = React.createClass({
 
+  //query the databse for match information
   componentWillMount() { 
     this.props.clearError();
     window.localStorage.setItem('joinMatchError', null); // joinMatchError has done its job and dictated state's error field. Time to clear the stale error
-    
     var self = this;
     request.get('/matches/')
       .end(function(err, res) {
@@ -34,6 +34,7 @@ export const JoinMatch = React.createClass({
       })
   },
 
+  //capitalize the first letter of a passed in word
   capFirstLetter (matchTitle) {
     return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
   },
@@ -55,6 +56,7 @@ export const JoinMatch = React.createClass({
     }
         
   },
+
   render() {
     const { joinMatch, userId, createMatch, errorValue } = this.props;
 
@@ -62,7 +64,7 @@ export const JoinMatch = React.createClass({
       <div className="container headerPadCreateMatch">
 
         <h2 className="centreTitle">Matches to Join</h2>
-        {errorValue && <div>
+        {errorValue && <div className="error">
           <p>Sorry! Someone already joined that match. Please find a new match to join.</p>
         </div>}
         
