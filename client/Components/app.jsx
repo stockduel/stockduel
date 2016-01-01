@@ -21,12 +21,29 @@ const ToolbarSeparator = require('material-ui/lib/toolbar/toolbar-separator');
 
 
 let App = React.createClass({
-  
-  getInitialState() {
-      return {
-        open: false  
-      };
+
+  componentWillMount() {
+    this.props.setInitialState(); // get the userId  
   },
+
+  componentDidMount() {
+    //this.getUserName(); 
+  },
+
+  // getUserName () {
+  //   this.username;
+  //   var that = this;
+  //   request.get('/users/' + this.props.userId)
+  //     .end((err, res) => {
+  //       if (err) {
+  //         console.error(err)
+  //       } else {
+  //         console.log('data', res.body)
+  //         that.username = res.body.data.username;
+  //         this.render();
+  //       }
+  //     });
+  // },
 
   logIn() {
     request.get('/auth/facebook')
@@ -38,9 +55,6 @@ let App = React.createClass({
       })
   },
 
-  componentWillMount() {
-    this.props.setInitialState(); // get the userId  
-  },
   
   render() {
 

@@ -20,7 +20,7 @@ export const Stock = React.createClass({
     return (
       <div>
 
-        <Card className="cardMarginBottom">
+        <Card className="cardMarginBottom portfolioStockCards">
 
 
           <div className="paddingPortfolio">

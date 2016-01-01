@@ -13,19 +13,26 @@ const RaisedButton = require('material-ui/lib/raised-button');
 
 export const PortfolioView = React.createClass({
 
+  capFirstLetter (matchTitle) {
+    return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
+  },
+
   render() {
 
     const { buy, sell, createMatch, MatchId, userId, portfolioValue, available_cash, portfolio, startdate, MatchTitle, errorValue } = this.props;
 
     return (
       <div className="container paddingTop">
-        
-        <h1>{MatchTitle}</h1>
-        <RaisedButton linkButton={true} href="#/search" label="Add to this portfolio" />
+
+        <h1 className="centreTitle" >{this.capFirstLetter(MatchTitle)}</h1>
         <h2 className="centreTitle paddingTop">You have ${numeral(Number(available_cash).toFixed(2)).format('0,0')} available cash</h2>
         <h2 className="centreTitle">Your portfolio is worth ${numeral(Number(portfolioValue).toFixed(2)).format('0,0')}</h2>
 
         <PortfolioDonut portfolio={portfolio} available_cash={available_cash} />
+
+        <div className="centreTitle paddingTop">
+          <RaisedButton linkButton={true} href="#/search" label="Buy Stocks" />
+        </div>
 
         <ul>
           {portfolio.get('stocks').map((stockObj, index) => {
