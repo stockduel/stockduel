@@ -7,6 +7,7 @@ module.exports = function (knex) {
   var tradesCtrl = tradesController(knex);
 
   var PENDING = 'pending';
+  var ACTIVE = 'active';
   var SOLO = 'solo';
 
   // ensure start dates are stored consistently in db
@@ -35,20 +36,33 @@ module.exports = function (knex) {
   module.createMatch = function (userId, startFunds, type, startDate, endDate, title) {
 
     var challengee = null;
-
-    if (type === SOLO) {
-      challengee = userId;
-    }
+    var today = standardizeStart(Date.now());
+    var status = PENDING;
 
     startDate = standardizeStart(startDate);
     endDate = standardizeEnd(endDate);
+
+    if (startDate >= endDate){
+      throw new Error('Start date can not occur before end date.');
+    }
+
+    if (startDate < today){
+      throw new Error('Start date can be before today.');
+    }
+
+    if (type === SOLO) {
+      challengee = userId;
+      if (startDate === today){
+        status = ACTIVE;
+      }
+    }
 
     return knex('matches').insert({
       'creator_id': userId,
       'starting_funds': startFunds,
       'startdate': startDate,
       'enddate': endDate,
-      'status': PENDING,
+      'status': status,
       'challengee': challengee,
       'title': title,
       'type': type
