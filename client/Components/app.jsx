@@ -9,7 +9,6 @@ import { StockPurchase } from './stockPurchaseWidget.jsx';
 import * as Actions from '../actions/actions.js';
 import { Link } from 'react-router';
 import request from 'superagent';
-import { CreateMatch } from './createMatch.jsx';
 
 import RaisedButton from 'material-ui/lib/raised-button';
 import Divider from 'material-ui/lib/divider';
@@ -45,7 +44,7 @@ let App = React.createClass({
   
   render() {
 
-    const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatcgith } = this.props;
+    const { buy, sell, setCurrentMatch, setInitialState, userId, logout } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">
