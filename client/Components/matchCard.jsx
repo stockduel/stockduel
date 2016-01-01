@@ -13,7 +13,6 @@ const Card = require('material-ui/lib/card/card');
 const CardActions = require('material-ui/lib/card/card-actions');
 const CardExpandable = require('material-ui/lib/card/card-expandable');
 const CardHeader = require('material-ui/lib/card/card-header');
-const CardMedia = require('material-ui/lib/card/card-media');
 const CardText = require('material-ui/lib/card/card-text');
 const CardTitle = require('material-ui/lib/card/card-title');
 const RaisedButton = require('material-ui/lib/raised-button');
@@ -63,7 +62,7 @@ export const MatchCard = React.createClass({
     let end = moment(endDate).fromNow();
 
     return (
-      <div className="paddingTop container">
+      <div className="paddingTop container listMatchCards">
 
         <Card initiallyExpanded={false}>
           <CardHeader
@@ -74,7 +73,7 @@ export const MatchCard = React.createClass({
           </CardHeader>
 
           <CardText expandable={true}>
-          <br></br>
+          <hr style={{marginTop:'-14px'}} />
           <div className="row">
             <p>Type: {match.get('type')}</p>
             <p>Start: {start}</p>
