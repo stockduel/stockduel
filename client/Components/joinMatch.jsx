@@ -52,9 +52,11 @@ export const JoinMatch = React.createClass({
   },
   render() {
     const { joinMatch, userId, createMatch, errorValue } = this.props;
-    console.log('here', this.matches)
+
     return (
       <div className="container paddingTop">
+
+        <h2 className="centreTitle">Matches to Join</h2>
         {errorValue && <div>
           <p>Sorry! Someone already joined that match. Please find a new match to join.</p>
         </div>}
@@ -62,11 +64,18 @@ export const JoinMatch = React.createClass({
           {this.matches && this.matches.map((matchObj) => {
             return matchObj ? <Card className="paddingTop"><div key={matchObj.m_id} >
               <CardText>
-                <h6>Match: {matchObj.title}</h6>  
-                <h6>Starts {moment(matchObj.startdate).fromNow()} and ends {moment(matchObj.enddate).fromNow()}</h6> 
-                <h6>Match Funds: {'$'+numeral(matchObj.starting_funds).format('0,0')}</h6>
+              <div className="row container">
+                <div className="six columns">
+                  <h5>Match:{ }<span className="joinMatchSubText">{matchObj.title}</span></h5>
+                  <h5>Match Funds:{ }<span className="joinMatchSubText">{'$'+numeral(matchObj.starting_funds).format('0,0')}</span></h5>
+                </div>
+                <div className="six columns">
+                  <h5>Starts{ }<span className="joinMatchSubText">{moment(matchObj.startdate).fromNow()}</span></h5>
+                  <h5>Ends{ }<span className="joinMatchSubText">{moment(matchObj.enddate).fromNow()}</span></h5>
+                </div>
+              </div>
               </CardText>
-              <CardActions>
+              <CardActions className="rightButtonExtraUp">
                 <FlatButton 
                 label="Join Match"
                 onClick={() => {

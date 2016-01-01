@@ -24,7 +24,7 @@ export const PortfolioView = React.createClass({
     return (
       <div className="container paddingTop">
 
-        <h1 className="centreTitle" >{this.capFirstLetter(MatchTitle)}</h1>
+        <h2 className="centreTitle" >{this.capFirstLetter(MatchTitle)}</h2>
         <h2 className="centreTitle paddingTop">You have ${numeral(Number(available_cash).toFixed(2)).format('0,0')} available cash</h2>
         <h2 className="centreTitle">Your portfolio is worth ${numeral(Number(portfolioValue).toFixed(2)).format('0,0')}</h2>
 
