@@ -23,6 +23,11 @@ body {
   margin-bottom: 14px;
 }
 
+.rightButtonExtraUp {
+  float: right;
+  margin-top: -40px;
+}
+
 .logoTopPad {
   padding-top: 6px;
 }
@@ -60,7 +65,7 @@ body {
 }
 
 .paddingTopStocks {
-  padding-top: 20px;
+  padding-top: 30px;
 }
 
 .spaceUnder {
@@ -94,9 +99,17 @@ i {
   margin-top: 60px;
 }
 
+.portfolioStockCards:first-child {
+  margin-top: 30px;
+}
+
 .headerPadCreateMatch {
   margin-bottom: 40px;
   margin-top: 70px;
+}
+
+.joinMatchSubText {
+  font-size: 18px;
 }
 
 

@@ -3,8 +3,9 @@ import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import request from 'superagent';
-const moment = require('moment');
 import { BarGraph } from './barGraph.jsx';
+
+const moment = require('moment');
 const numeral = require('numeral');
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
@@ -76,23 +77,19 @@ export const MatchCard = React.createClass({
           <CardText expandable={true}>
           <hr style={{marginTop:'-14px'}} />
           <div className="row">
-            <p>Type: {match.get('type')}</p>
-            <p>Start: {start}</p>
-            <p>End: {end}</p>
-          </div>
-
-          <div className="player1">
-            <div>
+            <div className="four columns paddingTopStocks">
+              <p>Type: {match.get('type')}</p>
+              <p>Start: {start}</p>
+              <p>End: {end}</p>
               <p>Your Portfolio: {'$' + numeral(Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)).format('0,0')}</p>
+              { match.get('type') === 'head' ? forHeadToHead : null }
+            </div>
+            
+            <div className="eight columns">
+              { this.opponentPortfolio ? <BarGraph match={ this.getMatchInfo() }/> : <div></div> }
             </div>
           </div>
 
-          <div className="player2">
-            { match.get('type') === 'head' ? forHeadToHead : null }
-          </div>
-
-          { this.opponentPortfolio ? <BarGraph match={ this.getMatchInfo() }/> : <div></div> }
-          
           </CardText>
 
           <CardActions expandable={true}>

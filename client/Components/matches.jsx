@@ -97,13 +97,13 @@ const MatchesList = React.createClass({
           }}
           >
 
-          <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Current" value="a" >
+          <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Current Matches" value="a" >
             <div className="container">
 
               <ul>
-                {matches.map(match => { 
+                {matches.map((match,index) => { 
                   if (match.get('status') === "active") {
-                     return (<MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>);
+                     return (<MatchCard key={index} setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>);
                    }
                 })}
               </ul>
@@ -111,13 +111,13 @@ const MatchesList = React.createClass({
             </div>
           </Tab>
 
-          <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Pending" value="b">
+          <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Pending Matches" value="b">
             <div className="container">
               
               <ul>
-                {matches.map(match => {
+                {matches.map( (match,index) => {
                   if (match.get('status') === "pending") {
-                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
+                    return <MatchCard key={index} setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
                   }
                 })}
               </ul>
@@ -125,13 +125,13 @@ const MatchesList = React.createClass({
             </div>
           </Tab>
 
-          <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Past" value="c">
+          <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Past Matches" value="c">
             <div className="container">
 
               <ul>
-                {matches.map(match => {
+                {matches.map((match,index) => {
                   if (match.get('status') === "complete") {
-                    return <MatchCard setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
+                    return <MatchCard key={index} setMatch={this.setMatch(match.get('m_id'))} match={match} userId={userId}/>
                   }
                 })}
               </ul>
