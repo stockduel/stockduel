@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { toJS } from 'immutable';
 import request from 'superagent';
 const moment = require('moment');
+import { BarGraph } from './barGraph.jsx';
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
 
@@ -38,6 +40,13 @@ export const MatchCard = React.createClass({
           window.location.hash="#/matches";
         }
       })
+  },
+
+  getMatchInfo(){
+    let matchInfo = {};
+    matchInfo['You'] = Number(this.props.match.getIn(['portfolio', 'totalValue'])).toFixed(2);
+    matchInfo[this.opponent] = this.opponentPortfolio &&  Number(this.opponentPortfolio.totalValue).toFixed(2);
+    return matchInfo;
   },
 
   render() {
@@ -82,6 +91,8 @@ export const MatchCard = React.createClass({
             { match.get('type') === 'head' ? forHeadToHead : null }
           </div>
 
+          { this.opponentPortfolio ? <BarGraph match={ this.getMatchInfo() }/> : <div></div> }
+          
           </CardText>
 
           <CardActions expandable={true}>
@@ -91,7 +102,7 @@ export const MatchCard = React.createClass({
                linkButton={true} onClick={setMatch} />
 
            </div>
-          </CardActions>
+          </CardActions>  
 
         </Card>
 
