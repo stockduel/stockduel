@@ -53,19 +53,23 @@ export const SearchStocksDumb = React.createClass({
       window.scrollTo(0, 0); // scroll to top of page to see input field
   },
 
+  capFirstLetter (matchTitle) {
+    return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
+  },
+
   render() {
     this.stockTicker = this.stockTicker || '';
     const {MatchId, userId, buy, MatchTitle, isActive, errorValue} = this.props;
     return (
-      <div className="cardMarginBottom paddingTop">
-        <h3>{MatchTitle && MatchTitle + (isActive ? '' : ' is not currently active')}</h3>
+      <div className="marginUnder headerPaddingTop centreTitle container">
+        <h3 className="">{this.capFirstLetter(MatchTitle && MatchTitle + (isActive ? '' : ' is not currently active'))}</h3>
         {!MatchId && <h4><strong>Just browsing . . .</strong></h4>}
-        <div>
+        <div className="">
           <TextField hintText="Stock Symbol" ref="searchStocksInput" onKeyDown={this.debouncedSearch} onChange={(e) => {
             this.updateStockValue(e.target.value);
           }}/>
         </div>
-        <div className="results">
+        <div className="">
           <ul>
             {this.searchResults === null ?
               null : 
