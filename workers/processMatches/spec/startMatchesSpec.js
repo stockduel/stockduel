@@ -116,7 +116,6 @@ describe('startMatches Worker', function () {
           startMatches.selectPendingMatches(date)
           .then(function (otherMatches) {
             expect(matches.length).to.equal(2);
-            // expect(otherMatches.length).to.equal(2);
             done();
           });
         });
