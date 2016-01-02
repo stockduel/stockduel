@@ -57,6 +57,12 @@ const MatchesList = React.createClass({
   render() {
     const { matches, userId, createMatch } = this.props;
 
+    //logic to display message and button to creat match if you have not yet made a match
+    let noMatches;
+    if ( (matches.count() ===1 && matches.get('m_id') === "") || matches.count() === 0) {
+      noMatches = (<div className="centreTitle headerPaddingTop" ><h3>You have no matches yet</h3><RaisedButton label="Create Match" link={true} onClick={ ()=>{ window.location.hash="#/create" }} /></div>);
+    }
+
     return (
       <div>
 
@@ -69,6 +75,8 @@ const MatchesList = React.createClass({
         {/*tab one current matches*/}
           <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Current Matches" value="a" >
             <div className="container">
+
+            {noMatches}
 
               <ul>
                 {matches.map((match,index) => { 
@@ -84,8 +92,11 @@ const MatchesList = React.createClass({
 
           {/*tab two pending matches*/}
           <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Pending Matches" value="b">
+            
             <div className="container">
-              
+            
+            {noMatches}   
+            
               <ul>
                 {matches.map( (match,index) => {
                   if (match.get('status') === "pending") {
@@ -100,6 +111,8 @@ const MatchesList = React.createClass({
         {/*tab three complete matches*/}
           <Tab style={{background:'white', fontSize:'15px', color: "#484848"}} label="Past Matches" value="c">
             <div className="container">
+              
+              {noMatches}
 
               <ul>
                 {matches.map((match,index) => {
