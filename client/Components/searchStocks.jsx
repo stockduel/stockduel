@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import { StockPurchase } from './stockPurchaseWidget.jsx';
-import { buy, clearError } from '../actions/actions.js';
+import { buy, clearError, createError } from '../actions/actions.js';
 import request from 'superagent';
 import {toJS} from 'immutable';
 
@@ -17,16 +17,19 @@ export const SearchStocksDumb = React.createClass({
     this.props.clearError(); // remove potential errors from possible previous invalid purchases
   },
 
-  //funcion to take the user input and query the database with it
+  //function to take the user input and query the database with it
+  getInitialState() {
+      return {
+          resultsVisible: true  
+      };
+  },
+
   searchStocks(queryString){
     var url = '/stocks/?search=';
     var self = this;
     request.get(url + queryString)
       .end((err, res) => {
-        if (err) {
-          console.error(<div className="error"><p>"There was a problem searching for stocks:", err</p></div>);
-        } else {
-          //sort the returned results by ask price
+        if (!err) {
           self.searchResults = res.body.data.sort((a, b) => {
             return b.ask - a.ask;
           }).slice(0, 10); // take first 10 results for clean UX
@@ -37,6 +40,7 @@ export const SearchStocksDumb = React.createClass({
 
   //triggered on key down in the user input
   debouncedSearch() {
+    this.setState({resultsVisible: true});
     var context = this;
     //get input value
     var input = this.refs.searchStocksInput.refs.input;
@@ -70,7 +74,7 @@ export const SearchStocksDumb = React.createClass({
 
   render() {
     this.stockTicker = this.stockTicker || '';
-    const {MatchId, userId, buy, MatchTitle, isActive, errorValue} = this.props;
+    const {MatchId, userId, buy, MatchTitle, isActive, errorValue, createError } = this.props;
     return (
       <div className="marginUnder headerPaddingTop centreTitle container">
         <h3 className="">{this.capFirstLetter(MatchTitle && MatchTitle + (isActive ? '' : ' is not currently active'))}</h3>
@@ -81,13 +85,16 @@ export const SearchStocksDumb = React.createClass({
           }}/>
         </div>
         <div>
-          <ul>
+          <ul className={this.state.resultsVisible ? "visible" : "invisible"}>
             {this.searchResults === null ?
               null : 
               this.searchResults.map(result => {
                 if(result.ask) { // certain stocks in database have to ask price -- filter those out
                   return (
-                    <li key={result.symbol} onClick={() => this.updateStockValue(result.symbol)}>
+                    <li className="searchResult" key={result.symbol} onClick={() => {
+                      this.updateStockValue(result.symbol);
+                      this.setState({resultsVisible: false});
+                    }}>
                       <strong>{result.symbol}</strong>: {result.name} -- <em>${result.ask}</em>
                     </li>
 
@@ -97,7 +104,7 @@ export const SearchStocksDumb = React.createClass({
           }
           </ul>
         </div>
-        {isActive && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} errorValue={errorValue} />}
+        {isActive && <StockPurchase stockTicker={this.stockTicker} buy={buy} MatchId={MatchId} userId={userId} errorValue={errorValue} createError={createError} />}
       </div>
     )
   }
@@ -117,12 +124,12 @@ function mapStateToProps(state) {
     MatchId: state.get('currentMatchId'),
     MatchTitle: targetMatch ? targetMatch.get('title') : '',
     isActive: targetMatch && targetMatch.get('status') === 'active',
-    errorValue: state.get('error')
+    errorValue: state.get('error'),
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({buy, clearError}, dispatch);
+  return bindActionCreators({buy, clearError, createError }, dispatch);
 }
 
 export const SearchStocks = connect(mapStateToProps, mapDispatchToProps)(SearchStocksDumb);
