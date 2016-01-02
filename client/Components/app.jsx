@@ -1,15 +1,16 @@
 'use strict';
+//import action creators & connect for app since it's connected
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+//import standard react functions
 import React from 'react';
 import { render } from 'react-dom';
-import { connect } from 'react-redux';
-import { toJS } from 'immutable';
-import { Stock } from './stockCard.jsx';
-import { StockPurchase } from './stockPurchaseWidget.jsx';
-import * as Actions from '../actions/actions.js';
+//import the two actions needed for the app
+import { logout, setInitialState } from '../actions/actions.js';
+//import router functionality
 import { Link } from 'react-router';
-import request from 'superagent';
 
+//import material UI components
 import RaisedButton from 'material-ui/lib/raised-button';
 import Divider from 'material-ui/lib/divider';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
@@ -19,47 +20,17 @@ const ToolbarTitle = require('material-ui/lib/toolbar/toolbar-title');
 const ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
 const ToolbarSeparator = require('material-ui/lib/toolbar/toolbar-separator');
 
-
+//declare app
 let App = React.createClass({
 
+  // call to set initial state when the page will mount to get the userId  
   componentWillMount() {
-    this.props.setInitialState(); // get the userId  
+    this.props.setInitialState(); 
   },
-
-  componentDidMount() {
-    //this.getUserName(); 
-  },
-
-  //this is to try and get the username in the nav bar not working currently
-  // getUserName () {
-  //   this.username;
-  //   var that = this;
-  //   request.get('/users/' + this.props.userId)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         console.error(err)
-  //       } else {
-  //         console.log('data', res.body)
-  //         that.username = res.body.data.username;
-  //         this.render();
-  //       }
-  //     });
-  // },
-
-  logIn() {
-    request.get('/auth/facebook')
-      .end(function(err, res) {
-        /* 
-        We never enter this callback.
-        Goes to Facebook, redirects to /loggedIn which redirects to / (root).
-        */
-      })
-  },
-
   
   render() {
-
-    const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatch, error, clearError, createError } = this.props;
+    //import logout action and userId from state
+    const { logout, userId } = this.props;
 
     //the drop down menu available from every page when the user is logged in
     const userButtons = 
@@ -86,14 +57,16 @@ let App = React.createClass({
   }
 });
 
-//map state to props
+//provide userId to the app (nav bar) to be used in determining what to display
 function mapStateToProps(state) {
-  return state.toJS();
+  return {
+    userId: state.get('userId')
+  };
 }
 
-//map dispatch to props
+//map the two actions needed for this page to props
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Actions, dispatch);
+  return bindActionCreators({logout, setInitialState}, dispatch);
 }
 
 //connect and export App
