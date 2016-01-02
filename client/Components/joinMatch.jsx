@@ -38,7 +38,7 @@ export const JoinMatch = React.createClass({
     return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
   },
 
-  // same functionality on update and willMount
+
   componentWillUpdate() {
     if (window.localStorage.getItem('joinMatchError') !== "null") { // local storage converts null to "null"
       var self = this;

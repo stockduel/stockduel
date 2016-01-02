@@ -2,13 +2,12 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { connect } from 'react-redux';
 import { toJS } from 'immutable';
-import { createMatch } from '../actions/actions.js';
+import { createMatch, clearError, createError } from '../actions/actions.js';
 import { bindActionCreators } from 'redux';
-
 import DropDownMenu from 'material-ui/lib/DropDownMenu';
 import MenuItem from 'material-ui/lib/menus/menu-item';
+import { connect } from 'react-redux';
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 injectTapEventPlugin();
@@ -25,10 +24,16 @@ import CardText from 'material-ui/lib/card/card-text';
 
 export const CreateMatch = React.createClass({
 
-  render() {
+  componentWillMount() {
+    this.props.clearError();
+  },
 
-    const { userId, createMatch } = this.props;
-    let startFunds;
+  render() {
+    let start, end, matchTitle, dStart, dEnd, yearStart, monthStart, dateStart, dateIntegerStart;
+    let dateFormatStart, yearEnd, monthEnd, dateEnd, dateIntegerEnd, dateFormatEnd, matchType;
+
+    const { userId, createMatch, errorValue, createError, clearError } = this.props;
+    let startFunds = '10000';
     let menuItems = [
       { payload: '10000', text: '$10,000' },
       { payload: '50000', text: '$50,000' },
@@ -41,7 +46,7 @@ export const CreateMatch = React.createClass({
     return (
       <div className="container paddingTop">
         
-        <h3 className="centreTitle headerPadCreateMatch">Create a Match</h3>
+        <h3 className="centreTitle headerPadCreateMatch container">Create a Match</h3>
 
         <Card className="container">
           <CardText>
@@ -83,65 +88,64 @@ export const CreateMatch = React.createClass({
              </div>
 
              </div>
-             <div className="rightButton">
-               <FlatButton label="Submit"
-                secondary={true}
-                linkButton={true} onClick={ () => { 
-                   let matchType;
-                   let start = this.refs.startDate.value;
-                   let end = this.refs.finishDate.value;
-                   let matchTitle = this.refs.matchTitleInput.refs.input.value;
-                   if (this.refs.headOrSolo.refs.head.isChecked()) {
-                     matchType = 'head';
-                   } else if (this.refs.headOrSolo.refs.solo.isChecked()) {
-                     matchType = 'solo';
-                   }
+           <div className="rightButton">
+             <FlatButton label="Submit"
+              secondary={true}
+              linkButton={true} onClick={ () => { 
+                 matchType;
+                 start = this.refs.startDate.value;
+                 end = this.refs.finishDate.value;
+                 matchTitle = this.refs.matchTitleInput.refs.input.value;
+                 if (this.refs.headOrSolo.refs.head.isChecked()) {
+                   matchType = 'head';
+                 } else if (this.refs.headOrSolo.refs.solo.isChecked()) {
+                   matchType = 'solo';
+                 }
 
-                   let dStart = start.split('-');
-                   let dEnd = end.split('-');
-               
-                   let yearStart = dStart[0];
-                   let monthStart = dStart[1]-1;
-                   let dateStart = dStart[2];
-                   let dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
-                   let dateFormatStart = new Date(dateIntegerStart);
-               
-                   let yearEnd = dEnd[0];
-                   let monthEnd = dEnd[1]-1;
-                   let dateEnd = dEnd[2];
-                   let dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
-                   let dateFormatEnd = new Date(dateIntegerEnd);
-               
-                   if (dateFormatStart.toString().substr(0, 3) === 'Sun' || dateFormatStart.toString().substr(0, 3) === 'Sat' ) {
-               
-                     return alert('Stock market\'s not open on '+dateFormatStart.toString().substr(0,3) + 'day.');
-                   
-                   } else {
-               
-                     if (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) {
-                       alert('Matches should not start before today, and should not end before they start.');
-                     } else {
-                       if (!matchType || !matchTitle || !dateIntegerStart || !dateIntegerEnd) {
-                        console.log(matchType, matchTitle,startFunds,dateIntegerStart,dateIntegerEnd)
-                         alert('Please pick an option for every field')
-                       } else {
-                         let createOptions = {
-                           userId: userId,
-                           title: matchTitle,
-                           startdate: dateFormatStart,
-                           enddate: dateFormatEnd,
-                           startFunds: startFunds || '10000',
-                           type: matchType === "solo" ? "solo" : "head"
-                         };
-                        createMatch(createOptions); 
-                       }
-                     }
-                   }
-                   
-                }} />
-              </div>
-          </CardText>
-        </Card>
+                 dStart = start.split('-');
+                 dEnd = end.split('-');
+         
+                 yearStart = dStart[0];
+                 monthStart = dStart[1]-1;
+                 dateStart = dStart[2];
+                 dateIntegerStart = Date.UTC(yearStart,monthStart,dateStart, 14);
+                 dateFormatStart = new Date(dateIntegerStart);
+         
+                 yearEnd = dEnd[0];
+                 monthEnd = dEnd[1]-1;
+                 dateEnd = dEnd[2];
+                 dateIntegerEnd = Date.UTC(yearEnd,monthEnd,dateEnd, 14);
+                 let today = new Date(Date.now());
+                 today = new Date(today.setHours(0));
+                 today = today.setMinutes(0);
+                 dateFormatEnd = new Date(dateIntegerEnd);
+                 if (dateIntegerStart < today || dateIntegerStart > dateIntegerEnd || !matchType || !matchTitle || !startFunds || !dateIntegerStart || !dateIntegerEnd) {
+                   return createError();
+                   // alert('Please pick an option for every field')
+                 } else {
+                   let createOptions = {
+                     userId: userId,
+                     title: matchTitle,
+                     startdate: dateFormatStart,
+                     enddate: dateFormatEnd,
+                     startFunds: startFunds,
+                     type: matchType === "solo" ? "solo" : "head"
+                   };
+                  createMatch(createOptions); 
+                 }
+                         
+              }} />
+            </div>
+
+            {errorValue && <div className="error">
+              { 
+                (dateIntegerStart < Date.now() || dateIntegerStart > dateIntegerEnd) ?
+                  <p>Make sure your start date is before your end date.</p> :
+                    <p>Please enter a value for all fields</p>
+              }
+            </div>}
+            </CardText>
+          </Card>
       </div>
     );
   }
@@ -158,7 +162,7 @@ function mapStateToProps(state) {
 
 //map dispatch to props
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({createMatch}, dispatch);
+  return bindActionCreators({createMatch, clearError, createError}, dispatch);
 }
 
 //connect and export App

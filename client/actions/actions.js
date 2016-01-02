@@ -28,7 +28,7 @@ export function buy(options) {
     .end(function(err, res) {
       if (err || !res.body.data) {
         // handle error
-        return dispatch({type: BAD_ACTION});
+        dispatch(createError());
       } else {
         dispatch(buySync(options.MatchId, options.userId, res.body.data.portfolio));
         window.location.hash="#/portfolio";
@@ -54,7 +54,7 @@ export function sell(options) {
     .send(options)
     .end(function(err, res) {
       if (err || !res.body.data) {
-        return dispatch({type: BAD_ACTION});
+        dispatch(createError());
       } else {
         return dispatch(sellSync(options.MatchId, options.userId, res.body.data.portfolio));
       }
@@ -94,7 +94,7 @@ export function sell(options) {
         if(err) {
           //handle error
           console.log('There was an error on GET from route /state', err);
-          dispatch({type: BAD_ACTION});
+          dispatch(createError());
         } else {
           dispatch(setInitialStateSync(res.body));
           // window.location.hash="#/";
@@ -135,9 +135,10 @@ export function sell(options) {
        .end(function(err, res){
          if(err) {
            //handle error
-           dispatch({type: BAD_ACTION});
+           dispatch(createError());
          } else {
            dispatch(createMatchSync(res.body.data));
+           dispatch(clearError());
            window.location.hash="#/portfolio";
          }
        });
@@ -172,7 +173,7 @@ export function sell(options) {
        request.put('/matches/' + joinOptions)
        .end(function(err, res) {
          if (err) {
-          dispatch({type: BAD_ACTION});
+          dispatch(createError());
           window.localStorage.setItem('joinMatchError', true);
           window.location.hash="#/join"; // cause componentWillUpdate on joinMatches component
          } else {
@@ -196,7 +197,7 @@ export function sell(options) {
        request.post( 'auth/logout' )
        .end(function(err, res) {
          if (err) {
-          dispatch({type: BAD_ACTION});
+          dispatch(createError());
          } else {
           dispatch(logoutSync());
          }
@@ -207,5 +208,11 @@ export function sell(options) {
    export function clearError() {
     return {
       type: CLEAR_ERROR
+    }
+   }
+
+   export function createError() {
+    return {
+      type: BAD_ACTION
     }
    }

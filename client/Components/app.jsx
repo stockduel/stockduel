@@ -58,7 +58,7 @@ let App = React.createClass({
   
   render() {
 
-    const { buy, sell, setCurrentMatch, setInitialState, userId, logout } = this.props;
+    const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatch, error, clearError, createError } = this.props;
 
     const userButtons = 
     (<ToolbarGroup float="right">
