@@ -17,7 +17,10 @@ module.exports = function (knex) {
 
   router.route('/')
 
+//Get All Joinable Matches
+//-------------------------
   .get(function (req, res) {
+
     matchesController.getAllJoinableMatches(req.user.u_id)
       .then(function (matches) {
         res.status(200).json({
@@ -29,9 +32,13 @@ module.exports = function (knex) {
           message: err
         });
       });
+
   })
 
+//Post New Match Details
+//----------------------
   .post(function (req, res) {
+
     var userId = req.body.userId;
     var startFunds = req.body.startFunds;
     var startDate = req.body.startdate;
@@ -53,7 +60,10 @@ module.exports = function (knex) {
 
   });
 
+//Get all of a Users Matches
+//--------------------------
   router.route('/user/:userId')
+
     .get(function (req, res) {
       matchesController.getUsersMatches(req.userId)
         .then(function (matches) {
@@ -66,13 +76,15 @@ module.exports = function (knex) {
             message: err
           });
         });
+
     });
 
+//Join a Match
+//------------------------
   router.route('/:matchId')
-    .put(function (req, res) {
-      console.log(req.session);
-      var userId = req.session.passport.user.u_id;
 
+    .put(function (req, res) {
+      var userId = req.session.passport.user.u_id;
       matchesController.joinMatch(req.matchId, userId)
         .then(function (match) {
           if (match === null) {
@@ -85,8 +97,11 @@ module.exports = function (knex) {
             });
           }
         });
+
     })
 
+//Get a certain match
+//----------------------
   .get(function (req, res) {
     matchesController.getMatch(req.matchId)
       .then(function (match) {

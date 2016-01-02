@@ -5,9 +5,12 @@ import request from 'superagent';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions/actions.js';
+
+//for number and date formatting
 const moment = require('moment');
 const numeral = require('numeral');
 
+//Material UI styling variables
 const Card = require('material-ui/lib/card/card');
 const CardActions = require('material-ui/lib/card/card-actions');
 const CardExpandable = require('material-ui/lib/card/card-expandable');
@@ -18,7 +21,8 @@ const FlatButton = require('material-ui/lib/flat-button');
 
 export const JoinMatch = React.createClass({
 
-  //query the databse for match information
+  //query the databse for joinable match information
+  //set a joinMatchError property to null/ back to null
   componentWillMount() { 
     this.props.clearError();
     window.localStorage.setItem('joinMatchError', null); // joinMatchError has done its job and dictated state's error field. Time to clear the stale error
@@ -34,12 +38,13 @@ export const JoinMatch = React.createClass({
       })
   },
 
-  //capitalize the first letter of a passed in word
+  //capitalize the first letter of string
   capFirstLetter (matchTitle) {
     return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
   },
 
-
+  //if the state does not contain a joinMatchError(that the match is no longer available to be joined) 
+  //send a request to the database to get the match information for all matches that can be joined
   componentWillUpdate() {
     if (window.localStorage.getItem('joinMatchError') !== "null") { // local storage converts null to "null"
       var self = this;
@@ -63,11 +68,13 @@ export const JoinMatch = React.createClass({
     return (
       <div className="container headerPadCreateMatch">
 
+        {/*throw error if the state holds an error value*/}
         <h2 className="centreTitle">Matches to Join</h2>
         {errorValue && <div className="error">
           <p>Sorry! Someone already joined that match. Please find a new match to join.</p>
         </div>}
-        
+
+        {/*table headers*/}
         <table className="u-full-width paddingTop">
           <thead>
             <tr>
@@ -79,6 +86,7 @@ export const JoinMatch = React.createClass({
             </tr>
           </thead>
           <tbody>
+            {/*maps the match details to the join matches table if no matches to join dont map any*/}
             {this.matches && this.matches.map((matchObj) => {
               return matchObj ? <tr><div key={matchObj.m_id}>
                 <td>{this.capFirstLetter(matchObj.title)}</td>
@@ -99,6 +107,7 @@ export const JoinMatch = React.createClass({
   }
 });
 
+//map the state to props
 function mapStateToProps(state) {  
   return {
     userId: state.get('userId'),
@@ -106,8 +115,10 @@ function mapStateToProps(state) {
   };
 }
 
+//bind the actions to the component so the methods can be passed to the props
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch);
 }
 
+//connect and export JoinMatch
 export const JoinMatchConnected = connect(mapStateToProps, mapDispatchToProps)(JoinMatch);

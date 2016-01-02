@@ -13,6 +13,8 @@ module.exports = function (knex) {
 
   var usersCtrl = usersController(knex);
 
+  //passport constructor object to send to facebook
+  //returned so it can be required passed to the routes
   return new FacebookStrategy({
       clientID: clientID,
       clientSecret: clientSecret,
@@ -20,14 +22,16 @@ module.exports = function (knex) {
       enableProof: false,
       profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified']
     },
+
     function (accessToken, refreshToken, profile, done) {
+
+      //format the details to get from facebook
       var user = {
         username: profile.name.givenName,
         name: [profile.name.givenName, profile.name.familyName].join(' '),
         email: profile.emails[0].value,
       };
-
-      //check in the users table, if user not there then insert the details from facebook
+      //Check in the users database table, if user not there. If not there insert the details from facebook.
       return usersCtrl.findOrCreateUser(user.username, user.name, user.email)
         .then(function (profile) {
           var user = {
@@ -41,6 +45,7 @@ module.exports = function (knex) {
         .catch(function (err) {
           done(err, null);
         });
+
     }
 
   );

@@ -8,6 +8,7 @@ import { toJS } from 'immutable';
 const FlatButton = require('material-ui/lib/flat-button');
 const TextField = require('material-ui/lib/text-field');
 
+//input and button that is linked with actions to update the state when a user want to buy a stock. Nested in search stocks page.
 export const StockPurchase = React.createClass({
 
   render() {
@@ -23,6 +24,7 @@ export const StockPurchase = React.createClass({
           label="Buy"
           hoverColor="#009ACD"
           onClick={() => {
+            //send action to buy the shares and update the state
            let buyOptions = {
               numShares: parseInt(numShares, 10),
               stockTicker: stockTicker.toUpperCase(),
@@ -30,6 +32,7 @@ export const StockPurchase = React.createClass({
               userId: userId,
               action: 'buy'
             };
+          {/*empty the number of shares input*/}
             this.refs.numSharesInput.refs.input.value = "";
             buy(buyOptions);
           }

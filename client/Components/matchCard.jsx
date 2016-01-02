@@ -33,7 +33,7 @@ export const MatchCard = React.createClass({
         } else {
           this.opponent = res.body.data.username;
           // render if AJAX call that sets this.opponentPortfolio has already returned
-          if (this.opponentPortfolio) {console.log('in first one');
+          if (this.opponentPortfolio) {
             this.render();
           }
         }
@@ -45,14 +45,14 @@ export const MatchCard = React.createClass({
         } else {
           this.opponentPortfolio = res.body.data;
           // render if AJAX call that sets this.opponent has already returned
-          if (this.opponentPortfolio) { console.log('in second one');
+          if (this.opponent) {
             this.render();
           }        
         }
       })
   },
 
-  //capitalize the first letter in a passed in word
+  //capitalize the first letter in string
   capFirstLetter (matchTitle) {
     return matchTitle.charAt(0).toUpperCase() + matchTitle.slice(1);
   },
@@ -67,11 +67,6 @@ export const MatchCard = React.createClass({
 
   render() {
     const {match, setMatch} = this.props;
-
-    //decided not to use currently as gauge shows this visually
-    // let forHeadToHead = (<div>
-    //                       <p>Opponent: {this.opponentPortfolio && "$" + numeral(Number(this.opponentPortfolio.totalValue).toFixed(2)).format('0,0')}</p>
-    //                     </div>);
     
     //variables to allow times to be compared
     let startDate = match.get('startdate');
