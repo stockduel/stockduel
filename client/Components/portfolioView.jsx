@@ -10,7 +10,7 @@ import { PortfolioDonut } from './portfolioDonut.jsx';
 const moment = require('moment');
 const numeral = require('numeral');
 
-const FlatButton = require('material-ui/lib/flat-button');
+const RaisedButton = require('material-ui/lib/raised-button');
 
 export const PortfolioView = React.createClass({
 
@@ -53,7 +53,7 @@ export const PortfolioView = React.createClass({
         <PortfolioDonut portfolio={portfolio} available_cash={available_cash} />
 
         <div className="paddingTop">
-          <FlatButton hoverColor="#009ACD" linkButton={true} href="#/search" label="Buy Stocks" />
+          <RaisedButton hoverColor="#009ACD" linkButton={true} href="#/search" label="Buy Stocks" />
         </div>
 
         <ul>
@@ -76,6 +76,7 @@ export const PortfolioView = React.createClass({
               percent_change={stockObj.get('percent_change') || 0}
               startdate={startdate}
               errorValue={errorValue}
+              matchStatus={match.get('status')}
             />
           })}
         </ul>
