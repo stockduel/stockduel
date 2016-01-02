@@ -11,6 +11,7 @@ const Card = require('material-ui/lib/card/card');
 const CardText = require('material-ui/lib/card/card-text');
 const CardTitle = require('material-ui/lib/card/card-title');
 
+//card that displays details of a users stock. Used in portfolio view.
 export const Stock = React.createClass({
 
   render() {
@@ -39,6 +40,7 @@ export const Stock = React.createClass({
                 <h5>Total: ${(shares * price).toFixed(2)}</h5>
               </div>
 
+            {/*logic to show the sell compont only when the match is active*/}
               {matchStatus !== 'complete' && <div className="four columns">
                 <input type="number" ref="sellNum" min="1" max={shares} step="1" onChange={(event) => {
                   numSharesToSell = event.target.value;
@@ -52,14 +54,17 @@ export const Stock = React.createClass({
                     userId: userId,
                     action: 'sell',
                   };
+                  {/*empty the input box for the user*/}
                   this.refs.sellNum.value="";
+                  {/*trigger action to sell stocks. Update the database and state*/}
                   sell(sellOptions);
                 }} />
 
+              {/*handle error*/}
                 {errorValue && <div className="error">
                   <p>Invalid sale. Please make sure you are not selling more shares than you own.</p>
-                </div>
-              }
+                </div>}
+
               </div>
               }
             </div>
@@ -67,7 +72,7 @@ export const Stock = React.createClass({
           </div>
 
           <CardText className="row">
-
+            {/*stock data displayed to the user*/}
             <div className="three columns paddingTopStocks">
               <p> Ask : ${ask}</p>
               <p> Bid : ${bid}</p>
@@ -75,6 +80,7 @@ export const Stock = React.createClass({
               <p> Change : {percent_change}</p>
             </div>
 
+          {/*stock chart component rendered here to show stock performance over the past year*/}
             <div className="nine columns">
               <StockChart startdate={startdate} symbol={symbol} />
             </div>

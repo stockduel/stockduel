@@ -1,5 +1,5 @@
 'use strict';
-//to gauges made on reflection could have made one
+//two gauges made on reflection could have made one
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { toJS } from 'immutable';
@@ -8,10 +8,12 @@ import c3 from 'c3';
 export const SoloGauge = React.createClass({
 
   componentDidMount(){
+    //working out the percentage of the user funds
     var startFunds = Number(this.props.matchFunds);
     var you = Number(this.props.portfolio);
     var total = startFunds + you;
     var percentage = (you/total)*100;
+    //call with the date to build the gauge chart
     this.buildChart(percentage.toFixed(2));
   },
 

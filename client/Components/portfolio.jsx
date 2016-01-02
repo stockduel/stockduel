@@ -20,6 +20,7 @@ var Portfolio = React.createClass({
 
     const { buy, sell, createMatch, MatchId, userId, portfolio, startdate, MatchTitle, match, errorValue } = this.props;
 
+    //if there is a portfolio then save the available cash and the total value
     let available_cash = portfolio ? portfolio.get('available_cash') : 0;
     let portfolioValue = portfolio ? portfolio.get('totalValue') : 0;
 
@@ -48,6 +49,8 @@ function mapStateToProps(state) {
   });
 
   return {
+    //return the state that the compnent needs
+
     //if a match has been selected
     portfolio: targetMatch ? targetMatch.get('portfolio'): null,
     MatchId: targetMatch ? targetMatch.get('m_id'): null,
@@ -58,11 +61,14 @@ function mapStateToProps(state) {
     userId: state.get('userId'),
     currentMatchId: state.get('currentMatchId'),
     errorValue: state.get('error')
+
   };
 }
 
+//bind the actions to the component so the methods can be passed to the props
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch);
 }
 
+//connect and export Portfolio
 export const PortfolioConnected = connect(mapStateToProps, mapDispatchToProps)(Portfolio);
