@@ -1,12 +1,10 @@
 import React from 'react';
+//require thunk to allow for ajax calls within actions
 import thunk from 'redux-thunk';
+//require createStore and applyMiddleware for generating the redux store
 import {createStore, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
+//require master reducer file for store creation
 import reducer from '../reducers/reducer.js';
 
-// const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
-
-// export const store = createStoreWithMiddleware(reducer);
+//declare store with thunk middleware and reducer passed in
 export const store = applyMiddleware(thunk)(createStore)(reducer);
-
-store.dispatch({type:'blabla'}); // initialize the state
