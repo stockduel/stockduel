@@ -61,7 +61,7 @@ const MatchesList = React.createClass({
     //logic to display message and button to creat match if you have not yet made a match
     let noMatches;
     if ( (matches.count() ===1 && matches.get('m_id') === "") || matches.count() === 0) {
-      noMatches = (<div className="centreTitle headerPaddingTop" ><h3>You have no matches yet</h3><RaisedButton label="Create Match" link={true} href='/#/create' /></div>);
+      noMatches = (<div className="centreTitle headerPaddingTop" ><h3>You have no matches yet</h3><RaisedButton label="Create Match" link={true} onClick={ ()=>{ window.location.hash="#/create" }} /></div>);
     }
 
     return (
