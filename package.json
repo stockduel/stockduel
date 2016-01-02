@@ -6,11 +6,13 @@
     "compile": "babel --presets es2015 -d lib/ client/reducers/",
     "test": "npm run compile && mocha --compilers js:babel-core/register client/reducers/test && mocha server/**/spec/*js && mocha workers/**/spec/*js",
     "servertest": "mocha server/**/spec/*js",
-    "start": "webpack && node index.js",
+    "start": "npm run build && npm run startserver",
+    "startserver": "pm2 stop index.js && pm2 start index.js || pm2 start index.js || node index.js",
+    "build": "npm install && npm run docco && webpack --progress",
+    "startlatest": "git pull upstream master && npm start",
     "dbup": "knex migrate:latest --knexfile db/index.js; knex seed:run --knexfile db/index.js",
     "dbdown": "knex migrate:rollback --knexfile db/index.js",
     "docco": "docco client/actions/*.js client/app/index.jsx client/Components/*.jsx server/routes/auth/*.js client/reducers/*.js client/store/*.js db/schema/*.js server/db/dbcontrollers/*.js server/routes/*.js workers/processMatches/scoreMatches/*.js workers/processMatches/startMatches/*.js"
-
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,7 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.0.0",
     "path": "^0.12.7",
+    "pm2": "^0.15.10",
     "react": "~0.14.3",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.1",
