@@ -46,10 +46,10 @@ export const CreateMatch = React.createClass({
     return (
       <div className="container paddingTop">
         
-        <h3 className="centreTitle headerPadCreateMatch container">Create a Match</h3>
+        <h3 className="centreTitle headerPadCreateMatch">Create a Match</h3>
 
         <Card className="container">
-          <CardText>
+          <CardText className="container">
             <div className="row">
                <div className="spaceUnder">
                  <TextField ref="matchTitleInput"

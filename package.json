@@ -8,7 +8,9 @@
     "servertest": "mocha server/**/spec/*js",
     "start": "webpack && node index.js",
     "dbup": "knex migrate:latest --knexfile db/index.js; knex seed:run --knexfile db/index.js",
-    "dbdown": "knex migrate:rollback --knexfile db/index.js"
+    "dbdown": "knex migrate:rollback --knexfile db/index.js",
+    "docco": "docco client/actions/*.js client/app/index.jsx client/Components/*.jsx server/routes/auth/*.js client/reducers/*.js client/store/*.js db/schema/*.js server/db/dbcontrollers/*.js server/routes/*.js workers/processMatches/scoreMatches/*.js workers/processMatches/startMatches/*.js"
+
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
     "c3": "^0.4.10",
     "cookie-parser": "^1.4.0",
     "d3": "^3.5.12",
+    "docco": "^0.7.0",
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "history": "^1.17.0",
