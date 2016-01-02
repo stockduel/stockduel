@@ -1,6 +1,3 @@
-//Set Initial State Reducer
-//--------------------
-
 //import function to create immutable object
 import {fromJS} from 'immutable';
 
@@ -8,4 +5,3 @@ import {fromJS} from 'immutable';
 export default function (state, action) {
   return fromJS(action.state);
 }
-

@@ -1,3 +1,4 @@
+//import function to create immutable object
 import {List, Map, toJS, fromJS} from 'immutable';
 
 //sell reducer takes the old state and the triggered action object to update current state to reflect the sell of a stock
@@ -36,7 +37,3 @@ export default function sellReducer(state, action) {
   return newState.set('error', null);
 
 }
-
-
-
-

@@ -1,6 +1,3 @@
-//Join Match Reducer
-//--------------------
-
 //import function to create immutable object
 import { fromJS } from 'immutable';
 

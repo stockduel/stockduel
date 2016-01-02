@@ -1,3 +1,4 @@
+//import function to create immutable object
 import {List, Map, toJS, fromJS} from 'immutable';
 
 //buy reducer takes the old state and the triggered action object and updates the current state to reflect a buy
