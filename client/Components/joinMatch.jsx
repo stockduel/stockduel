@@ -87,7 +87,9 @@ export const JoinMatch = React.createClass({
           </thead>
           <tbody>
             {/*maps the match details to the join matches table if no matches to join dont map any*/}
-            {this.matches && this.matches.map((matchObj) => {
+            {this.matches && this.matches.sort(function(a, b) {
+              return a.startdate - b.startdate;
+            }).map((matchObj) => {
               return matchObj ? <tr><div key={matchObj.m_id}>
                 <td>{this.capFirstLetter(matchObj.title)}</td>
                 <td>{numeral(matchObj.starting_funds).format('0,0')}</td>
