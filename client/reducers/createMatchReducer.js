@@ -1,6 +1,3 @@
-//Create Match Reducer
-//--------------------
-
 //import function to create immutable object
 import { fromJS } from 'immutable';
 
@@ -12,4 +9,3 @@ export default function (state, action) {
   //return the new state with updated match array and set the currentMatchId
   return stateWithNewMatch.set('currentMatchId', action.currentMatchId);
 }
-

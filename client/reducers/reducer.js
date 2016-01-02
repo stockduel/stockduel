@@ -56,16 +56,14 @@ export default function reducer(state = initialState, action) {
     //clears out state when the user logs out of the app
     case LOGOUT:
       return logoutReducer(state, action)
+    //sets the error property on state to true  
     case BAD_ACTION:
       return errorReducer(state, action)
-    //if action type isn't defined, dispatched action is ignored and state is returned
+    //sets the error property on state to null  
     case CLEAR_ERROR:
       return clearErrorReducer(state, action)
+    //if action type isn't defined, dispatched action is ignored and state is returned
     default:
       return state
   }
 }
-
-
-
-
