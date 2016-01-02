@@ -30,6 +30,7 @@ let App = React.createClass({
     //this.getUserName(); 
   },
 
+  //this is to try and get the username in the nav bar not working currently
   // getUserName () {
   //   this.username;
   //   var that = this;
@@ -60,32 +61,26 @@ let App = React.createClass({
 
     const { buy, sell, setCurrentMatch, setInitialState, userId, logout, createMatch, error, clearError, createError } = this.props;
 
+    //the drop down menu available from every page when the user is logged in
     const userButtons = 
     (<ToolbarGroup float="right">
-      {/*below to be implemented*/}
-      <button className="navButton" style={{marginRight:"30px"}}><h6 className="inverseTextColor">Hello: {this.username}</h6></button>
-      {/*<button className="navButton"><Link className="navButtonFontSize" to="/matches">My Matches</Link></button> 
-       <button className="navButton"><Link className="navButtonFontSize" to="/join">Join a Match</Link></button>
-       <button className="navButton" onClick={()=>{logout()}}><Link className="navButtonFontSize" to="/#">Logout</Link></button>*/}
-
-      <IconMenu iconButtonElement={<i className="fa fa-university fa-lg"></i>} >
-        <MenuItem primaryText="Create Match" onClick={ ()=>{ window.location.hash="#/create" } } />
-        <MenuItem primaryText="Your Matches" onClick={ ()=>{ window.location.hash="#/matches" } } />
-        <MenuItem primaryText="Matches to Join" onClick={ ()=>{ window.location.hash="#/join" } } />
+      <IconMenu iconButtonElement={<i className="fa fa-university fa-lg iconMarginTop"></i>} >
+        <MenuItem primaryText="Create Match" leftIcon={<i className="fa fa-file-o"></i>} onClick={ ()=>{ window.location.hash="#/create" } } />
+        <MenuItem primaryText="My Matches" leftIcon={<i className="fa fa-archive"></i>} onClick={ ()=>{ window.location.hash="#/matches" } } />
+        <MenuItem primaryText="Matches to Join" leftIcon={<i className="fa fa-plus"></i>} onClick={ ()=>{ window.location.hash="#/join" } } />
         <Divider />
-        <MenuItem primaryText="Sign out" onClick={ ()=>{ logout(); window.location.hash="#/"; } } />
+        <MenuItem primaryText="Sign out" leftIcon={<i className="fa fa-sign-out"></i>} onClick={ ()=>{ logout(); window.location.hash="#/"; } } />
       </IconMenu>
 
     </ToolbarGroup>);
 
     return (
       <div>
-      <Toolbar
+        <Toolbar
           style={{backgroundImage: 'url('+'http://hypertext.net/images/weblog/linen-backgrounds/dark_linen-640x960.png'+')', height:'60px'}}>
           <ToolbarGroup float="left" className="logoTopPad"><Link className="navButtonFontSize" to="/"><img className="navLogo" src='../assets/images/whiteLogo.png' alt="stockduel white logo" /></Link></ToolbarGroup>
           { !!userId ? userButtons : null }
         </Toolbar>
-
       </div>
     )
   }

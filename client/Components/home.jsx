@@ -4,8 +4,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/actions.js';
-// import request from 'superagent';
-
 
 const HomeDumb = React.createClass({
 
@@ -43,7 +41,9 @@ const HomeDumb = React.createClass({
 
 });
 
+//map the state to props
 function mapStateToProps(state) {
+  //only userId needed in this component
   return {
     userId: state.get('userId')
   }

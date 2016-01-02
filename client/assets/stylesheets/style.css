@@ -79,6 +79,10 @@ body {
   padding-top: 30px;
 }
 
+.paddingTopLess {
+  padding-top: 14px;
+}
+
 .spaceUnder {
   padding-bottom: 19px;
 }
@@ -96,6 +100,11 @@ i {
   color: white;
 }
 
+i:hover, .homeLogo:hover {
+  color: #009ACD;
+  cursor: pointer;
+}
+
 .inverseTextColor {
   color: white;
 }
@@ -108,9 +117,37 @@ i {
   margin-top: 30px;
 }
 
-.joinMatchSubText {
+.subText {
   font-size: 18px;
 }
 
+.font {
+  font-family: 'Raleway', sans-serif;
+}
+
+.titleSizeCard {
+  font-size: 17px;
+}
+
+.nudgeUp {
+  margin-top: -4px;
+}
+
+.iconMarginTop {
+  margin-top: 20px;
+}
+
+/*colors for errors and win/lose status and match status*/
+.error {
+  color: red;
+}
+
+.win {
+  color: green;
+}
+
+.matchActive {
+  color: #00b200;
+}
 
 
