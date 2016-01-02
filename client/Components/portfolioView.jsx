@@ -61,6 +61,10 @@ export const PortfolioView = React.createClass({
           <RaisedButton hoverColor="#009ACD" linkButton={true} href="#/search" label="Buy Stocks" />
         </div>
 
+        {errorValue && <div className="error">
+          <p>Invalid sale. Please make sure you are not selling more shares than you own.</p>
+        </div>
+        }
         <ul>
           {portfolio.get('stocks').map((stockObj, index) => {
           {/*render the stock in your portfolio to the page*/}
@@ -80,7 +84,6 @@ export const PortfolioView = React.createClass({
               marketValue={stockObj.get('marketValue')}
               percent_change={stockObj.get('percent_change') || 0}
               startdate={startdate}
-              errorValue={errorValue}
               matchStatus={match.get('status')}
             />
           })}

@@ -129,7 +129,7 @@ export const MatchCard = React.createClass({
               <div className="four columns">
                 <p>{type}</p>
                 <p>Start: {start}</p>
-                <p>Opponent: {this.opponent || "none"} </p>
+                {type !== "Solo" && <p>Opponent: {this.opponent || "none"} </p>}
               </div>
               <div className="four columns">
                 <p>Your Portfolio: {'$' + numeral(Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)).format('0,0')}</p>
@@ -139,7 +139,7 @@ export const MatchCard = React.createClass({
 
               <div className="four columns">
                 {/*logic to decide which type of gauge to display*/}
-                {this.opponentPortfolio ? <OpponentGauge portfolio={Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)} opponentPortfolio={this.opponentPortfolio.totalValue.toFixed(2)} /> : 
+                { (type !== "Solo" && this.opponentPortfolio) ? <OpponentGauge portfolio={Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)} opponentPortfolio={this.opponentPortfolio.totalValue.toFixed(2)} /> : 
                   <SoloGauge matchFunds={match.get('starting_funds')} portfolio={Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)} /> 
                 }
               </div>

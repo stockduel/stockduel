@@ -15,7 +15,7 @@ const CardTitle = require('material-ui/lib/card/card-title');
 export const Stock = React.createClass({
 
   render() {
-    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate, errorValue, matchStatus } = this.props;
+    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate, matchStatus } = this.props;
     let numSharesToSell;
 
     return (
@@ -59,11 +59,6 @@ export const Stock = React.createClass({
                   {/*trigger action to sell stocks. Update the database and state*/}
                   sell(sellOptions);
                 }} />
-
-              {/*handle error*/}
-                {errorValue && <div className="error">
-                  <p>Invalid sale. Please make sure you are not selling more shares than you own.</p>
-                </div>}
 
               </div>
               }

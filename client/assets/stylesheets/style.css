@@ -150,4 +150,20 @@ i:hover, .homeLogo:hover {
   color: #00b200;
 }
 
+.searchResult {
+  width: 50%;
+  margin: 0 auto;
+}
 
+.searchResult:hover {
+  cursor: pointer;
+  background-color: rgba(0,154,205, 0.25);
+}
+
+.visible {
+  display: block;
+}
+
+.invisible {
+  display: none;
+}
