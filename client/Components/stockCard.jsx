@@ -14,7 +14,7 @@ const CardTitle = require('material-ui/lib/card/card-title');
 export const Stock = React.createClass({
 
   render() {
-    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate, errorValue } = this.props;
+    const { sell, symbol, shares, MatchId, userId, price, name, ask, bid, gain_loss, percent_change, marketValue, startdate, errorValue, matchStatus } = this.props;
     let numSharesToSell;
 
     return (
@@ -39,12 +39,12 @@ export const Stock = React.createClass({
                 <h5>Total: ${(shares * price).toFixed(2)}</h5>
               </div>
 
-              <div className="four columns">
+              {matchStatus !== 'complete' && <div className="four columns">
                 <input type="number" ref="sellNum" min="1" max={shares} step="1" onChange={(event) => {
                   numSharesToSell = event.target.value;
                 }} />
 
-                <RaisedButton label="Sell" onClick={() => {
+               <RaisedButton label="Sell" onClick={() => {
                   let sellOptions = {
                     numShares: numSharesToSell,
                     stockTicker: symbol,
@@ -55,11 +55,13 @@ export const Stock = React.createClass({
                   this.refs.sellNum.value="";
                   sell(sellOptions);
                 }} />
+
                 {errorValue && <div className="error">
                   <p>Invalid sale. Please make sure you are not selling more shares than you own.</p>
-                </div>}
+                </div>
+              }
               </div>
-
+              }
             </div>
 
           </div>

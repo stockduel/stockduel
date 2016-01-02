@@ -25,24 +25,29 @@ export const MatchCard = React.createClass({
 
   //get the opponents details from the database and make available to the component
   componentWillMount() {
-    let opponentId;
     this.opponentId = (this.props.match.get('challengee')) === (this.props.userId) ?  (this.props.match.get('creator_id')) : (this.props.match.get('challengee'));
-    request.get('/users/' + opponentId)
+    request.get('/users/' + this.opponentId)
       .end((err, res) => {
         if (err) {
           console.error(err)
         } else {
           this.opponent = res.body.data.username;
-          window.location.hash = "#/matches";
+          // render if AJAX call that sets this.opponentPortfolio has already returned
+          if (this.opponentPortfolio) {console.log('in first one');
+            this.render();
+          }
         }
       });
-    request.get('/trades/' + this.props.match.get('m_id') + '/' + opponentId)
+    request.get('/trades/' + this.props.match.get('m_id') + '/' + this.opponentId)
       .end((err, res) => {
         if (err) {
           console.error(err)
         } else {
           this.opponentPortfolio = res.body.data;
-          window.location.hash = "#/matches";
+          // render if AJAX call that sets this.opponent has already returned
+          if (this.opponentPortfolio) { console.log('in second one');
+            this.render();
+          }        
         }
       })
   },
@@ -76,12 +81,16 @@ export const MatchCard = React.createClass({
 
     let winner = null;
 
-    //if the match is a head to head the work out who was the winner
-    if (match.get('type') === 'head') {
-      if (match.get('winner') === this.opponentId) {
-        winner = (<div><p className="error">You Lost</p></div>);
-      } else {
-        winner = (<div><p className="win">You Won!</p></div>);
+    if (match.get('status') === 'complete') {
+       //if the match is a head to head the work out who was the winner
+      if (match.get('type') === 'head') {
+        if (match.get('winner') === this.opponentId) {
+          winner = <p className="error">You Lost</p>;
+        } else if (match.get('winner') !== null) {
+          winner = <p className="win">You Won!</p>;
+        } else {
+          winner = <p>Tie</p>;
+        }
       }
     }
 
@@ -105,7 +114,7 @@ export const MatchCard = React.createClass({
                 <p className="font titleSizeCard" >{this.capFirstLetter(match.get('title'))}</p>
               </div>
               <div className="four columns titleSizeCard">
-                {match.get('status') === 'complete' ? <p>{winner}</p> : null}
+                {winner}
               </div>
 
               <div className="rightButton paddingTopLess">
@@ -124,11 +133,13 @@ export const MatchCard = React.createClass({
             
               <div className="four columns">
                 <p>{type}</p>
-                <p>Your Portfolio: {'$' + numeral(Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)).format('0,0')}</p>
+                <p>Start: {start}</p>
+                <p>Opponent: {this.opponent || "none"} </p>
               </div>
               <div className="four columns">
-                <p>Start: {start}</p>
+                <p>Your Portfolio: {'$' + numeral(Number(match.getIn(['portfolio', 'totalValue'])).toFixed(2)).format('0,0')}</p>
                 <p>End: {end}</p>
+                <p>{this.opponent && this.opponent + "'s Portfolio: "}{this.opponentPortfolio && "$" + numeral(Number(this.opponentPortfolio.totalValue).toFixed(2)).format('0, 0')}</p>
               </div>
 
               <div className="four columns">

@@ -111,7 +111,7 @@ module.exports = function (knex) {
           for (var key in row) {
             if (row.Date.length !== 0 && row.Close.length !== 0) {
               var date1 = row.Date;
-              data[date1] = Math.round(row.Close);
+              data[date1] = row.Close;
             }
           }
         });
