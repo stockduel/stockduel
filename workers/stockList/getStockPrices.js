@@ -1,5 +1,3 @@
-//Only file in this stockList folder in deployment
-//------------------------------------------------
 #!/usr/local/bin/node
 
 var Promise = require('bluebird');
